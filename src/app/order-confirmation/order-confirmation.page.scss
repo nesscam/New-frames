@@ -1,0 +1,59 @@
+:host {
+  --background: #121212;
+  --ion-background-color: #121212;
+  --ion-text-color: #ffffff;
+}
+
+.confirmation-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  color: var(--ion-color-success, #2dd36f);
+  margin-bottom: 20px;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #aaaaaa;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.order-number-box {
+  background: #2a2a2a;
+  padding: 15px 30px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  
+  small {
+    display: block;
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+  }
+  
+  strong {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+}

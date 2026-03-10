@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resumen de Compra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark" class="ion-padding">
+  
+  <div class="checkout-container">
+    <div class="preview-section" *ngIf="styledImage">
+      <div class="thumbnail-wrapper" [attr.data-frame]="selectedFrameId">
+        <img [src]="styledImage" alt="Artwork Preview" />
+      </div>
+    </div>
+
+    <ion-card color="medium" class="summary-card">
+      <ion-card-content>
+        <h2>Resumen del Pedido</h2>
+        <div class="summary-row">
+          <span>Marco: {{ selectedFrameDetail?.material || 'Desconocido' }}</span>
+          <span>{{ selectedFrameDetail?.price | currency:'USD' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Envío</span>
+          <span>{{ shippingCost | currency:'USD' }}</span>
+        </div>
+        <hr />
+        <div class="summary-row total">
+          <strong>Total</strong>
+          <strong>{{ totalCost | currency:'USD' }}</strong>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <h2 class="section-title">Dirección de Envío</h2>
+    
+    <form [formGroup]="checkoutForm">
+      <ion-item color="medium">
+        <ion-label position="stacked">Nombre Completo</ion-label>
+        <ion-input formControlName="name" placeholder="Ej. Ana Gómez"></ion-input>
+      </ion-item>
+      
+      <ion-item color="medium">
+        <ion-label position="stacked">Calle</ion-label>
+        <ion-input formControlName="street" placeholder="Ej. Av. Siempre Viva 123"></ion-input>
+      </ion-item>
+
+      <ion-item color="medium">
+        <ion-label position="stacked">Ciudad</ion-label>
+        <ion-input formControlName="city" placeholder="Ej. Ciudad de México"></ion-input>
+      </ion-item>
+
+      <ion-item color="medium">
+        <ion-label position="stacked">Estado / Provincia</ion-label>
+        <ion-input formControlName="state" placeholder="Ej. CDMX"></ion-input>
+      </ion-item>
+
+      <ion-item color="medium" lines="none">
+        <ion-label position="stacked">Código Postal</ion-label>
+        <ion-input formControlName="zip" placeholder="Ej. 12345"></ion-input>
+      </ion-item>
+    </form>
+
+    <div class="pay-btn-container">
+      <ion-button expand="block" size="large" color="success" (click)="onPay()" [disabled]="isProcessing">
+        <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
+        <span *ngIf="!isProcessing">Pagar con Stripe</span>
+      </ion-button>
+    </div>
+  </div>
+
+</ion-content>

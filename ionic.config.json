@@ -1,0 +1,7 @@
+{
+  "name": "tmp-project",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

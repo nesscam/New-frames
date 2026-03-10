@@ -1,0 +1,69 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>
+      AI Poster Editor
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding" color="dark">
+  
+  <div class="editor-container">
+    <div class="canvas-wrapper" 
+         [class.has-styled]="styledImage !== null"
+         [attr.data-frame]="selectedFrameId"
+         [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
+      <canvas #fabricCanvas></canvas>
+      <div *ngIf="isApplyingStyle" class="spinner-overlay">
+        <ion-spinner name="crescent" color="light"></ion-spinner>
+        <p>Aplicando Estilo...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-container">
+    <!-- UPLOAD STEP -->
+    <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
+      <h2>Sube tu foto</h2>
+      <p>Selecciona una imagen para comenzar.</p>
+      <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
+      <label for="file-upload" class="upload-btn">
+        Seleccionar Imagen
+      </label>
+    </div>
+
+    <!-- STYLE STEP -->
+    <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
+      <h2>Elige un Estilo</h2>
+      <div class="horiz-scroll">
+        <button class="style-btn" *ngFor="let style of styles" (click)="applyStyle(style)">
+          {{ style }}
+        </button>
+      </div>
+    </div>
+
+    <!-- FRAME STEP -->
+    <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
+      <h2>Elige un Marco</h2>
+      <div class="horiz-scroll">
+        <button class="frame-btn" 
+                *ngFor="let frame of frames" 
+                [class.selected]="selectedFrameId === frame.id"
+                (click)="selectFrame(frame.id)">
+          {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
+        </button>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <div class="footer-nav">
+      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">Atrás</ion-button>
+      <div class="step-indicator">{{ currentStep | uppercase }}</div>
+      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">Siguiente</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

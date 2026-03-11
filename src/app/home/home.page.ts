@@ -13,11 +13,17 @@ import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folde
 })
 export class HomePage implements OnInit {
 
-  inspirations = [
+  galleryInspirations = [
     { style: 'Cyberpunk', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=200&q=80' },
     { style: 'Watercolor', image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=200&q=80' },
     { style: 'Watercolor', image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=200&q=80' },
     { style: 'Oil Painting', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=200&q=80' }
+  ];
+
+  userCreations = [
+    { style: 'Neon City', image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=200&q=80' },
+    { style: 'Pop Art Portrait', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=200&q=80' },
+    { style: 'Classic Landscape', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=200&q=80' }
   ];
 
   orders = [

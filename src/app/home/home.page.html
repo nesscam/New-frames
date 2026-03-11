@@ -35,20 +35,37 @@
     </div>
   </div>
 
-  <!-- Your Creations -->
+  <!-- Inspiration Gallery -->
   <div class="section-container">
-    <h2>Your Creations</h2>
+    <h2>Inspiration</h2>
     
     <div class="creations-carousel">
-      <div class="creation-wrapper" *ngFor="let inspo of inspirations" (click)="openEditorModal(inspo.style)">
+      <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
         <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
         <p class="creation-label">{{ inspo.style }}</p>
       </div>
       <!-- Add extra placeholders to match the mockup horizontal scroll -->
-      <div class="creation-wrapper">
-        <div class="creation-img" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=200')"></div>
+      <div class="creation-wrapper" (click)="openEditorModal('Oil Painting')">
+        <div class="creation-img" style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=200')"></div>
         <p class="creation-label">Oil Painting</p>
       </div>
+    </div>
+  </div>
+
+  <!-- Your Creations -->
+  <div class="section-container">
+    <h2>Your Creations</h2>
+    
+    <div class="creations-carousel" *ngIf="userCreations.length > 0">
+      <div class="creation-wrapper" *ngFor="let creation of userCreations">
+        <div class="creation-img" [style.background-image]="'url(' + creation.image + ')'"></div>
+        <p class="creation-label">{{ creation.style }}</p>
+      </div>
+    </div>
+    
+    <div class="empty-state" *ngIf="userCreations.length === 0">
+      <ion-icon name="color-palette-outline"></ion-icon>
+      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
     </div>
   </div>
 

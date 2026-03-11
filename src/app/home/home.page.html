@@ -1,93 +1,20 @@
-<ion-content [fullscreen]="true" class="ion-padding custom-bg">
-  
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="search-container">
-      <ion-icon name="search-outline"></ion-icon>
-      <input type="text" placeholder="Search" />
-    </div>
-    <div class="user-meta">
-      <div class="avatar">
-        <!-- Placeholder for user avatar -->
-        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
-      </div>
-      <span class="credits-text">10 Credits</span>
-      <div class="credits-bar">
-        <div class="progress"></div>
-      </div>
-      <ion-icon name="notifications-outline" class="meta-icon"></ion-icon>
-      <ion-icon name="alert-outline" class="meta-icon"></ion-icon>
-    </div>
-  </div>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- Quick Actions -->
-  <div class="section-container">
-    <h2>Quick Actions</h2>
-    <div class="quick-actions-grid">
-      <div class="action-card upload-card" (click)="openEditorModal()">
-        <ion-icon name="camera-outline"></ion-icon>
-        <span>Upload Photo</span>
-      </div>
-      <div class="action-card studio-card" (click)="openEditorModal()">
-        <ion-icon name="folder-outline"></ion-icon>
-        <span>View Your Studio</span>
-      </div>
-    </div>
-  </div>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <!-- Inspiration Gallery -->
-  <div class="section-container">
-    <h2>Inspiration</h2>
-    
-    <div class="creations-carousel">
-      <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
-        <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
-        <p class="creation-label">{{ inspo.style }}</p>
-      </div>
-      <!-- Add extra placeholders to match the mockup horizontal scroll -->
-      <div class="creation-wrapper" (click)="openEditorModal('Oil Painting')">
-        <div class="creation-img" style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=200')"></div>
-        <p class="creation-label">Oil Painting</p>
-      </div>
-    </div>
+  <div id="container">
+    <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
   </div>
-
-  <!-- Your Creations -->
-  <div class="section-container">
-    <h2>Your Creations</h2>
-    
-    <div class="creations-carousel" *ngIf="userCreations.length > 0">
-      <div class="creation-wrapper" *ngFor="let creation of userCreations">
-        <div class="creation-img" [style.background-image]="'url(' + creation.image + ')'"></div>
-        <p class="creation-label">{{ creation.style }}</p>
-      </div>
-    </div>
-    
-    <div class="empty-state" *ngIf="userCreations.length === 0">
-      <ion-icon name="color-palette-outline"></ion-icon>
-      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
-    </div>
-  </div>
-
-  <!-- Your Orders -->
-  <div class="section-container">
-    <h2>Your Orders</h2>
-    <div class="orders-list">
-      <div class="order-card" *ngFor="let order of orders">
-        <div class="order-img" [style.background-image]="'url(' + order.image + ')'"></div>
-        <div class="order-details">
-          <h3>{{ order.id }}</h3>
-          <p>{{ order.details }}</p>
-          <p *ngIf="order.date" class="order-date">{{ order.date }}</p>
-        </div>
-        <div class="order-status" [ngClass]="order.status.toLowerCase()">
-          {{ order.status }}
-        </div>
-      </div>
-    </div>
-    <div class="view-all-container">
-      <button class="view-all-btn">View All Orders</button>
-    </div>
-  </div>
-
 </ion-content>

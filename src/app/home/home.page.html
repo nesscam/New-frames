@@ -1,69 +1,93 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>
-      AI Poster Editor
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding" color="dark">
+<ion-content [fullscreen]="true" class="ion-padding custom-bg">
   
-  <div class="editor-container">
-    <div class="canvas-wrapper" 
-         [class.has-styled]="styledImage !== null"
-         [attr.data-frame]="selectedFrameId"
-         [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
-      <canvas #fabricCanvas></canvas>
-      <div *ngIf="isApplyingStyle" class="spinner-overlay">
-        <ion-spinner name="crescent" color="light"></ion-spinner>
-        <p>Aplicando Estilo...</p>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="search-container">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="Search" />
+    </div>
+    <div class="user-meta">
+      <div class="avatar">
+        <!-- Placeholder for user avatar -->
+        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
+      </div>
+      <span class="credits-text">10 Credits</span>
+      <div class="credits-bar">
+        <div class="progress"></div>
+      </div>
+      <ion-icon name="notifications-outline" class="meta-icon"></ion-icon>
+      <ion-icon name="alert-outline" class="meta-icon"></ion-icon>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="section-container">
+    <h2>Quick Actions</h2>
+    <div class="quick-actions-grid">
+      <div class="action-card upload-card" (click)="openEditorModal()">
+        <ion-icon name="camera-outline"></ion-icon>
+        <span>Upload Photo</span>
+      </div>
+      <div class="action-card studio-card" (click)="openEditorModal()">
+        <ion-icon name="folder-outline"></ion-icon>
+        <span>View Your Studio</span>
       </div>
     </div>
   </div>
 
-  <div class="controls-container">
-    <!-- UPLOAD STEP -->
-    <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
-      <h2>Sube tu foto</h2>
-      <p>Selecciona una imagen para comenzar.</p>
-      <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
-      <label for="file-upload" class="upload-btn">
-        Seleccionar Imagen
-      </label>
-    </div>
-
-    <!-- STYLE STEP -->
-    <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
-      <h2>Elige un Estilo</h2>
-      <div class="horiz-scroll">
-        <button class="style-btn" *ngFor="let style of styles" (click)="applyStyle(style)">
-          {{ style }}
-        </button>
+  <!-- Inspiration Gallery -->
+  <div class="section-container">
+    <h2>Inspiration</h2>
+    
+    <div class="creations-carousel">
+      <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
+        <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
+        <p class="creation-label">{{ inspo.style }}</p>
+      </div>
+      <!-- Add extra placeholders to match the mockup horizontal scroll -->
+      <div class="creation-wrapper" (click)="openEditorModal('Oil Painting')">
+        <div class="creation-img" style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=200')"></div>
+        <p class="creation-label">Oil Painting</p>
       </div>
     </div>
+  </div>
 
-    <!-- FRAME STEP -->
-    <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
-      <h2>Elige un Marco</h2>
-      <div class="horiz-scroll">
-        <button class="frame-btn" 
-                *ngFor="let frame of frames" 
-                [class.selected]="selectedFrameId === frame.id"
-                (click)="selectFrame(frame.id)">
-          {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
-        </button>
+  <!-- Your Creations -->
+  <div class="section-container">
+    <h2>Your Creations</h2>
+    
+    <div class="creations-carousel" *ngIf="userCreations.length > 0">
+      <div class="creation-wrapper" *ngFor="let creation of userCreations">
+        <div class="creation-img" [style.background-image]="'url(' + creation.image + ')'"></div>
+        <p class="creation-label">{{ creation.style }}</p>
       </div>
     </div>
     
-  </div>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar color="dark">
-    <div class="footer-nav">
-      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">Atrás</ion-button>
-      <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">Siguiente</ion-button>
+    <div class="empty-state" *ngIf="userCreations.length === 0">
+      <ion-icon name="color-palette-outline"></ion-icon>
+      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
     </div>
-  </ion-toolbar>
-</ion-footer>
+  </div>
+
+  <!-- Your Orders -->
+  <div class="section-container">
+    <h2>Your Orders</h2>
+    <div class="orders-list">
+      <div class="order-card" *ngFor="let order of orders">
+        <div class="order-img" [style.background-image]="'url(' + order.image + ')'"></div>
+        <div class="order-details">
+          <h3>{{ order.id }}</h3>
+          <p>{{ order.details }}</p>
+          <p *ngIf="order.date" class="order-date">{{ order.date }}</p>
+        </div>
+        <div class="order-status" [ngClass]="order.status.toLowerCase()">
+          {{ order.status }}
+        </div>
+      </div>
+    </div>
+    <div class="view-all-container">
+      <button class="view-all-btn">View All Orders</button>
+    </div>
+  </div>
+
+</ion-content>

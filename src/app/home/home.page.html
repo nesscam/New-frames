@@ -1,69 +1,75 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar color="dark">
-    <ion-title>
-      AI Poster Editor
-    </ion-title>
+    <ion-title>AI Studio</ion-title>
+    <ion-button slot="end" fill="clear" color="light">
+      <!-- Settings or Profile Icon placeholder -->
+      <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding" color="dark">
   
-  <div class="editor-container">
-    <div class="canvas-wrapper" 
-         [class.has-styled]="styledImage !== null"
-         [attr.data-frame]="selectedFrameId"
-         [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
-      <canvas #fabricCanvas></canvas>
-      <div *ngIf="isApplyingStyle" class="spinner-overlay">
-        <ion-spinner name="crescent" color="light"></ion-spinner>
-        <p>Aplicando Estilo...</p>
+  <!-- Header & Actions -->
+  <div class="actions-section">
+    <ion-button expand="block" shape="round" color="primary" class="main-action-btn shadow-lg" (click)="openEditorModal()">
+      <ion-icon name="images-outline" slot="start"></ion-icon>
+      Nueva Foto
+    </ion-button>
+    <ion-button expand="block" shape="round" fill="outline" color="light" class="secondary-action-btn shadow-lg" (click)="openEditorModal()">
+      <ion-icon name="camera-outline" slot="start"></ion-icon>
+      Cámara
+    </ion-button>
+  </div>
+
+  <!-- Inspiración (Prioridad 1) -->
+  <div class="section-container">
+    <h2>Galería de Inspiración</h2>
+    <div class="horizontal-carousel">
+      <div class="carousel-item shadow-lg rounded-2xl" 
+           *ngFor="let inspo of inspirations" 
+           (click)="openEditorModal(inspo.style)"
+           [style.background-image]="'url(' + inspo.image + ')'">
+        <div class="badge">Estilo</div>
+        <div class="item-overlay">
+          <span class="item-title">{{ inspo.style }}</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="controls-container">
-    <!-- UPLOAD STEP -->
-    <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
-      <h2>Sube tu foto</h2>
-      <p>Selecciona una imagen para comenzar.</p>
-      <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
-      <label for="file-upload" class="upload-btn">
-        Seleccionar Imagen
-      </label>
-    </div>
-
-    <!-- STYLE STEP -->
-    <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
-      <h2>Elige un Estilo</h2>
-      <div class="horiz-scroll">
-        <button class="style-btn" *ngFor="let style of styles" (click)="applyStyle(style)">
-          {{ style }}
-        </button>
-      </div>
-    </div>
-
-    <!-- FRAME STEP -->
-    <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
-      <h2>Elige un Marco</h2>
-      <div class="horiz-scroll">
-        <button class="frame-btn" 
-                *ngFor="let frame of frames" 
-                [class.selected]="selectedFrameId === frame.id"
-                (click)="selectFrame(frame.id)">
-          {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
-        </button>
-      </div>
+  <!-- Tu Estudio (Prioridad 2) -->
+  <div class="section-container">
+    <h2>Tus Creaciones</h2>
+    
+    <div class="empty-state rounded-2xl shadow-lg" *ngIf="creations.length === 0">
+      <ion-icon name="color-palette-outline"></ion-icon>
+      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
     </div>
     
-  </div>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar color="dark">
-    <div class="footer-nav">
-      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">Atrás</ion-button>
-      <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">Siguiente</ion-button>
+    <div class="horizontal-carousel" *ngIf="creations.length > 0">
+      <div class="carousel-item shadow-lg rounded-2xl" *ngFor="let creation of creations">
+        <!-- Content for user creations -->
+      </div>
     </div>
-  </ion-toolbar>
-</ion-footer>
+  </div>
+
+  <!-- Pedidos (Prioridad 3) -->
+  <div class="section-container">
+    <h2>Pedidos Recientes</h2>
+    
+    <ion-list class="orders-list rounded-2xl shadow-lg" lines="none">
+      <ion-item *ngFor="let order of orders" color="medium" class="order-item">
+        <ion-icon name="cube-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Pedido #{{ order.id }}</h3>
+          <p>{{ order.date }}</p>
+        </ion-label>
+        <ion-text slot="end" color="success">
+          <small>{{ order.status }}</small>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

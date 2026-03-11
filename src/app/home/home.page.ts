@@ -1,160 +1,47 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter } from '@ionic/angular/standalone';
-import { EditorStoreService, OrderStep } from '../services/editor-store.service';
-import { CatalogService, Frame } from '../services/catalog.service';
-import { AiPromptService } from '../services/ai-prompt.service';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-declare var fabric: any;
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText } from '@ionic/angular/standalone';
+import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, CommonModule],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, IonCard, IonText, CommonModule],
 })
-export class HomePage implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('fabricCanvas') canvasEl!: ElementRef<HTMLCanvasElement>;
-  
-  canvas: any;
-  
-  currentStep: OrderStep = 'upload';
-  originalImage: string | null = null;
-  styledImage: string | null = null;
-  selectedFrameId: string | null = null;
-  
-  frames: Frame[] = [];
-  styles: string[] = ['Original', 'Cyberpunk', 'Watercolor', 'Oil Painting', 'Sketch', 'Comic'];
-  
-  isApplyingStyle = false;
+export class HomePage implements OnInit {
 
-  private subs = new Subscription();
+  inspirations = [
+    { style: 'Cyberpunk', image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
+    { style: 'Óleo', image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
+    { style: 'Acuarela', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
+    { style: 'Pop Art', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' }
+  ];
 
-  constructor(
-    private editorStore: EditorStoreService,
-    private catalogService: CatalogService,
-    private aiPromptService: AiPromptService,
-    private router: Router
-  ) {}
+  creations: any[] = [];
+  
+  orders = [
+    { id: 'ORD-12345', status: 'En Preparación', date: '10 Mar 2026' }
+  ];
+
+  constructor(private modalCtrl: ModalController) {}
 
   ngOnInit() {
-    this.subs.add(this.editorStore.orderStep$.subscribe(step => this.currentStep = step));
-    this.subs.add(this.editorStore.originalImage$.subscribe(img => this.originalImage = img));
-    this.subs.add(this.editorStore.styledImage$.subscribe(img => this.styledImage = img));
-    this.subs.add(this.editorStore.selectedFrameId$.subscribe(id => this.selectedFrameId = id));
-
-    this.subs.add(this.catalogService.getCatalog().subscribe(catalog => {
-      this.frames = catalog.frames;
-    }));
+    // Optionally fetch creations and orders from a real service later
   }
 
-  ngAfterViewInit() {
-    this.initFabric();
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-    if (this.canvas) {
-      this.canvas.dispose();
-    }
-  }
-
-  initFabric() {
-    this.canvas = new fabric.Canvas(this.canvasEl.nativeElement, {
-      width: 300,
-      height: 400,
-      backgroundColor: '#2a2a2a'
+  async openEditorModal(preselectedStyle?: string) {
+    const modal = await this.modalCtrl.create({
+      component: EditorModalComponent,
+      componentProps: {
+        preselectedStyle: preselectedStyle
+      }
     });
-  }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const imageUrl = e.target.result;
-        this.editorStore.setOriginalImage(imageUrl);
-        this.loadImageToCanvas(imageUrl);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  loadImageToCanvas(imageUrl: string) {
-    if (!this.canvas) return;
-    this.canvas.clear();
-    this.canvas.backgroundColor = '#2a2a2a';
+    await modal.present();
     
-    fabric.Image.fromURL(imageUrl, (img: any) => {
-      // Scale image to fit canvas
-      const scaleX = this.canvas.width! / img.width!;
-      const scaleY = this.canvas.height! / img.height!;
-      const scale = Math.min(scaleX, scaleY) * 0.9; // 90% to leave a tiny padding inside the 'frame'
-
-      img.set({
-        scaleX: scale,
-        scaleY: scale,
-        originX: 'center',
-        originY: 'center',
-        left: this.canvas.width! / 2,
-        top: this.canvas.height! / 2,
-        selectable: false
-      });
-      
-      this.canvas.add(img);
-      this.canvas.renderAll();
-    });
+    // When closed, you could optionally refresh the dashboard
+    // const { data } = await modal.onWillDismiss();
   }
 
-  applyStyle(styleName: string) {
-    if (!this.originalImage) return;
-    if (styleName === 'Original') {
-       this.editorStore.setStyledImage(this.originalImage);
-       return;
-    }
-    
-    this.isApplyingStyle = true;
-    
-    // Call the AI proxy service using environment config
-    this.subs.add(
-      this.aiPromptService.processImage(this.originalImage, styleName).subscribe({
-        next: (result) => {
-          this.isApplyingStyle = false;
-          // In real scenario result would have the new base64/url
-          // For now we set it to original to continue flow if it succeeds
-          const returnedImg = result?.imageUrl || this.originalImage;
-          this.editorStore.setStyledImage(returnedImg);
-        },
-        error: (err) => {
-           console.error("Failed to generate AI stylistic image", err);
-           this.isApplyingStyle = false;
-           // Fallback for testing:
-           this.editorStore.setStyledImage(this.originalImage);
-        }
-      })
-    );
-  }
-
-  selectFrame(frameId: string) {
-    this.editorStore.setSelectedFrameId(frameId);
-  }
-
-  nextStep() {
-    switch(this.currentStep) {
-      case 'upload': this.editorStore.setOrderStep('style'); break;
-      case 'style': this.editorStore.setOrderStep('frame'); break;
-      case 'frame': 
-        this.router.navigate(['/checkout']); 
-        break;
-    }
-  }
-
-  prevStep() {
-    switch(this.currentStep) {
-      case 'style': this.editorStore.setOrderStep('upload'); break;
-      case 'frame': this.editorStore.setOrderStep('style'); break;
-      case 'checkout': this.editorStore.setOrderStep('frame'); break;
-    }
-  }
 }

@@ -1,0 +1,128 @@
+:host {
+  height: 100%;
+}
+
+.editor-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  min-height: 50vh;
+}
+
+.canvas-wrapper {
+  position: relative;
+  border: 10px solid #ffffff; /* Default plain frame */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: border 0.3s ease, filter 0.3s ease;
+  background-color: #2a2a2a;
+  
+  /* Simulate styles with CSS filter for now since canvas holds original image */
+  &[data-style="loading"] {
+    opacity: 0.7;
+    filter: blur(2px) grayscale(50%);
+  }
+
+  /* Simulate different frames by changing the border */
+  &[data-frame="min-black-8-10"] {
+    border-color: #1a1a1a;
+    border-width: 8px;
+  }
+  
+  &[data-frame="classic-oak-11-14"] {
+    border-color: #8B5A2B; /* Wood-like color */
+    border-style: ridge;
+    border-width: 15px;
+  }
+  
+  &[data-frame="premium-gold-12-12"] {
+    border-color: #D4AF37; /* Gold color */
+    border-style: double;
+    border-width: 12px;
+  }
+}
+
+.spinner-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  z-index: 10;
+  p { margin-top: 10px; font-weight: bold; }
+}
+
+.controls-container {
+  padding: 10px;
+}
+
+.step-panel {
+  text-align: center;
+  h2 { margin-top: 0; font-size: 1.5rem; font-weight: 600; }
+  p { color: #aaaaaa; font-size: 0.9rem; }
+}
+
+/* Upload Button */
+.upload-btn {
+  display: inline-block;
+  background: var(--ion-color-primary, #3880ff);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  &:active { opacity: 0.8; }
+}
+
+/* Horizontal Scroll Lists */
+.horiz-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px 5px;
+  margin-top: 15px;
+  
+  &::-webkit-scrollbar { display: none; }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.style-btn, .frame-btn {
+  flex: 0 0 auto;
+  background: #2a2a2a;
+  color: white;
+  border: 2px solid transparent;
+  padding: 15px 20px;
+  border-radius: 12px;
+  min-width: 100px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &.selected, &:focus {
+    border-color: var(--ion-color-primary, #3880ff);
+    background: #333333;
+  }
+  
+  small { color: #888; }
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  width: 100%;
+}
+
+.step-indicator {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #888;
+  font-weight: bold;
+}

@@ -1,75 +1,76 @@
-<ion-header [translucent]="true" class="ion-no-border">
-  <ion-toolbar color="dark">
-    <ion-title>AI Studio</ion-title>
-    <ion-button slot="end" fill="clear" color="light">
-      <!-- Settings or Profile Icon placeholder -->
-      <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding" color="dark">
+<ion-content [fullscreen]="true" class="ion-padding custom-bg">
   
-  <!-- Header & Actions -->
-  <div class="actions-section">
-    <ion-button expand="block" shape="round" color="primary" class="main-action-btn shadow-lg" (click)="openEditorModal()">
-      <ion-icon name="images-outline" slot="start"></ion-icon>
-      Nueva Foto
-    </ion-button>
-    <ion-button expand="block" shape="round" fill="outline" color="light" class="secondary-action-btn shadow-lg" (click)="openEditorModal()">
-      <ion-icon name="camera-outline" slot="start"></ion-icon>
-      Cámara
-    </ion-button>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="search-container">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="Search" />
+    </div>
+    <div class="user-meta">
+      <div class="avatar">
+        <!-- Placeholder for user avatar -->
+        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
+      </div>
+      <span class="credits-text">10 Credits</span>
+      <div class="credits-bar">
+        <div class="progress"></div>
+      </div>
+      <ion-icon name="notifications-outline" class="meta-icon"></ion-icon>
+      <ion-icon name="alerts-outline" class="meta-icon"></ion-icon>
+    </div>
   </div>
 
-  <!-- Inspiración (Prioridad 1) -->
+  <!-- Quick Actions -->
   <div class="section-container">
-    <h2>Galería de Inspiración</h2>
-    <div class="horizontal-carousel">
-      <div class="carousel-item shadow-lg rounded-2xl" 
-           *ngFor="let inspo of inspirations" 
-           (click)="openEditorModal(inspo.style)"
-           [style.background-image]="'url(' + inspo.image + ')'">
-        <div class="badge">Estilo</div>
-        <div class="item-overlay">
-          <span class="item-title">{{ inspo.style }}</span>
+    <h2>Quick Actions</h2>
+    <div class="quick-actions-grid">
+      <div class="action-card upload-card" (click)="openEditorModal()">
+        <ion-icon name="camera-outline"></ion-icon>
+        <span>Upload Photo</span>
+      </div>
+      <div class="action-card studio-card" (click)="openEditorModal()">
+        <ion-icon name="folder-outline"></ion-icon>
+        <span>View Your Studio</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Your Creations -->
+  <div class="section-container">
+    <h2>Your Creations</h2>
+    
+    <div class="creations-carousel">
+      <div class="creation-wrapper" *ngFor="let inspo of inspirations" (click)="openEditorModal(inspo.style)">
+        <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
+        <p class="creation-label">{{ inspo.style }}</p>
+      </div>
+      <!-- Add extra placeholders to match the mockup horizontal scroll -->
+      <div class="creation-wrapper">
+        <div class="creation-img" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=200')"></div>
+        <p class="creation-label">Oil Painting</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Your Orders -->
+  <div class="section-container">
+    <h2>Your Orders</h2>
+    <div class="orders-list">
+      <div class="order-card" *ngFor="let order of orders">
+        <div class="order-img" [style.background-image]="'url(' + order.image + ')'"></div>
+        <div class="order-details">
+          <h3>{{ order.id }}</h3>
+          <p>{{ order.details }}</p>
+          <p *ngIf="order.date" class="order-date">{{ order.date }}</p>
+        </div>
+        <div class="order-status" [ngClass]="order.status.toLowerCase()">
+          {{ order.status }}
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Tu Estudio (Prioridad 2) -->
-  <div class="section-container">
-    <h2>Tus Creaciones</h2>
-    
-    <div class="empty-state rounded-2xl shadow-lg" *ngIf="creations.length === 0">
-      <ion-icon name="color-palette-outline"></ion-icon>
-      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
+    <div class="view-all-container">
+      <button class="view-all-btn">View All Orders</button>
     </div>
-    
-    <div class="horizontal-carousel" *ngIf="creations.length > 0">
-      <div class="carousel-item shadow-lg rounded-2xl" *ngFor="let creation of creations">
-        <!-- Content for user creations -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Pedidos (Prioridad 3) -->
-  <div class="section-container">
-    <h2>Pedidos Recientes</h2>
-    
-    <ion-list class="orders-list rounded-2xl shadow-lg" lines="none">
-      <ion-item *ngFor="let order of orders" color="medium" class="order-item">
-        <ion-icon name="cube-outline" slot="start" color="primary"></ion-icon>
-        <ion-label>
-          <h3>Pedido #{{ order.id }}</h3>
-          <p>{{ order.date }}</p>
-        </ion-label>
-        <ion-text slot="end" color="success">
-          <small>{{ order.status }}</small>
-        </ion-text>
-      </ion-item>
-    </ion-list>
   </div>
 
 </ion-content>

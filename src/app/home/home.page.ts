@@ -12,16 +12,16 @@ import { EditorModalComponent } from '../components/editor-modal/editor-modal.co
 export class HomePage implements OnInit {
 
   inspirations = [
-    { style: 'Cyberpunk', image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
-    { style: 'Óleo', image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
-    { style: 'Acuarela', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
-    { style: 'Pop Art', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' }
+    { style: 'Cyberpunk', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=200&q=80' },
+    { style: 'Watercolor', image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=200&q=80' },
+    { style: 'Watercolor', image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=200&q=80' },
+    { style: 'Oil Painting', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=200&q=80' }
   ];
 
-  creations: any[] = [];
-  
   orders = [
-    { id: 'ORD-12345', status: 'En Preparación', date: '10 Mar 2026' }
+    { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', status: 'Pnippto', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=100&q=80' },
+    { id: '#Processing', details: 'Size: 11x14, Material, Wood', status: 'Shipped', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=100&q=80' },
+    { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', date: '20120221', status: 'Shipped', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=100&q=80' }
   ];
 
   constructor(private modalCtrl: ModalController) {}

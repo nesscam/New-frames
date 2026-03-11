@@ -15,7 +15,7 @@
   border: 10px solid #ffffff; /* Default plain frame */
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transition: border 0.3s ease, filter 0.3s ease;
-  background-color: #2a2a2a;
+  background-color: var(--bg-secondary);
   
   /* Simulate styles with CSS filter for now since canvas holds original image */
   &[data-style="loading"] {
@@ -62,13 +62,13 @@
 .step-panel {
   text-align: center;
   h2 { margin-top: 0; font-size: 1.5rem; font-weight: 600; }
-  p { color: #aaaaaa; font-size: 0.9rem; }
+  p { color: var(--text-secondary); font-size: 0.9rem; }
 }
 
 /* Upload Button */
 .upload-btn {
   display: inline-block;
-  background: var(--ion-color-primary, #3880ff);
+  background: var(--upload-gradient);
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
@@ -94,7 +94,7 @@
 
 .style-btn, .frame-btn {
   flex: 0 0 auto;
-  background: #2a2a2a;
+  background: var(--bg-secondary);
   color: white;
   border: 2px solid transparent;
   padding: 15px 20px;
@@ -105,11 +105,11 @@
   transition: all 0.2s;
   
   &.selected, &:focus {
-    border-color: var(--ion-color-primary, #3880ff);
-    background: #333333;
+    border-color: var(--accent-blue);
+    background: #313545;
   }
   
-  small { color: #888; }
+  small { color: var(--text-secondary); }
 }
 
 .footer-nav {

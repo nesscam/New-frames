@@ -23,10 +23,23 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
+    ...(environment.firebase.apiKey ? [
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+      provideAuth(() => getAuth()),
+    ] : []),
+    ...(environment.firebase.apiKey ? [
+      provideFirestore(() => getFirestore()),
+      provideStorage(() => getStorage()),
+    ] : []),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useClass: TranslateHttpLoader
+        },
+        defaultLanguage: 'es',
+      })
+    ),
     {
       provide: TRANSLATE_HTTP_LOADER_CONFIG,
       useValue: {
@@ -34,15 +47,5 @@ bootstrapApplication(AppComponent, {
         suffix: '.json'
       }
     },
-    importProvidersFrom(
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useClass: TranslateHttpLoader,
-          deps: [HttpClient, TRANSLATE_HTTP_LOADER_CONFIG],
-        },
-        defaultLanguage: 'es',
-      })
-    ),
   ],
 });

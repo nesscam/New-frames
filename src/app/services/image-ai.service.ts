@@ -39,14 +39,17 @@ export class ImageAiService {
     const stylePrompt = this.MASTER_PROMPTS[styleKey] || styleKey;
     const userDocRef = doc(this.firestore, `users/${userId}`);
 
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${environment.replicateApiKey}`,
+      'Content-Type': 'application/json'
+    });
+
     return from(getDoc(userDocRef)).pipe(
       switchMap(docSnap => {
         if (!docSnap.exists() || (docSnap.data()?.['credits'] ?? 0) < 1) {
           return throwError(() => new Error('Insufficient credits or user not found.'));
         }
 
-        // 1. Upload init image to a temporary public location or use a Data URL if Replicate supports it.
-        // Usually Replicate needs a URL. Let's upload to a temp folder in Firebase.
         const tempPath = `temp_uploads/${userId}/${Date.now()}.png`;
         const tempRef = ref(this.storage, tempPath);
 
@@ -55,9 +58,8 @@ export class ImageAiService {
         );
       }),
       switchMap((initImageUrl: string) => {
-        // 2. Call Replicate API (Proxy recommended to hide key, but here we follow request)
         const body = {
-          version: "39ed52f2a78e934b3ba6e24ee33373c959d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1", // SDXL version placeholder
+          version: "39ed52f2a78e934b3ba6e24ee33373c959d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1",
           input: {
             image: initImageUrl,
             prompt: stylePrompt,
@@ -67,21 +69,9 @@ export class ImageAiService {
           }
         };
 
-        const headers = new HttpHeaders({
-          'Authorization': `Token ${environment.replicateApiKey}`,
-          'Content-Type': 'application/json'
-        });
-
         return this.http.post<any>(this.replicateApiUrl, body, { headers });
       }),
       switchMap((prediction: any) => {
-        // 3. Replicate is async. In a real app, we'd poll or use webhooks.
-        // For this implementation, we will assume a proxy or a simplified flow.
-        // But to be helpful, let's at least return the prediction URL if we can't poll here easily.
-        // Actually, the user wants to "Conecta con la API", so I should implement a basic poll or
-        // return the prediction ID.
-        // Let's assume the user will handle polling in the component or I add a simple poll here.
-
         return this.pollPrediction(prediction.urls.get, headers);
       }),
       switchMap((outputUrl: string) => {
@@ -119,5 +109,29 @@ export class ImageAiService {
         return throwError(() => error);
       })
     );
+  }
+
+  private pollPrediction(url: string, headers: HttpHeaders): Observable<string> {
+    // Simple polling implementation
+    return new Observable<string>(observer => {
+      const interval = setInterval(() => {
+        this.http.get<any>(url, { headers }).subscribe({
+          next: (prediction) => {
+            if (prediction.status === 'succeeded') {
+              clearInterval(interval);
+              observer.next(prediction.output[0]);
+              observer.complete();
+            } else if (prediction.status === 'failed' || prediction.status === 'canceled') {
+              clearInterval(interval);
+              observer.error(new Error(`Prediction ${prediction.status}`));
+            }
+          },
+          error: (err) => {
+            clearInterval(interval);
+            observer.error(err);
+          }
+        });
+      }, 3000); // Poll every 3 seconds
+    });
   }
 }

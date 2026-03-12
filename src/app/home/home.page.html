@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true" class="ion-padding custom-bg">
-  
+
   <!-- Top Bar -->
   <div class="top-bar">
     <div class="search-container">
@@ -38,7 +38,7 @@
   <!-- Inspiration Gallery -->
   <div class="section-container">
     <h2>Inspiration</h2>
-    
+
     <div class="creations-carousel">
       <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
         <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
@@ -55,14 +55,14 @@
   <!-- Your Creations -->
   <div class="section-container">
     <h2>Your Creations</h2>
-    
+
     <div class="creations-carousel" *ngIf="userCreations.length > 0">
       <div class="creation-wrapper" *ngFor="let creation of userCreations">
         <div class="creation-img" [style.background-image]="'url(' + creation.image + ')'"></div>
         <p class="creation-label">{{ creation.style }}</p>
       </div>
     </div>
-    
+
     <div class="empty-state" *ngIf="userCreations.length === 0">
       <ion-icon name="color-palette-outline"></ion-icon>
       <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>

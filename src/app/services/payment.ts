@@ -10,7 +10,7 @@ export class PaymentService {
 
   /**
    * Simulates a payment transaction with Stripe.
-   * 
+   *
    * @param amount The amount to charge.
    * @returns An observable that resolves to true after a simulated delay.
    */

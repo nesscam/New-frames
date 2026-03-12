@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
     });
 
     await modal.present();
-    
+
     // When closed, you could optionally refresh the dashboard
     // const { data } = await modal.onWillDismiss();
   }

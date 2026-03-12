@@ -16,7 +16,7 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transition: border 0.3s ease, filter 0.3s ease;
   background-color: var(--bg-secondary);
-  
+
   /* Simulate styles with CSS filter for now since canvas holds original image */
   &[data-style="loading"] {
     opacity: 0.7;
@@ -28,13 +28,13 @@
     border-color: #1a1a1a;
     border-width: 8px;
   }
-  
+
   &[data-frame="classic-oak-11-14"] {
     border-color: #8B5A2B; /* Wood-like color */
     border-style: ridge;
     border-width: 15px;
   }
-  
+
   &[data-frame="premium-gold-12-12"] {
     border-color: #D4AF37; /* Gold color */
     border-style: double;
@@ -86,7 +86,7 @@
   gap: 15px;
   padding: 10px 5px;
   margin-top: 15px;
-  
+
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -103,12 +103,12 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &.selected, &:focus {
     border-color: var(--accent-blue);
     background: #313545;
   }
-  
+
   small { color: var(--text-secondary); }
 }
 

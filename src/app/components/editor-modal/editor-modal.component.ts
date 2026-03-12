@@ -18,17 +18,17 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() preselectedStyle?: string;
 
   @ViewChild('fabricCanvas') canvasEl!: ElementRef<HTMLCanvasElement>;
-  
+
   canvas: any;
-  
+
   currentStep: OrderStep = 'upload';
   originalImage: string | null = null;
   styledImage: string | null = null;
   selectedFrameId: string | null = null;
-  
+
   frames: Frame[] = [];
   styles: string[] = ['Original', 'Cyberpunk', 'Watercolor', 'Oil Painting', 'Sketch', 'Comic'];
-  
+
   isApplyingStyle = false;
 
   private subs = new Subscription();
@@ -55,7 +55,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
       this.frames = catalog.frames;
     }));
 
-    // If preselectedStyle, jump to style step implicitly? 
+    // If preselectedStyle, jump to style step implicitly?
     // Usually wait for user to upload first, so keep upload step.
   }
 
@@ -86,10 +86,10 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
         const imageUrl = e.target.result;
         this.editorStore.setOriginalImage(imageUrl);
         this.loadImageToCanvas(imageUrl);
-        
+
         // Auto-navigate to style step
         this.editorStore.setOrderStep('style');
-        
+
         if (this.preselectedStyle) {
           this.applyStyle(this.preselectedStyle);
         }
@@ -102,7 +102,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.canvas) return;
     this.canvas.clear();
     this.canvas.backgroundColor = '#2a2a2a';
-    
+
     fabric.Image.fromURL(imageUrl, (img: any) => {
       // Scale image to fit canvas
       const scaleX = this.canvas.width! / img.width!;
@@ -118,7 +118,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
         top: this.canvas.height! / 2,
         selectable: false
       });
-      
+
       this.canvas.add(img);
       this.canvas.renderAll();
     });
@@ -130,9 +130,9 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
        this.editorStore.setStyledImage(this.originalImage);
        return;
     }
-    
+
     this.isApplyingStyle = true;
-    
+
     this.subs.add(
       this.aiPromptService.processImage(this.originalImage, styleName).subscribe({
         next: (result) => {
@@ -157,9 +157,9 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     switch(this.currentStep) {
       case 'upload': this.editorStore.setOrderStep('style'); break;
       case 'style': this.editorStore.setOrderStep('frame'); break;
-      case 'frame': 
+      case 'frame':
         this.dismissModal();
-        this.router.navigate(['/checkout']); 
+        this.router.navigate(['/checkout']);
         break;
     }
   }

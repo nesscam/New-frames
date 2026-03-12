@@ -10,9 +10,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding" color="dark">
-  
+
   <div class="editor-container">
-    <div class="canvas-wrapper" 
+    <div class="canvas-wrapper"
          [class.has-styled]="styledImage !== null"
          [attr.data-frame]="selectedFrameId"
          [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
@@ -39,7 +39,7 @@
     <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
       <h2>Elige un Estilo</h2>
       <div class="horiz-scroll">
-        <button class="style-btn" *ngFor="let style of styles" 
+        <button class="style-btn" *ngFor="let style of styles"
                 [class.selected]="preselectedStyle === style"
                 (click)="applyStyle(style)">
           {{ style }}
@@ -51,15 +51,15 @@
     <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
       <h2>Elige un Marco</h2>
       <div class="horiz-scroll">
-        <button class="frame-btn" 
-                *ngFor="let frame of frames" 
+        <button class="frame-btn"
+                *ngFor="let frame of frames"
                 [class.selected]="selectedFrameId === frame.id"
                 (click)="selectFrame(frame.id)">
           {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
         </button>
       </div>
     </div>
-    
+
   </div>
 </ion-content>
 

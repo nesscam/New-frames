@@ -22,7 +22,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
   styledImage: string | null = null;
   selectedFrameId: string | null = null;
   selectedFrameDetail: Frame | null = null;
-  
+
   shippingCost = 15.00;
   totalCost = 0;
 
@@ -48,7 +48,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
     this.subs.add(this.editorStore.styledImage$.subscribe(img => {
       this.styledImage = img;
     }));
-    
+
     this.subs.add(this.editorStore.selectedFrameId$.subscribe(id => {
       this.selectedFrameId = id;
       this.loadFrameDetails();
@@ -78,7 +78,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
     }
 
     this.isProcessing = true;
-    
+
     // Simulate saving order to Firestore 'Paid' and getting Stripe success
     this.paymentService.processPayment(this.totalCost).subscribe(success => {
       this.isProcessing = false;

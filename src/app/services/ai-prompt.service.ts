@@ -12,7 +12,7 @@ export class AiPromptService {
 
   /**
    * Sends an image and a style prompt to the AI processing Cloud Function.
-   * 
+   *
    * @param imageUrlOrBase64 The source image to stylize.
    * @param stylePrompt The style description (e.g. 'Cyberpunk', 'Watercolor').
    * @returns An observable with the stylized image result.

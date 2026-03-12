@@ -8,10 +8,11 @@ export const environment = {
     messagingSenderId: "",
     appId: ""
   },
+  stabilityApiKey: "",
   stripe: {
-    publicKey: "pk_test_placeholder"
+    publicKey: "pk_live_placeholder"
   },
   api: {
-    processAiImage: "https://placeholder-url.cloudfunctions.net/processAiImage"
+    processAiImage: "https://your-cloud-functions-url.cloudfunctions.net/processAiImage"
   }
 };

@@ -19,7 +19,7 @@
   max-width: 200px;
   border: 10px solid #ffffff;
   background-color: #2a2a2a;
-  
+
   img {
     display: block;
     width: 100%;
@@ -30,13 +30,13 @@
     border-color: #1a1a1a;
     border-width: 8px;
   }
-  
+
   &[data-frame="classic-oak-11-14"] {
     border-color: #8B5A2B;
     border-style: ridge;
     border-width: 15px;
   }
-  
+
   &[data-frame="premium-gold-12-12"] {
     border-color: #D4AF37;
     border-style: double;
@@ -46,7 +46,7 @@
 
 .summary-card {
   margin: 0 0 20px 0;
-  
+
   h2 {
     margin-top: 0;
     margin-bottom: 15px;
@@ -58,7 +58,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  
+
   &.total {
     font-size: 1.2rem;
     color: var(--ion-color-success, #2dd36f);

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="dark" class="ion-padding">
-  
+
   <div class="checkout-container">
     <div class="preview-section" *ngIf="styledImage">
       <div class="thumbnail-wrapper" [attr.data-frame]="selectedFrameId">
@@ -36,13 +36,13 @@
     </ion-card>
 
     <h2 class="section-title">Dirección de Envío</h2>
-    
+
     <form [formGroup]="checkoutForm">
       <ion-item color="medium">
         <ion-label position="stacked">Nombre Completo</ion-label>
         <ion-input formControlName="name" placeholder="Ej. Ana Gómez"></ion-input>
       </ion-item>
-      
+
       <ion-item color="medium">
         <ion-label position="stacked">Calle</ion-label>
         <ion-input formControlName="street" placeholder="Ej. Av. Siempre Viva 123"></ion-input>

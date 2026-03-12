@@ -39,12 +39,12 @@ h2 {
     border-radius: 8px;
     padding: 8px 15px;
     width: 300px;
-    
+
     ion-icon {
       color: var(--text-secondary);
       margin-right: 10px;
     }
-    
+
     input {
       background: transparent;
       border: none;
@@ -141,7 +141,7 @@ h2 {
   gap: 15px;
   overflow-x: auto;
   padding-bottom: 10px;
-  
+
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -149,7 +149,7 @@ h2 {
   .creation-wrapper {
     flex: 0 0 140px;
     cursor: pointer;
-    
+
     .creation-img {
       width: 140px;
       height: 140px;
@@ -159,7 +159,7 @@ h2 {
       background-color: var(--bg-secondary);
       margin-bottom: 10px;
       transition: transform 0.2s;
-      
+
       &:hover { transform: scale(1.03); }
     }
 
@@ -202,7 +202,7 @@ h2 {
 
     .order-details {
       flex: 1;
-      
+
       h3 {
         margin: 0 0 4px;
         font-size: 1rem;
@@ -225,7 +225,7 @@ h2 {
       font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      
+
       &.pnippto {
         background: var(--accent-blue);
         color: white;

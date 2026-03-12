@@ -4,14 +4,14 @@
 :root {
   /* Core Dashboard Background */
   --bg-primary: #1C2029; /* Dark blue/gray background from mockup */
-  
+
   /* Sidebar & Cards Background */
   --bg-secondary: #252836; /* Slightly lighter shade for cards and sidebar */
-  
+
   /* Text Colors */
   --text-primary: #ffffff;
   --text-secondary: #92929D;
-  
+
   /* Accents */
   --accent-blue: #3E7BFA;
   --accent-purple: #8B4EFF;
@@ -21,7 +21,7 @@
   /* Gradient for Quick Actions */
   --quick-action-gradient: linear-gradient(135deg, #02AAB0 0%, #00CDAC 100%);
   --upload-gradient: linear-gradient(135deg, #3DC8FF 0%, #9F59FB 100%);
-  
+
   /* Override default Ionic Dark Theme */
   --ion-background-color: var(--bg-primary);
   --ion-text-color: var(--text-primary);

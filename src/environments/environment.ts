@@ -12,7 +12,7 @@ export const environment = {
     messagingSenderId: "",
     appId: ""
   },
-  stabilityApiKey: "",
+  replicateApiKey: "",
   stripe: {
     publicKey: "pk_test_placeholder"
   },

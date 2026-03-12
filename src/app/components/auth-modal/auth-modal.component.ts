@@ -24,6 +24,7 @@ import {
 import { addIcons } from 'ionicons';
 import { logoGoogle, mailOutline, lockClosedOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-modal',
@@ -44,7 +45,8 @@ import { AuthService } from '../../services/auth.service';
     IonFooter,
     IonButtons,
     IonIcon,
-    IonText
+    IonText,
+    TranslateModule
   ]
 })
 export class AuthModalComponent {

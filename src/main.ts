@@ -12,6 +12,15 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { errorInterceptor } from './app/interceptors/error.interceptor';
 
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { importProvidersFrom } from '@angular/core';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(withInterceptors([errorInterceptor])),
@@ -22,5 +31,15 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: createTranslateLoader,
+          deps: [HttpClient],
+        },
+        defaultLanguage: 'es',
+      })
+    ),
   ],
 });

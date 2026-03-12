@@ -1,0 +1,17 @@
+{
+  "name": "LUMIO",
+  "short_name": "LUMIO",
+  "theme_color": "#3880ff",
+  "background_color": "#121212",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/icon/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

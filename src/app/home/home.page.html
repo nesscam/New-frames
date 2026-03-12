@@ -13,9 +13,12 @@
 
   <!-- Top Bar -->
   <div class="top-bar">
+    <div class="logo-mobile ion-hide-lg-up">
+       <h1 style="color: var(--ion-color-primary); margin: 0; font-weight: 800;">LUMIO</h1>
+    </div>
     <div class="search-container">
       <ion-icon name="search-outline"></ion-icon>
-      <input type="text" placeholder="Search" />
+      <input type="text" [placeholder]="'HOME.SEARCH' | translate" />
     </div>
     <div class="user-meta">
       <div class="avatar">
@@ -33,22 +36,22 @@
 
   <!-- Quick Actions -->
   <div class="section-container">
-    <h2>Quick Actions</h2>
+    <h2>{{ 'HOME.QUICK_ACTIONS' | translate }}</h2>
     <div class="quick-actions-grid">
       <div class="action-card upload-card" (click)="openEditorModal()">
         <ion-icon name="camera-outline"></ion-icon>
-        <span>Upload Photo</span>
+        <span>{{ 'HOME.UPLOAD_PHOTO' | translate }}</span>
       </div>
-      <div class="action-card studio-card" (click)="openEditorModal()">
+      <div class="action-card studio-card" routerLink="/studio">
         <ion-icon name="folder-outline"></ion-icon>
-        <span>View Your Studio</span>
+        <span>{{ 'HOME.VIEW_STUDIO' | translate }}</span>
       </div>
     </div>
   </div>
 
   <!-- Inspiration Gallery -->
   <div class="section-container">
-    <h2>Inspiration</h2>
+    <h2>{{ 'HOME.INSPIRATION' | translate }}</h2>
 
     <div class="creations-carousel">
       <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
@@ -65,7 +68,7 @@
 
   <!-- Your Creations -->
   <div class="section-container">
-    <h2>Your Creations</h2>
+    <h2>{{ 'HOME.YOUR_CREATIONS' | translate }}</h2>
 
     <div class="creations-carousel" *ngIf="userCreations.length > 0">
       <div class="creation-wrapper" *ngFor="let creation of userCreations">
@@ -76,13 +79,13 @@
 
     <div class="empty-state" *ngIf="userCreations.length === 0">
       <ion-icon name="color-palette-outline"></ion-icon>
-      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
+      <p>{{ 'HOME.NO_ART_YET' | translate }}</p>
     </div>
   </div>
 
   <!-- Your Orders -->
   <div class="section-container">
-    <h2>Your Orders</h2>
+    <h2>{{ 'HOME.YOUR_ORDERS' | translate }}</h2>
     <div class="orders-list">
       <div class="order-card" *ngFor="let order of orders">
         <div class="order-img" [style.background-image]="'url(' + order.image + ')'"></div>
@@ -97,7 +100,7 @@
       </div>
     </div>
     <div class="view-all-container">
-      <button class="view-all-btn">View All Orders</button>
+      <button class="view-all-btn">{{ 'HOME.VIEW_ALL_ORDERS' | translate }}</button>
     </div>
   </div>
 

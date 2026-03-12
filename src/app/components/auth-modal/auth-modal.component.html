@@ -1,8 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="dark">
-    <ion-title>{{ isLogin ? 'Inicia Sesión' : 'Crea tu Cuenta' }}</ion-title>
+    <ion-title>{{ (isLogin ? 'AUTH.LOGIN_TITLE' : 'AUTH.SIGNUP_TITLE') | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Cerrar</ion-button>
+      <ion-button (click)="dismissModal()">{{ 'AUTH.CLOSE' | translate }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -10,42 +10,42 @@
 <ion-content color="dark" class="ion-padding">
   <div class="auth-container">
     <div class="logo-area">
-      <h1 class="logo-text">AI</h1>
-      <p>Bienvenido al futuro de tus recuerdos</p>
+      <h1 class="logo-text">LUMIO</h1>
+      <p>{{ 'AUTH.WELCOME_MSG' | translate }}</p>
     </div>
 
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
       <ion-item lines="full" class="custom-item">
         <ion-icon name="mail-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Email</ion-label>
+        <ion-label position="stacked">{{ 'AUTH.EMAIL' | translate }}</ion-label>
         <ion-input formControlName="email" type="email" placeholder="tu@email.com"></ion-input>
       </ion-item>
 
       <ion-item lines="full" class="custom-item">
         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Password</ion-label>
+        <ion-label position="stacked">{{ 'AUTH.PASSWORD' | translate }}</ion-label>
         <ion-input formControlName="password" type="password" placeholder="******"></ion-input>
       </ion-item>
 
       <div class="ion-margin-top">
         <ion-button expand="block" shape="round" type="submit" [disabled]="!authForm.valid" class="main-btn">
-          {{ isLogin ? 'Entrar' : 'Registrarse' }}
+          {{ (isLogin ? 'AUTH.ENTER' : 'AUTH.SIGNUP') | translate }}
         </ion-button>
       </div>
     </form>
 
     <div class="divider">
-      <span>O también</span>
+      <span>{{ 'AUTH.OR_ALSO' | translate }}</span>
     </div>
 
     <ion-button expand="block" fill="outline" shape="round" color="light" (click)="loginWithGoogle()" class="google-btn">
       <ion-icon name="logo-google" slot="start"></ion-icon>
-      Continúa con Google
+      {{ 'AUTH.CONTINUE_GOOGLE' | translate }}
     </ion-button>
 
     <div class="footer-toggle ion-text-center ion-margin-top">
       <ion-text (click)="toggleMode()">
-        {{ isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión' }}
+        {{ (isLogin ? 'AUTH.NO_ACCOUNT' : 'AUTH.ALREADY_ACCOUNT') | translate }}
       </ion-text>
     </div>
   </div>

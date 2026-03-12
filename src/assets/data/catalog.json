@@ -3,27 +3,27 @@
   "last_updated": "2026-03-09",
   "frames": [
     {
-      "id": "min-black-8-10",
-      "style": "Minimalist",
-      "material": "Madera Negra",
-      "size": "8x10",
-      "price": 35.00,
+      "id": "canvas-std",
+      "style": "Canvas",
+      "material": "Lienzo de Algodón",
+      "size": "12x18",
+      "price": 55.00,
       "currency": "USD"
     },
     {
-      "id": "classic-oak-11-14",
-      "style": "Classic",
-      "material": "Madera Roble",
+      "id": "poster-std",
+      "style": "Poster",
+      "material": "Papel Fotográfico Mate",
+      "size": "18x24",
+      "price": 25.00,
+      "currency": "USD"
+    },
+    {
+      "id": "marco-lux",
+      "style": "Marco",
+      "material": "Madera Premium Flotante",
       "size": "11x14",
-      "price": 48.00,
-      "currency": "USD"
-    },
-    {
-      "id": "premium-gold-12-12",
-      "style": "Premium",
-      "material": "Metal Dorado",
-      "size": "12x12",
-      "price": 60.00,
+      "price": 75.00,
       "currency": "USD"
     }
   ]

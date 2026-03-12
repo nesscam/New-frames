@@ -64,6 +64,13 @@
       </ion-item>
     </form>
 
+    <div class="ar-container ion-margin-bottom" *ngIf="styledImage">
+      <ion-button expand="block" fill="outline" color="secondary" [attr.href]="'intent://ar-canvas.model#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end'">
+        <ion-icon name="cube-outline" slot="start"></ion-icon>
+        Ver en mi Pared (AR)
+      </ion-button>
+    </div>
+
     <div class="pay-btn-container">
       <ion-button expand="block" size="large" color="success" (click)="onPay()" [disabled]="isProcessing">
         <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>

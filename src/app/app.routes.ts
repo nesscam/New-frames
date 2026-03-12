@@ -17,5 +17,8 @@ export const routes: Routes = [
     path: 'order-confirmation',
     loadComponent: () => import('./order-confirmation/order-confirmation.page').then( m => m.OrderConfirmationPage)
   },
-
+  {
+    path: 'studio',
+    loadComponent: () => import('./studio/studio.page').then( m => m.StudioPage)
+  },
 ];

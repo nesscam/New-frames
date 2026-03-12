@@ -1,0 +1,53 @@
+{
+  "HOME": {
+    "QUICK_ACTIONS": "Quick Actions",
+    "UPLOAD_PHOTO": "Upload Photo",
+    "VIEW_STUDIO": "View Your Studio",
+    "INSPIRATION": "Inspiration",
+    "YOUR_CREATIONS": "Your Creations",
+    "NO_ART_YET": "No art yet. Start by uploading a photo!",
+    "YOUR_ORDERS": "Your Orders",
+    "VIEW_ALL_ORDERS": "View All Orders",
+    "SEARCH": "Search"
+  },
+  "SIDEBAR": {
+    "WELCOME": "Welcome",
+    "GUEST": "Guest",
+    "HOME": "Home",
+    "EDITOR": "Editor",
+    "ORDERS": "Orders",
+    "PROFILE": "Profile",
+    "LOGOUT": "Logout",
+    "SUBTITLE": "AI Art Lens"
+  },
+  "AUTH": {
+    "LOGIN_TITLE": "Sign In",
+    "SIGNUP_TITLE": "Create Account",
+    "WELCOME_MSG": "Welcome to the future of your memories",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "ENTER": "Enter",
+    "SIGNUP": "Sign Up",
+    "OR_ALSO": "Or also",
+    "CONTINUE_GOOGLE": "Continue with Google",
+    "NO_ACCOUNT": "Don't have an account? Sign up",
+    "ALREADY_ACCOUNT": "Already have an account? Sign in",
+    "CLOSE": "Close"
+  },
+  "LOADING": {
+    "APPLYING_STYLE": "Applying artistic style...",
+    "UPLOADING": "Uploading your photo...",
+    "PROCESSING": "Processing..."
+  },
+  "ALERTS": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "GENERIC_ERROR": "Something went wrong. Please try again."
+  },
+  "EDITOR": {
+    "MODAL_TITLE": "AI Poster Editor",
+    "CLOSE": "Close",
+    "BACK": "Back",
+    "NEXT": "Next"
+  }
+}

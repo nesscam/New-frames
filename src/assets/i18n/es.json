@@ -1,0 +1,53 @@
+{
+  "HOME": {
+    "QUICK_ACTIONS": "Acciones Rápidas",
+    "UPLOAD_PHOTO": "Subir Foto",
+    "VIEW_STUDIO": "Ver Tu Estudio",
+    "INSPIRATION": "Inspiración",
+    "YOUR_CREATIONS": "Tus Creaciones",
+    "NO_ART_YET": "Aún no tienes arte. ¡Empieza subiendo una foto!",
+    "YOUR_ORDERS": "Tus Pedidos",
+    "VIEW_ALL_ORDERS": "Ver Todos los Pedidos",
+    "SEARCH": "Buscar"
+  },
+  "SIDEBAR": {
+    "WELCOME": "Bienvenido",
+    "GUEST": "Invitado",
+    "HOME": "Inicio",
+    "EDITOR": "Editor",
+    "ORDERS": "Pedidos",
+    "PROFILE": "Perfil",
+    "LOGOUT": "Cerrar Sesión",
+    "SUBTITLE": "Lente de Arte IA"
+  },
+  "AUTH": {
+    "LOGIN_TITLE": "Inicia Sesión",
+    "SIGNUP_TITLE": "Crea tu Cuenta",
+    "WELCOME_MSG": "Bienvenido al futuro de tus recuerdos",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "ENTER": "Entrar",
+    "SIGNUP": "Registrarse",
+    "OR_ALSO": "O también",
+    "CONTINUE_GOOGLE": "Continúa con Google",
+    "NO_ACCOUNT": "¿No tienes cuenta? Regístrate",
+    "ALREADY_ACCOUNT": "¿Ya tienes cuenta? Inicia sesión",
+    "CLOSE": "Cerrar"
+  },
+  "LOADING": {
+    "APPLYING_STYLE": "Aplicando estilo artístico...",
+    "UPLOADING": "Subiendo tu foto...",
+    "PROCESSING": "Procesando..."
+  },
+  "ALERTS": {
+    "ERROR": "Error",
+    "SUCCESS": "Éxito",
+    "GENERIC_ERROR": "Algo salió mal. Por favor intenta de nuevo."
+  },
+  "EDITOR": {
+    "MODAL_TITLE": "Editor de Poster IA",
+    "CLOSE": "Cerrar",
+    "BACK": "Atrás",
+    "NEXT": "Siguiente"
+  }
+}

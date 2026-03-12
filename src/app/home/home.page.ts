@@ -4,6 +4,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonLis
 import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
 import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
 import { AuthService } from '../services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle } from 'ionicons/icons';
 
@@ -11,7 +12,7 @@ import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folde
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, IonCard, IonText, CommonModule],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, IonCard, IonText, CommonModule, TranslateModule],
 })
 export class HomePage implements OnInit {
 

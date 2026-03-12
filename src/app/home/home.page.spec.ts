@@ -4,6 +4,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideIonicAngular, ModalController } from '@ionic/angular/standalone';
 import { HomePage } from './home.page';
 import { AuthService } from '../services/auth.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 describe('HomePage', () => {
@@ -20,13 +21,14 @@ describe('HomePage', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HomePage],
+      imports: [HomePage, TranslateModule.forRoot()],
       providers: [
         provideIonicAngular(),
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ModalController, useValue: modalSpy },
-        { provide: AuthService, useValue: authSpy }
+        { provide: AuthService, useValue: authSpy },
+        TranslateService
       ]
     }).compileComponents();
 

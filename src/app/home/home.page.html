@@ -1,5 +1,16 @@
 <ion-content [fullscreen]="true" class="ion-padding custom-bg">
 
+  <!-- Temp Auth Button for Quick Test -->
+  <div class="temp-auth" style="margin-bottom: 10px; text-align: right;">
+    <ion-button *ngIf="!(authService.user$ | async)" (click)="openAuthModal()" fill="clear" color="primary">
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      Login para Probar
+    </ion-button>
+    <ion-button *ngIf="authService.user$ | async as user" (click)="authService.logout()" fill="clear" color="danger">
+      Logout ({{ user.email }})
+    </ion-button>
+  </div>
+
   <!-- Top Bar -->
   <div class="top-bar">
     <div class="search-container">

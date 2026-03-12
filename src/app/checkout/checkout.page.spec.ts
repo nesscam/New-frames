@@ -1,27 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideIonicAngular, ModalController } from '@ionic/angular/standalone';
-import { HomePage } from './home.page';
+import { IonicModule } from '@ionic/angular';
+import { CheckoutPage } from './checkout.page';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('CheckoutPage', () => {
+  let component: CheckoutPage;
+  let fixture: ComponentFixture<CheckoutPage>;
 
   beforeEach(async () => {
-    const modalSpy = jasmine.createSpyObj('ModalController', ['create']);
-
     await TestBed.configureTestingModule({
-      imports: [HomePage],
+      imports: [CheckoutPage, IonicModule.forRoot()],
       providers: [
-        provideIonicAngular(),
         provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: ModalController, useValue: modalSpy }
+        provideHttpClientTesting()
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(CheckoutPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

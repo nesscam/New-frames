@@ -12,7 +12,13 @@ export const environment = {
     messagingSenderId: "",
     appId: ""
   },
-  stabilityApiKey: ""
+  stabilityApiKey: "",
+  stripe: {
+    publicKey: "pk_test_placeholder"
+  },
+  api: {
+    processAiImage: "https://placeholder-url.cloudfunctions.net/processAiImage"
+  }
 };
 
 /*

@@ -1,0 +1,77 @@
+ion-menu {
+  --background: var(--bg-secondary);
+  --width: 250px;
+}
+
+ion-content {
+  --background: var(--bg-secondary);
+}
+
+.logo-container {
+  padding: 30px 20px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .logo-text {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    /* Gradient text for the AI logo */
+    background: linear-gradient(135deg, #3E7BFA 0%, #8B4EFF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 10px 0 2px;
+    color: var(--text-primary);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+}
+
+.nav-list {
+  background: transparent;
+  padding: 10px 15px;
+
+  ion-item {
+    --background: transparent;
+    --border-width: 0;
+    --padding-start: 15px;
+    --inner-padding-end: 15px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+
+    ion-icon {
+      font-size: 1.2rem;
+      margin-right: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* Hover and Active states */
+    &:hover {
+      --background: rgba(255,255,255,0.05);
+    }
+
+    &.active {
+      --background: #313545; /* Active background */
+      color: var(--text-primary);
+
+      ion-icon {
+        color: var(--text-primary);
+      }
+    }
+  }
+}

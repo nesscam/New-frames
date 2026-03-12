@@ -1,5 +1,6 @@
 import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { beforeUserCreated } from "firebase-functions/v2/identity";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
@@ -28,6 +29,32 @@ export const processAiImage = onCall(async (request) => {
     processedImageUrl: imageUrl, // For now, return the same URL
     message: "Image processed successfully (placeholder)"
   };
+});
+
+/**
+ * Trigger to initialize user document in Firestore when a new user is created.
+ * We use beforeUserCreated (Identity Platform) or we could use functions.auth.user().onCreate.
+ * For v2, identity triggers are common, but traditional auth triggers are still in v1.
+ * Let's use the v2 identity trigger if available, or a standard v1 auth trigger.
+ */
+export const onUserCreate = beforeUserCreated(async (event) => {
+  const user = event.data;
+  if (!user) return;
+
+  const db = admin.firestore();
+  const userRef = db.collection("users").doc(user.uid);
+
+  await userRef.set({
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName || "",
+    photoURL: user.photoURL || "",
+    credits: 10, // Initial gift
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  console.log(`Initialized Firestore document for user: ${user.uid}`);
 });
 
 /**

@@ -10,7 +10,7 @@
 <ion-content color="dark">
   <div class="gallery-container">
     <div class="header-section">
-      <h1 class="ion-padding-start">Estudio LUMIO</h1>
+      <h1 class="ion-padding-start">Estudio FRAMIA</h1>
       <p class="ion-padding-start subtitle">Tus creaciones maestras</p>
     </div>
 
@@ -26,10 +26,16 @@
             <ion-card class="art-card">
               <div class="image-container">
                 <img [src]="item.imageUrl" alt="AI Art" />
-                <div class="watermark">Created with Lumio</div>
+                <div class="watermark">Created with FRAMIA</div>
                 <div class="actions-overlay">
                   <ion-button fill="clear" (click)="toggleFavorite(item)">
                     <ion-icon [name]="item.isFavorite ? 'heart' : 'heart-outline'" [color]="item.isFavorite ? 'danger' : 'light'"></ion-icon>
+                  </ion-button>
+                </div>
+                <div class="ar-overlay">
+                  <ion-button fill="solid" size="small" color="secondary" [attr.href]="'intent://ar-canvas.model#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end'">
+                    <ion-icon name="cube-outline" slot="start"></ion-icon>
+                    Ver en mi pared
                   </ion-button>
                 </div>
               </div>

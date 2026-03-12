@@ -5,25 +5,25 @@
     {
       "id": "canvas-std",
       "style": "Canvas",
-      "material": "Lienzo de Algodón",
+      "material": "Lienzo Canvas",
       "size": "12x18",
-      "price": 55.00,
+      "price": 49.99,
       "currency": "USD"
     },
     {
       "id": "poster-std",
       "style": "Poster",
-      "material": "Papel Fotográfico Mate",
+      "material": "Póster Premium",
       "size": "18x24",
-      "price": 25.00,
+      "price": 24.99,
       "currency": "USD"
     },
     {
       "id": "marco-lux",
       "style": "Marco",
-      "material": "Madera Premium Flotante",
+      "material": "Cuadro con Marco",
       "size": "11x14",
-      "price": 75.00,
+      "price": 59.99,
       "currency": "USD"
     }
   ]

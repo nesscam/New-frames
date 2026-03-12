@@ -21,7 +21,7 @@ import { AuthService } from '../services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, shareOutline, downloadOutline } from 'ionicons/icons';
+import { heart, heartOutline, shareOutline, downloadOutline, cubeOutline } from 'ionicons/icons';
 
 interface ArtItem {
   id: string;
@@ -62,7 +62,7 @@ export class StudioPage implements OnInit {
   artItems$: Observable<ArtItem[]> = of([]);
 
   constructor() {
-    addIcons({ heart, heartOutline, shareOutline, downloadOutline });
+    addIcons({ heart, heartOutline, shareOutline, downloadOutline, cubeOutline });
   }
 
   ngOnInit() {

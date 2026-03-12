@@ -4,8 +4,8 @@
       <ion-content>
         <!-- Logo Area -->
         <div class="logo-container">
-          <h1 class="logo-text">LUMIO</h1>
-          <h2>{{ 'SIDEBAR.SUBTITLE' | translate }}</h2>
+          <h1 class="logo-text">FRAMIA</h1>
+          <h2>Tu arte IA, hecho realidad</h2>
           <ng-container *ngIf="authService.user$ | async as user; else guest">
             <p>{{ 'SIDEBAR.WELCOME' | translate }}, {{ user.displayName || user.email }}</p>
           </ng-container>

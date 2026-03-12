@@ -17,7 +17,11 @@ export const environment = {
     publicKey: "pk_test_placeholder"
   },
   api: {
-    processAiImage: "https://placeholder-url.cloudfunctions.net/processAiImage"
+    processAiImage: "https://app.framia.art/api/process",
+    baseUrl: "https://app.framia.art"
+  },
+  social: {
+    handle: "@framia_art"
   }
 };
 

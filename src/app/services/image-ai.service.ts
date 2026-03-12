@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, collection, addDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable, from, throwError } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
@@ -88,13 +88,26 @@ export class ImageAiService {
         return this.http.get(outputUrl, { responseType: 'blob' }).pipe(
           switchMap((blob: Blob) => {
             const timestamp = Date.now();
-            const filePath = `generated_art/${userId}/lumio_hires_${timestamp}.png`;
+            const filePath = `generated_art/${userId}/framia_hires_${timestamp}.png`;
             const storageRef = ref(this.storage, filePath);
             return from(uploadBytes(storageRef, blob, {
               contentType: 'image/png',
-              customMetadata: { 'dpi': '300', 'app': 'LUMIO', 'quality': 'high-res' }
+              customMetadata: { 'dpi': '300', 'app': 'FRAMIA', 'quality': 'high-res' }
             })).pipe(
-              switchMap(snapshot => from(getDownloadURL(snapshot.ref)))
+              switchMap(snapshot => from(getDownloadURL(snapshot.ref))),
+              switchMap(downloadUrl => {
+                // Save to Firestore /my_art collection
+                const artItem = {
+                  userId,
+                  imageUrl: downloadUrl,
+                  style: styleKey,
+                  isFavorite: false,
+                  createdAt: new Date(),
+                  highResUrl: outputUrl // Store original Replicate URL or high-res path
+                };
+                const artRef = collection(this.firestore, 'my_art');
+                return from(addDoc(artRef, artItem)).pipe(map(() => downloadUrl));
+              })
             );
           })
         );

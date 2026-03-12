@@ -60,6 +60,18 @@
         --padding-end: 8px;
       }
     }
+
+    .ar-overlay {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+
+      ion-button {
+        --border-radius: 20px;
+        font-size: 0.7rem;
+        height: 28px;
+      }
+    }
   }
 
   .card-footer {

@@ -5,6 +5,7 @@ import { EditorStoreService, OrderStep } from '../../services/editor-store.servi
 import { CatalogService, Frame } from '../../services/catalog.service';
 import { AiPromptService } from '../../services/ai-prompt.service';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 declare var fabric: any;
 
@@ -12,7 +13,7 @@ declare var fabric: any;
   selector: 'app-editor-modal',
   templateUrl: './editor-modal.component.html',
   styleUrls: ['./editor-modal.component.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, IonIcon, CommonModule]
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, IonIcon, CommonModule, TranslateModule]
 })
 export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() preselectedStyle?: string;
@@ -27,7 +28,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedFrameId: string | null = null;
 
   frames: Frame[] = [];
-  styles: string[] = ['Original', 'Cyberpunk', 'Watercolor', 'Oil Painting', 'Sketch', 'Comic'];
+  styles: string[] = ['Original', 'Neon', 'Watercolor', 'Oil', 'Sketch', 'Comic'];
 
   isApplyingStyle = false;
 

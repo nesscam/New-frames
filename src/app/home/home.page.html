@@ -4,10 +4,10 @@
   <div class="temp-auth" style="margin-bottom: 10px; text-align: right;">
     <ion-button *ngIf="!(authService.user$ | async)" (click)="openAuthModal()" fill="clear" color="primary">
       <ion-icon name="logo-google" slot="start"></ion-icon>
-      Login para Probar
+      {{ 'HOME.LOGIN_TO_TEST' | translate }}
     </ion-button>
     <ion-button *ngIf="authService.user$ | async as user" (click)="authService.logout()" fill="clear" color="danger">
-      Logout ({{ user.email }})
+      {{ 'SIDEBAR.LOGOUT' | translate }} ({{ user.email }})
     </ion-button>
   </div>
 
@@ -25,7 +25,7 @@
         <!-- Placeholder for user avatar -->
         <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
       </div>
-      <span class="credits-text">10 Credits</span>
+      <span class="credits-text">10 {{ 'HOME.CREDITS' | translate }}</span>
       <div class="credits-bar">
         <div class="progress"></div>
       </div>

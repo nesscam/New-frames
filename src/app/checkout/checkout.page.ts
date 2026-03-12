@@ -8,6 +8,7 @@ import { cubeOutline } from 'ionicons/icons';
 import { CatalogService, Frame } from '../services/catalog.service';
 import { PaymentService } from '../services/payment';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './checkout.page.html',
   styleUrls: ['./checkout.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent, IonIcon, TranslateModule]
 })
 export class CheckoutPage implements OnInit, OnDestroy {
   checkoutForm: FormGroup;

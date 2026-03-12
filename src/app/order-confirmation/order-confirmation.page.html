@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title>Pedido Confirmado</ion-title>
+    <ion-title>{{ 'CONFIRMATION.TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,16 +14,16 @@
       </svg>
     </div>
 
-    <h1>¡Gracias por tu compra!</h1>
-    <p>Tu arte generado por IA está siendo preparado para impresión y pronto será enmarcado.</p>
+    <h1>{{ 'CONFIRMATION.THANK_YOU' | translate }}</h1>
+    <p>{{ 'CONFIRMATION.DESC' | translate }}</p>
 
     <div class="order-number-box" *ngIf="orderId">
-      <small>Número de Pedido</small>
+      <small>{{ 'CONFIRMATION.ORDER_NUMBER' | translate }}</small>
       <strong>{{ orderId }}</strong>
     </div>
 
     <ion-button expand="block" shape="round" color="primary" (click)="goHome()">
-      Volver al Inicio
+      {{ 'CONFIRMATION.GO_HOME' | translate }}
     </ion-button>
   </div>
 </ion-content>

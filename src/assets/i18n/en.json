@@ -8,13 +8,15 @@
     "NO_ART_YET": "No art yet. Start by uploading a photo!",
     "YOUR_ORDERS": "Your Orders",
     "VIEW_ALL_ORDERS": "View All Orders",
-    "SEARCH": "Search"
+    "SEARCH": "Search",
+    "CREDITS": "Credits",
+    "LOGIN_TO_TEST": "Login to Test"
   },
   "SIDEBAR": {
     "WELCOME": "Welcome",
     "GUEST": "Guest",
     "HOME": "Home",
-    "EDITOR": "Editor",
+    "EDITOR": "Studio",
     "ORDERS": "Orders",
     "PROFILE": "Profile",
     "LOGOUT": "Logout",
@@ -32,7 +34,8 @@
     "CONTINUE_GOOGLE": "Continue with Google",
     "NO_ACCOUNT": "Don't have an account? Sign up",
     "ALREADY_ACCOUNT": "Already have an account? Sign in",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "SLOGAN": "Your AI art, made reality"
   },
   "LOADING": {
     "APPLYING_STYLE": "Applying artistic style...",
@@ -48,6 +51,53 @@
     "MODAL_TITLE": "AI Poster Editor",
     "CLOSE": "Close",
     "BACK": "Back",
-    "NEXT": "Next"
+    "NEXT": "Next",
+    "UPLOAD_TITLE": "Upload your photo",
+    "UPLOAD_DESC": "Select an image to start.",
+    "CHOOSE_STYLE": "Choose a Style",
+    "CHOOSE_FRAME": "Choose a Frame",
+    "APPLYING": "Applying Style..."
+  },
+  "CHECKOUT": {
+    "TITLE": "Purchase Summary",
+    "ORDER_SUMMARY": "Order Summary",
+    "FRAME": "Frame",
+    "SHIPPING": "Shipping",
+    "TOTAL": "Total",
+    "SHIPPING_ADDRESS": "Shipping Address",
+    "FULL_NAME": "Full Name",
+    "STREET": "Street",
+    "CITY": "City",
+    "STATE": "State / Province",
+    "ZIP": "Zip Code",
+    "NAME_PLACEHOLDER": "e.g. John Doe",
+    "STREET_PLACEHOLDER": "e.g. 123 Main St",
+    "CITY_PLACEHOLDER": "e.g. New York",
+    "STATE_PLACEHOLDER": "e.g. NY",
+    "ZIP_PLACEHOLDER": "e.g. 10001",
+    "PAY_STRIPE": "Pay with Stripe",
+    "VIEW_ON_WALL": "View on my Wall (AR)",
+    "UNKNOWN": "Unknown"
+  },
+  "CONFIRMATION": {
+    "TITLE": "Order Confirmed",
+    "THANK_YOU": "Thank you for your purchase!",
+    "DESC": "Your AI-generated art is being prepared for printing and will be framed soon.",
+    "ORDER_NUMBER": "Order Number",
+    "GO_HOME": "Go back home"
+  },
+  "STUDIO": {
+    "TITLE": "FRAMIA Studio",
+    "SUBTITLE": "Your masterpiece creations",
+    "WATERMARK": "Created with FRAMIA",
+    "VIEW_ON_WALL": "View on my wall"
+  },
+  "STYLES": {
+    "ORIGINAL": "Original",
+    "NEON": "Neon / Cyberpunk",
+    "WATERCOLOR": "Watercolor",
+    "OIL": "Oil Painting",
+    "SKETCH": "Sketch",
+    "COMIC": "Comic"
   }
 }

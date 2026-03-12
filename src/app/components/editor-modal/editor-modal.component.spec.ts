@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideIonicAngular, ModalController } from '@ionic/angular/standalone';
 import { EditorModalComponent } from './editor-modal.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 describe('EditorModalComponent', () => {
@@ -25,12 +26,13 @@ describe('EditorModalComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [EditorModalComponent],
+      imports: [EditorModalComponent, TranslateModule.forRoot()],
       providers: [
         provideIonicAngular(),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: ModalController, useValue: modalSpy }
+        { provide: ModalController, useValue: modalSpy },
+        TranslateService
       ]
     }).compileComponents();
 

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { of } from 'rxjs';
 import { OrderConfirmationPage } from './order-confirmation.page';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('OrderConfirmationPage', () => {
   let component: OrderConfirmationPage;
@@ -10,8 +11,9 @@ describe('OrderConfirmationPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrderConfirmationPage, IonicModule.forRoot()],
+      imports: [OrderConfirmationPage, IonicModule.forRoot(), TranslateModule.forRoot()],
       providers: [
+        TranslateService,
         {
           provide: ActivatedRoute,
           useValue: {

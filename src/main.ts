@@ -14,12 +14,8 @@ import { errorInterceptor } from './app/interceptors/error.interceptor';
 
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
 import { importProvidersFrom } from '@angular/core';
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -31,12 +27,19 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    {
+      provide: TRANSLATE_HTTP_LOADER_CONFIG,
+      useValue: {
+        prefix: './assets/i18n/',
+        suffix: '.json'
+      }
+    },
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient],
+          useClass: TranslateHttpLoader,
+          deps: [HttpClient, TRANSLATE_HTTP_LOADER_CONFIG],
         },
         defaultLanguage: 'es',
       })

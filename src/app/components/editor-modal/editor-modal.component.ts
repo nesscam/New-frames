@@ -13,7 +13,7 @@ declare var fabric: any;
   selector: 'app-editor-modal',
   templateUrl: './editor-modal.component.html',
   styleUrls: ['./editor-modal.component.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, IonIcon, CommonModule, TranslateModule]
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, CommonModule, TranslateModule]
 })
 export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() preselectedStyle?: string;

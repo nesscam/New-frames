@@ -42,7 +42,6 @@ import { TranslateModule } from '@ngx-translate/core';
     IonItem,
     IonLabel,
     IonInput,
-    IonFooter,
     IonButtons,
     IonIcon,
     IonText,

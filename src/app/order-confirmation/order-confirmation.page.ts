@@ -11,7 +11,7 @@ import { EditorStoreService } from '../services/editor-store.service';
   templateUrl: './order-confirmation.page.html',
   styleUrls: ['./order-confirmation.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonIcon, TranslateModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, TranslateModule]
 })
 export class OrderConfirmationPage implements OnInit {
   orderId: string = '';

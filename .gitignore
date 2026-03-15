@@ -29,7 +29,9 @@ log.txt
 /out-tsc
 /bazel-out
 /functions/lib
-
+/ios
+/android    
+/functions/src/
 # Node
 node_modules/
 npm-debug.log

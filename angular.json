@@ -36,8 +36,13 @@
               },
               "src/manifest.json"
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": [],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
+            "scripts": [
+              "node_modules/fabric/dist/index.js"
+            ],
             "browser": "src/main.ts"
           },
           "configurations": {
@@ -110,7 +115,10 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -123,7 +131,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }

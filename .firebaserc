@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "framiaweb": "new-frames-703a6",
+    "default": "new-frames-703a6"
+  },
+  "targets": {
+    "new-frames-703a6": {
+      "hosting": {
+        "framiaweb": [
+          "framiaweb"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

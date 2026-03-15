@@ -6,18 +6,19 @@ export const environment = {
   production: false,
   firebase: {
     apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    authDomain: "new-frames-703a6.firebaseapp.com",
+    projectId: "new-frames-703a6",
+    storageBucket: "new-frames-703a6.firebasestorage.app",
+    messagingSenderId: "152247361953",
+    appId: "1:152247361953:web:5c6a1586ff669a213babe0",
+    measurementId: "G-9KYXX1N7P3"
   },
   replicateApiKey: "",
   stripe: {
     publicKey: "pk_test_placeholder"
   },
   api: {
-    processAiImage: "https://app.framia.art/api/process",
+    processAiImage: "https://api.replicate.com/v1/predictions",
     baseUrl: "https://app.framia.art"
   },
   social: {

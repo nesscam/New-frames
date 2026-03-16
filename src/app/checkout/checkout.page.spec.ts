@@ -3,7 +3,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IonicModule } from '@ionic/angular';
 import { CheckoutPage } from './checkout.page';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('CheckoutPage', () => {
   let component: CheckoutPage;
@@ -11,11 +10,10 @@ describe('CheckoutPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutPage, IonicModule.forRoot(), TranslateModule.forRoot()],
+      imports: [CheckoutPage, IonicModule.forRoot()],
       providers: [
         provideHttpClient(),
-        provideHttpClientTesting(),
-        TranslateService
+        provideHttpClientTesting()
       ]
     }).compileComponents();
 

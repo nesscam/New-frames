@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ 'CHECKOUT.TITLE' | translate }}</ion-title>
+    <ion-title>Resumen de Compra</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,63 +18,56 @@
 
     <ion-card color="medium" class="summary-card">
       <ion-card-content>
-        <h2>{{ 'CHECKOUT.ORDER_SUMMARY' | translate }}</h2>
+        <h2>Resumen del Pedido</h2>
         <div class="summary-row">
-          <span>{{ 'CHECKOUT.FRAME' | translate }}: {{ selectedFrameDetail?.material || ('CHECKOUT.UNKNOWN' | translate) }}</span>
+          <span>Marco: {{ selectedFrameDetail?.material || 'Desconocido' }}</span>
           <span>{{ selectedFrameDetail?.price | currency:'USD' }}</span>
         </div>
         <div class="summary-row">
-          <span>{{ 'CHECKOUT.SHIPPING' | translate }}</span>
+          <span>Envío</span>
           <span>{{ shippingCost | currency:'USD' }}</span>
         </div>
         <hr />
         <div class="summary-row total">
-          <strong>{{ 'CHECKOUT.TOTAL' | translate }}</strong>
+          <strong>Total</strong>
           <strong>{{ totalCost | currency:'USD' }}</strong>
         </div>
       </ion-card-content>
     </ion-card>
 
-    <h2 class="section-title">{{ 'CHECKOUT.SHIPPING_ADDRESS' | translate }}</h2>
+    <h2 class="section-title">Dirección de Envío</h2>
 
     <form [formGroup]="checkoutForm">
       <ion-item color="medium">
-        <ion-label position="stacked">{{ 'CHECKOUT.FULL_NAME' | translate }}</ion-label>
-        <ion-input formControlName="name" [placeholder]="'CHECKOUT.NAME_PLACEHOLDER' | translate"></ion-input>
+        <ion-label position="stacked">Nombre Completo</ion-label>
+        <ion-input formControlName="name" placeholder="Ej. Ana Gómez"></ion-input>
       </ion-item>
 
       <ion-item color="medium">
-        <ion-label position="stacked">{{ 'CHECKOUT.STREET' | translate }}</ion-label>
-        <ion-input formControlName="street" [placeholder]="'CHECKOUT.STREET_PLACEHOLDER' | translate"></ion-input>
+        <ion-label position="stacked">Calle</ion-label>
+        <ion-input formControlName="street" placeholder="Ej. Av. Siempre Viva 123"></ion-input>
       </ion-item>
 
       <ion-item color="medium">
-        <ion-label position="stacked">{{ 'CHECKOUT.CITY' | translate }}</ion-label>
-        <ion-input formControlName="city" [placeholder]="'CHECKOUT.CITY_PLACEHOLDER' | translate"></ion-input>
+        <ion-label position="stacked">Ciudad</ion-label>
+        <ion-input formControlName="city" placeholder="Ej. Ciudad de México"></ion-input>
       </ion-item>
 
       <ion-item color="medium">
-        <ion-label position="stacked">{{ 'CHECKOUT.STATE' | translate }}</ion-label>
-        <ion-input formControlName="state" [placeholder]="'CHECKOUT.STATE_PLACEHOLDER' | translate"></ion-input>
+        <ion-label position="stacked">Estado / Provincia</ion-label>
+        <ion-input formControlName="state" placeholder="Ej. CDMX"></ion-input>
       </ion-item>
 
       <ion-item color="medium" lines="none">
-        <ion-label position="stacked">{{ 'CHECKOUT.ZIP' | translate }}</ion-label>
-        <ion-input formControlName="zip" [placeholder]="'CHECKOUT.ZIP_PLACEHOLDER' | translate"></ion-input>
+        <ion-label position="stacked">Código Postal</ion-label>
+        <ion-input formControlName="zip" placeholder="Ej. 12345"></ion-input>
       </ion-item>
     </form>
-
-    <div class="ar-container ion-margin-bottom" *ngIf="styledImage">
-      <ion-button expand="block" fill="outline" color="secondary" [attr.href]="'intent://ar-canvas.model#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end'">
-        <ion-icon name="cube-outline" slot="start"></ion-icon>
-        {{ 'CHECKOUT.VIEW_ON_WALL' | translate }}
-      </ion-button>
-    </div>
 
     <div class="pay-btn-container">
       <ion-button expand="block" size="large" color="success" (click)="onPay()" [disabled]="isProcessing">
         <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
-        <span *ngIf="!isProcessing">{{ 'CHECKOUT.PAY_STRIPE' | translate }}</span>
+        <span *ngIf="!isProcessing">Pagar con Stripe</span>
       </ion-button>
     </div>
   </div>

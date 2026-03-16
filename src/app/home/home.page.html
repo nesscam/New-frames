@@ -1,31 +1,17 @@
 <ion-content [fullscreen]="true" class="ion-padding custom-bg">
 
-  <!-- Temp Auth Button for Quick Test -->
-  <div class="temp-auth" style="margin-bottom: 10px; text-align: right;">
-    <ion-button *ngIf="!(authService.user$ | async)" (click)="openAuthModal()" fill="clear" color="primary">
-      <ion-icon name="logo-google" slot="start"></ion-icon>
-      {{ 'HOME.LOGIN_TO_TEST' | translate }}
-    </ion-button>
-    <ion-button *ngIf="authService.user$ | async as user" (click)="authService.logout()" fill="clear" color="danger">
-      {{ 'SIDEBAR.LOGOUT' | translate }} ({{ user.email }})
-    </ion-button>
-  </div>
-
   <!-- Top Bar -->
   <div class="top-bar">
-    <div class="logo-mobile ion-hide-lg-up">
-       <h1 style="color: var(--ion-color-primary); margin: 0; font-weight: 800;">FRAMIA</h1>
-    </div>
     <div class="search-container">
       <ion-icon name="search-outline"></ion-icon>
-      <input type="text" [placeholder]="'HOME.SEARCH' | translate" />
+      <input type="text" placeholder="Search" />
     </div>
     <div class="user-meta">
       <div class="avatar">
         <!-- Placeholder for user avatar -->
         <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
       </div>
-      <span class="credits-text">10 {{ 'HOME.CREDITS' | translate }}</span>
+      <span class="credits-text">10 Credits</span>
       <div class="credits-bar">
         <div class="progress"></div>
       </div>
@@ -36,22 +22,22 @@
 
   <!-- Quick Actions -->
   <div class="section-container">
-    <h2>{{ 'HOME.QUICK_ACTIONS' | translate }}</h2>
+    <h2>Quick Actions</h2>
     <div class="quick-actions-grid">
       <div class="action-card upload-card" (click)="openEditorModal()">
         <ion-icon name="camera-outline"></ion-icon>
-        <span>{{ 'HOME.UPLOAD_PHOTO' | translate }}</span>
+        <span>Upload Photo</span>
       </div>
-      <div class="action-card studio-card" routerLink="/studio">
+      <div class="action-card studio-card" (click)="openEditorModal()">
         <ion-icon name="folder-outline"></ion-icon>
-        <span>{{ 'HOME.VIEW_STUDIO' | translate }}</span>
+        <span>View Your Studio</span>
       </div>
     </div>
   </div>
 
   <!-- Inspiration Gallery -->
   <div class="section-container">
-    <h2>{{ 'HOME.INSPIRATION' | translate }}</h2>
+    <h2>Inspiration</h2>
 
     <div class="creations-carousel">
       <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
@@ -68,7 +54,7 @@
 
   <!-- Your Creations -->
   <div class="section-container">
-    <h2>{{ 'HOME.YOUR_CREATIONS' | translate }}</h2>
+    <h2>Your Creations</h2>
 
     <div class="creations-carousel" *ngIf="userCreations.length > 0">
       <div class="creation-wrapper" *ngFor="let creation of userCreations">
@@ -79,13 +65,13 @@
 
     <div class="empty-state" *ngIf="userCreations.length === 0">
       <ion-icon name="color-palette-outline"></ion-icon>
-      <p>{{ 'HOME.NO_ART_YET' | translate }}</p>
+      <p>Aún no tienes arte. ¡Empieza subiendo una foto!</p>
     </div>
   </div>
 
   <!-- Your Orders -->
   <div class="section-container">
-    <h2>{{ 'HOME.YOUR_ORDERS' | translate }}</h2>
+    <h2>Your Orders</h2>
     <div class="orders-list">
       <div class="order-card" *ngFor="let order of orders">
         <div class="order-img" [style.background-image]="'url(' + order.image + ')'"></div>
@@ -100,7 +86,7 @@
       </div>
     </div>
     <div class="view-all-container">
-      <button class="view-all-btn">{{ 'HOME.VIEW_ALL_ORDERS' | translate }}</button>
+      <button class="view-all-btn">View All Orders</button>
     </div>
   </div>
 

@@ -1,103 +1,12 @@
 {
-  "HOME": {
-    "QUICK_ACTIONS": "Acciones Rápidas",
-    "UPLOAD_PHOTO": "Subir Foto",
-    "VIEW_STUDIO": "Ver Tu Estudio",
-    "INSPIRATION": "Inspiración",
-    "YOUR_CREATIONS": "Tus Creaciones",
-    "NO_ART_YET": "Aún no tienes arte. ¡Empieza subiendo una foto!",
-    "YOUR_ORDERS": "Tus Pedidos",
-    "VIEW_ALL_ORDERS": "Ver Todos los Pedidos",
-    "SEARCH": "Buscar",
-    "CREDITS": "Créditos",
-    "LOGIN_TO_TEST": "Login para Probar"
+  "LANDING": {
+    "TITLE": "Crea tu obra maestra",
+    "SUBTITLE": "10 créditos gratis al empezar",
+    "CTA": "Empieza a Crear",
+    "ANIMALS_GALLERY": "Naturaleza y Animales",
+    "MUSEUM_GALLERY": "Vista de Museo"
   },
-  "SIDEBAR": {
-    "WELCOME": "Bienvenido",
-    "GUEST": "Invitado",
-    "HOME": "Inicio",
-    "EDITOR": "Estudio",
-    "ORDERS": "Pedidos",
-    "PROFILE": "Perfil",
-    "LOGOUT": "Cerrar Sesión",
-    "SUBTITLE": "Tu arte IA, hecho realidad"
-  },
-  "AUTH": {
-    "LOGIN_TITLE": "Inicia Sesión",
-    "SIGNUP_TITLE": "Crea tu Cuenta",
-    "WELCOME_MSG": "Bienvenido al futuro de tus recuerdos",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "ENTER": "Entrar",
-    "SIGNUP": "Registrarse",
-    "OR_ALSO": "O también",
-    "CONTINUE_GOOGLE": "Continúa con Google",
-    "NO_ACCOUNT": "¿No tienes cuenta? Regístrate",
-    "ALREADY_ACCOUNT": "¿Ya tienes cuenta? Inicia sesión",
-    "CLOSE": "Cerrar",
-    "SLOGAN": "Tu arte IA, hecho realidad"
-  },
-  "LOADING": {
-    "APPLYING_STYLE": "Aplicando estilo artístico...",
-    "UPLOADING": "Subiendo tu foto...",
-    "PROCESSING": "Procesando..."
-  },
-  "ALERTS": {
-    "ERROR": "Error",
-    "SUCCESS": "Éxito",
-    "GENERIC_ERROR": "Algo salió mal. Por favor intenta de nuevo."
-  },
-  "EDITOR": {
-    "MODAL_TITLE": "Editor de Poster IA",
-    "CLOSE": "Cerrar",
-    "BACK": "Atrás",
-    "NEXT": "Siguiente",
-    "UPLOAD_TITLE": "Sube tu foto",
-    "UPLOAD_DESC": "Selecciona una imagen para comenzar.",
-    "CHOOSE_STYLE": "Elige un Estilo",
-    "CHOOSE_FRAME": "Elige un Marco",
-    "APPLYING": "Aplicando Estilo..."
-  },
-  "CHECKOUT": {
-    "TITLE": "Resumen de Compra",
-    "ORDER_SUMMARY": "Resumen del Pedido",
-    "FRAME": "Marco",
-    "SHIPPING": "Envío",
-    "TOTAL": "Total",
-    "SHIPPING_ADDRESS": "Dirección de Envío",
-    "FULL_NAME": "Nombre Completo",
-    "STREET": "Calle",
-    "CITY": "Ciudad",
-    "STATE": "Estado / Provincia",
-    "ZIP": "Código Postal",
-    "NAME_PLACEHOLDER": "Ej. Ana Gómez",
-    "STREET_PLACEHOLDER": "Ej. Av. Siempre Viva 123",
-    "CITY_PLACEHOLDER": "Ej. Ciudad de México",
-    "STATE_PLACEHOLDER": "Ej. CDMX",
-    "ZIP_PLACEHOLDER": "Ej. 12345",
-    "PAY_STRIPE": "Pagar con Stripe",
-    "VIEW_ON_WALL": "Ver en mi Pared (AR)",
-    "UNKNOWN": "Desconocido"
-  },
-  "CONFIRMATION": {
-    "TITLE": "Pedido Confirmado",
-    "THANK_YOU": "¡Gracias por tu compra!",
-    "DESC": "Tu arte generado por IA está siendo preparado para impresión y pronto será enmarcado.",
-    "ORDER_NUMBER": "Número de Pedido",
-    "GO_HOME": "Volver al inicio"
-  },
-  "STUDIO": {
-    "TITLE": "Estudio FRAMIA",
-    "SUBTITLE": "Tus creaciones maestras",
-    "WATERMARK": "Created with FRAMIA",
-    "VIEW_ON_WALL": "Ver en mi pared"
-  },
-  "STYLES": {
-    "ORIGINAL": "Original",
-    "NEON": "Neon / Cyberpunk",
-    "WATERCOLOR": "Acuarela",
-    "OIL": "Óleo",
-    "SKETCH": "Boceto",
-    "COMIC": "Cómic"
+  "COMMON": {
+    "LOADING": "Cargando..."
   }
 }

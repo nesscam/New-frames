@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
     <ion-title>
-      {{ 'EDITOR.MODAL_TITLE' | translate }}
+      AI Poster Editor
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">{{ 'EDITOR.CLOSE' | translate }}</ion-button>
+      <ion-button (click)="dismissModal()">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -19,7 +19,7 @@
       <canvas #fabricCanvas></canvas>
       <div *ngIf="isApplyingStyle" class="spinner-overlay">
         <ion-spinner name="crescent" color="light"></ion-spinner>
-        <p>{{ 'EDITOR.APPLYING' | translate }}</p>
+        <p>Aplicando Estilo...</p>
       </div>
     </div>
   </div>
@@ -27,29 +27,29 @@
   <div class="controls-container">
     <!-- UPLOAD STEP -->
     <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
-      <h2>{{ 'EDITOR.UPLOAD_TITLE' | translate }}</h2>
-      <p>{{ 'EDITOR.UPLOAD_DESC' | translate }}</p>
+      <h2>Sube tu foto</h2>
+      <p>Selecciona una imagen para comenzar.</p>
       <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
       <label for="file-upload" class="upload-btn">
-        {{ 'HOME.UPLOAD_PHOTO' | translate }}
+        Seleccionar Imagen
       </label>
     </div>
 
     <!-- STYLE STEP -->
     <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
-      <h2>{{ 'EDITOR.CHOOSE_STYLE' | translate }}</h2>
+      <h2>Elige un Estilo</h2>
       <div class="horiz-scroll">
         <button class="style-btn" *ngFor="let style of styles"
                 [class.selected]="preselectedStyle === style"
                 (click)="applyStyle(style)">
-          {{ 'STYLES.' + style.toUpperCase() | translate }}
+          {{ style }}
         </button>
       </div>
     </div>
 
     <!-- FRAME STEP -->
     <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
-      <h2>{{ 'EDITOR.CHOOSE_FRAME' | translate }}</h2>
+      <h2>Elige un Marco</h2>
       <div class="horiz-scroll">
         <button class="frame-btn"
                 *ngFor="let frame of frames"
@@ -66,9 +66,9 @@
 <ion-footer>
   <ion-toolbar color="dark">
     <div class="footer-nav">
-      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">{{ 'EDITOR.BACK' | translate }}</ion-button>
+      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">Atrás</ion-button>
       <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">{{ 'EDITOR.NEXT' | translate }}</ion-button>
+      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">Siguiente</ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

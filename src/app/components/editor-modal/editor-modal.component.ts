@@ -5,15 +5,14 @@ import { EditorStoreService, OrderStep } from '../../services/editor-store.servi
 import { CatalogService, Frame } from '../../services/catalog.service';
 import { AiPromptService } from '../../services/ai-prompt.service';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import * as fabric from 'fabric';
+declare var fabric: any;
 
 @Component({
   selector: 'app-editor-modal',
   templateUrl: './editor-modal.component.html',
   styleUrls: ['./editor-modal.component.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, IonIcon, CommonModule, TranslateModule]
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonFooter, IonButtons, IonIcon, CommonModule]
 })
 export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() preselectedStyle?: string;
@@ -28,7 +27,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedFrameId: string | null = null;
 
   frames: Frame[] = [];
-  styles: string[] = ['Original', 'Neon', 'Watercolor', 'Oil', 'Sketch', 'Comic'];
+  styles: string[] = ['Original', 'Cyberpunk', 'Watercolor', 'Oil Painting', 'Sketch', 'Comic'];
 
   isApplyingStyle = false;
 
@@ -40,7 +39,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     private aiPromptService: AiPromptService,
     private router: Router,
     private modalCtrl: ModalController
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.subs.add(this.editorStore.orderStep$.subscribe(step => this.currentStep = step));
@@ -104,7 +103,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.canvas.clear();
     this.canvas.backgroundColor = '#2a2a2a';
 
-    fabric.Image.fromURL(imageUrl).then((img) => {
+    fabric.Image.fromURL(imageUrl, (img: any) => {
       // Scale image to fit canvas
       const scaleX = this.canvas.width! / img.width!;
       const scaleY = this.canvas.height! / img.height!;
@@ -128,8 +127,8 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   applyStyle(styleName: string) {
     if (!this.originalImage) return;
     if (styleName === 'Original') {
-      this.editorStore.setStyledImage(this.originalImage);
-      return;
+       this.editorStore.setStyledImage(this.originalImage);
+       return;
     }
 
     this.isApplyingStyle = true;
@@ -142,9 +141,9 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
           this.editorStore.setStyledImage(returnedImg);
         },
         error: (err) => {
-          console.error("Failed to generate AI stylistic image", err);
-          this.isApplyingStyle = false;
-          this.editorStore.setStyledImage(this.originalImage);
+           console.error("Failed to generate AI stylistic image", err);
+           this.isApplyingStyle = false;
+           this.editorStore.setStyledImage(this.originalImage);
         }
       })
     );
@@ -155,7 +154,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   nextStep() {
-    switch (this.currentStep) {
+    switch(this.currentStep) {
       case 'upload': this.editorStore.setOrderStep('style'); break;
       case 'style': this.editorStore.setOrderStep('frame'); break;
       case 'frame':
@@ -166,7 +165,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   prevStep() {
-    switch (this.currentStep) {
+    switch(this.currentStep) {
       case 'style': this.editorStore.setOrderStep('upload'); break;
       case 'frame': this.editorStore.setOrderStep('style'); break;
     }

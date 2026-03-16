@@ -2,17 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText } from '@ionic/angular/standalone';
 import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
-import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
-import { AuthService } from '../services/auth.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
-import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle } from 'ionicons/icons';
+import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonButton, IonIcon, CommonModule, TranslateModule],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, IonCard, IonText, CommonModule],
 })
 export class HomePage implements OnInit {
 
@@ -35,19 +32,12 @@ export class HomePage implements OnInit {
     { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', date: '20120221', status: 'Shipped', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=100&q=80' }
   ];
 
-  constructor(private modalCtrl: ModalController, public authService: AuthService) {
-    addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle });
+  constructor(private modalCtrl: ModalController) {
+    addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline });
   }
 
   ngOnInit() {
     // Optionally fetch creations and orders from a real service later
-  }
-
-  async openAuthModal() {
-    const modal = await this.modalCtrl.create({
-      component: AuthModalComponent,
-    });
-    await modal.present();
   }
 
   async openEditorModal(preselectedStyle?: string) {

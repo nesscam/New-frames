@@ -1,40 +1,53 @@
+import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+import * as admin from "firebase-admin";
 
-export const processAiImage = onCall({
-    timeoutSeconds: 120, // Damos más tiempo para que la IA responda
-    memory: "256MiB"     // Memoria suficiente para el túnel de la API
-}, async (request) => {
-    // Importamos Replicate DENTRO para que el contenedor inicie más rápido
-    const { default: Replicate } = await import("replicate");
+admin.initializeApp();
 
-    const replicate = new Replicate({
-        auth: "",
-    });
+/**
+ * Cloud Function to process an AI image.
+ * Placeholder for actual AI API call.
+ */
+export const processAiImage = onCall(async (request) => {
+  // Check if user is authenticated
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "The function must be called while authenticated.");
+  }
 
-    const { imageUrl, promptStyle } = request.data;
+  const { imageUrl, prompt } = request.data;
 
-    if (!imageUrl) {
-        throw new HttpsError("invalid-argument", "Falta la URL de la imagen");
+  if (!imageUrl || !prompt) {
+    throw new HttpsError("invalid-argument", "The function must be called with imageUrl and prompt.");
+  }
+
+  console.log(`Processing image: ${imageUrl} with prompt: ${prompt}`);
+
+  // Placeholder for AI API logic
+  return {
+    success: true,
+    processedImageUrl: imageUrl, // For now, return the same URL
+    message: "Image processed successfully (placeholder)"
+  };
+});
+
+/**
+ * Trigger to validate user credits on update.
+ */
+export const onUserUpdate = onDocumentUpdated("users/{userId}", (event) => {
+  const newValue = event.data?.after.data();
+  const previousValue = event.data?.before.data();
+
+  if (!newValue || !previousValue) {
+    return;
+  }
+
+  // If credits changed, validate they are not negative
+  if (newValue.credits !== previousValue.credits) {
+    if (newValue.credits < 0) {
+      console.error(`Invalid credits value for user ${event.params.userId}: ${newValue.credits}`);
+      // In a real scenario, you might want to revert the change or handle it accordingly.
+      // Firestore triggers cannot "block" the write, but we can log the error or take corrective action.
+      throw new Error("Credits cannot be negative.");
     }
-
-    try {
-        logger.info("Iniciando proceso con Replicate para:", imageUrl);
-
-        const output = await replicate.run(
-            "stability-ai/sdxl:363e72b0",
-            {
-                input: {
-                    image: imageUrl,
-                    prompt: `${promptStyle}, vibrant oil painting style, masterpiece`,
-                    structure_conditioning_scale: 0.8,
-                },
-            }
-        );
-
-        return { success: true, output };
-    } catch (error: any) {
-        logger.error("Error en Replicate:", error);
-        throw new HttpsError("internal", error.message || "Error en IA");
-    }
+  }
 });

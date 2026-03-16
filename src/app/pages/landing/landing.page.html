@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  <div class="landing-container">
+    <!-- Top Gallery Section -->
+    <section class="gallery-top">
+      <div class="section-label">{{ 'LANDING.ANIMALS_GALLERY' | translate }}</div>
+      <div class="gallery-track">
+        <div class="art-card" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="placeholder-img">Art {{i}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Middle Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>{{ 'LANDING.TITLE' | translate }}</h1>
+        <p>{{ 'LANDING.SUBTITLE' | translate }}</p>
+        <ion-button (click)="startCreating()" class="cta-button">
+          {{ 'LANDING.CTA' | translate }}
+        </ion-button>
+      </div>
+    </section>
+
+    <!-- Bottom Museum View Gallery -->
+    <section class="gallery-bottom">
+      <div class="section-label">{{ 'LANDING.MUSEUM_GALLERY' | translate }}</div>
+      <div class="museum-track">
+        <div class="museum-card" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="placeholder-img museum">Museum {{i}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glassmorphism Dock -->
+    <div class="nav-dock">
+      <ion-icon name="grid-outline"></ion-icon>
+      <ion-icon name="color-palette-outline"></ion-icon>
+      <ion-icon name="heart-outline"></ion-icon>
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
+  </div>
+</ion-content>

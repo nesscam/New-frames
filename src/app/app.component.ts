@@ -1,25 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline } from 'ionicons/icons';
-import { AuthService } from './services/auth.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { homeOutline, colorPaletteOutline, cubeOutline, personOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  imports: [IonApp, IonRouterOutlet, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, RouterModule, CommonModule, TranslateModule],
+  imports: [IonApp, IonRouterOutlet, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, RouterModule],
 })
 export class AppComponent {
-  public authService = inject(AuthService);
-  private translate = inject(TranslateService);
-
   constructor() {
-    addIcons({ homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline });
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
+    addIcons({ homeOutline, colorPaletteOutline, cubeOutline, personOutline });
   }
 }

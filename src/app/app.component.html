@@ -4,37 +4,28 @@
       <ion-content>
         <!-- Logo Area -->
         <div class="logo-container">
-          <h1 class="logo-text">FRAMIA</h1>
-          <h2>Tu arte IA, hecho realidad</h2>
-          <ng-container *ngIf="authService.user$ | async as user; else guest">
-            <p>{{ 'SIDEBAR.WELCOME' | translate }}, {{ user.displayName || user.email }}</p>
-          </ng-container>
-          <ng-template #guest>
-            <p>{{ 'SIDEBAR.WELCOME' | translate }}, {{ 'SIDEBAR.GUEST' | translate }}</p>
-          </ng-template>
+          <h1 class="logo-text">AI</h1>
+          <h2>AI Photo Frame</h2>
+          <p>Welcome, [User Name]</p>
         </div>
 
         <!-- Navigation -->
         <ion-list class="nav-list" lines="none">
-          <ion-item button routerLink="/home" routerDirection="root" routerLinkActive="active">
+          <ion-item button routerLink="/home" routerDirection="root" class="active">
             <ion-icon name="home-outline" slot="start"></ion-icon>
-            <ion-label>{{ 'SIDEBAR.HOME' | translate }}</ion-label>
+            <ion-label>Home</ion-label>
           </ion-item>
-          <ion-item button routerLink="/studio" routerDirection="forward" routerLinkActive="active">
+          <ion-item button>
             <ion-icon name="color-palette-outline" slot="start"></ion-icon>
-            <ion-label>{{ 'SIDEBAR.EDITOR' | translate }}</ion-label>
+            <ion-label>Editor</ion-label>
           </ion-item>
           <ion-item button>
             <ion-icon name="cube-outline" slot="start"></ion-icon>
-            <ion-label>{{ 'SIDEBAR.ORDERS' | translate }}</ion-label>
+            <ion-label>Orders</ion-label>
           </ion-item>
           <ion-item button>
             <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-label>{{ 'SIDEBAR.PROFILE' | translate }}</ion-label>
-          </ion-item>
-          <ion-item button *ngIf="authService.user$ | async" (click)="authService.logout()">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
-            <ion-label>{{ 'SIDEBAR.LOGOUT' | translate }}</ion-label>
+            <ion-label>Profile</ion-label>
           </ion-item>
         </ion-list>
       </ion-content>

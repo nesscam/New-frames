@@ -1,14 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { EditorStoreService } from '../services/editor-store.service';
-import { addIcons } from 'ionicons';
-import { cubeOutline } from 'ionicons/icons';
 import { CatalogService, Frame } from '../services/catalog.service';
 import { PaymentService } from '../services/payment';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './checkout.page.html',
   styleUrls: ['./checkout.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent, IonIcon, TranslateModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent]
 })
 export class CheckoutPage implements OnInit, OnDestroy {
   checkoutForm: FormGroup;
@@ -38,7 +35,6 @@ export class CheckoutPage implements OnInit, OnDestroy {
     private paymentService: PaymentService,
     private router: Router
   ) {
-    addIcons({ cubeOutline });
     this.checkoutForm = this.fb.group({
       name: ['', Validators.required],
       street: ['', Validators.required],

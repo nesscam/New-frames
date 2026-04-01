@@ -19,7 +19,6 @@ export class AppComponent {
 
   constructor() {
     addIcons({ homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline });
-    this.translate.setDefaultLang('es');
     this.translate.use('es');
   }
 }

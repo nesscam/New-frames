@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Firestore, doc, getDoc, collection, addDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 import { Observable, from, throwError } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageAiService {
-  private readonly replicateApiUrl = 'https://api.replicate.com/v1/predictions';
-
   // Master Prompts in English
   private readonly MASTER_PROMPTS: { [key: string]: string } = {
     'Neon': 'Cyberpunk style, neon lights, futuristic city, glowing colors, highly detailed, 8k resolution',
@@ -21,11 +19,16 @@ export class ImageAiService {
     'Comic': 'Pop art comic book style, bold outlines, Ben-Day dots, vibrant colors, superhero aesthetic'
   };
 
+  private processAiImageCallable: ReturnType<typeof httpsCallable>;
+
   constructor(
     private http: HttpClient,
     private firestore: Firestore,
-    private storage: Storage
-  ) {}
+    private storage: Storage,
+    private functions: Functions
+  ) {
+    this.processAiImageCallable = httpsCallable(this.functions, 'processAiImage');
+  }
 
   /**
    * Generates artistic version of a user image using Replicate (SDXL).
@@ -38,11 +41,6 @@ export class ImageAiService {
   generateArt(userImage: Blob, styleKey: string, userId: string): Observable<string> {
     const stylePrompt = this.MASTER_PROMPTS[styleKey] || styleKey;
     const userDocRef = doc(this.firestore, `users/${userId}`);
-
-    const headers = new HttpHeaders({
-      'Authorization': `Token ${environment.replicateApiKey}`,
-      'Content-Type': 'application/json'
-    });
 
     return from(getDoc(userDocRef)).pipe(
       switchMap(docSnap => {
@@ -58,23 +56,10 @@ export class ImageAiService {
         );
       }),
       switchMap((initImageUrl: string) => {
-        const body = {
-          version: "39ed52f2a78e934b3ba6e24ee33373c959d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1",
-          input: {
-            image: initImageUrl,
-            prompt: stylePrompt,
-            refine: "expert_ensemble_refiner",
-            apply_watermark: false,
-            num_inference_steps: 25
-          }
-        };
-
-        return this.http.post<any>(this.replicateApiUrl, body, { headers });
+        return from(this.processAiImageCallable({ imageUrl: initImageUrl, promptStyle: stylePrompt }));
       }),
-      switchMap((prediction: any) => {
-        return this.pollPrediction(prediction.urls.get, headers);
-      }),
-      switchMap((outputUrl: string) => {
+      switchMap((response: any) => {
+        const outputUrl = response.data.output[0];
         // 4. Download generated image from Replicate and upload to Firebase Storage
         // Ensuring we use high-res result and tagging metadata for 300 DPI
         return this.http.get(outputUrl, { responseType: 'blob' }).pipe(
@@ -111,27 +96,5 @@ export class ImageAiService {
     );
   }
 
-  private pollPrediction(url: string, headers: HttpHeaders): Observable<string> {
-    // Simple polling implementation
-    return new Observable<string>(observer => {
-      const interval = setInterval(() => {
-        this.http.get<any>(url, { headers }).subscribe({
-          next: (prediction) => {
-            if (prediction.status === 'succeeded') {
-              clearInterval(interval);
-              observer.next(prediction.output[0]);
-              observer.complete();
-            } else if (prediction.status === 'failed' || prediction.status === 'canceled') {
-              clearInterval(interval);
-              observer.error(new Error(`Prediction ${prediction.status}`));
-            }
-          },
-          error: (err) => {
-            clearInterval(interval);
-            observer.error(err);
-          }
-        });
-      }, 3000); // Poll every 3 seconds
-    });
-  }
+
 }

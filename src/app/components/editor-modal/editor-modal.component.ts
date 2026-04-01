@@ -49,7 +49,13 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
       // If we have an image and a preselected style, auto-apply it once the user uploads.
       // Easiest way in this flow is to watch for originalImage change and if step switches to 'style', trigger it.
     }));
-    this.subs.add(this.editorStore.styledImage$.subscribe(img => this.styledImage = img));
+    this.subs.add(this.editorStore.styledImage$.subscribe(img => {
+      this.styledImage = img;
+      if (img) {
+        // Redraw canvas any time the style is effectively applied
+        this.loadImageToCanvas(img);
+      }
+    }));
     this.subs.add(this.editorStore.selectedFrameId$.subscribe(id => this.selectedFrameId = id));
 
     this.subs.add(this.catalogService.getCatalog().subscribe(catalog => {
@@ -136,9 +142,11 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.aiPromptService.processImage(this.originalImage, styleName).subscribe({
-        next: (result) => {
+        next: (result: any) => {
           this.isApplyingStyle = false;
-          const returnedImg = result?.imageUrl || this.originalImage;
+          // AngularFire's httpsCallable automatically unwraps the { result: ... } HTTP payload.
+          // So our cloud function's payload `{ success: true, output: [...] }` is directly in `result`.
+          const returnedImg = result?.output?.[0] || result?.data?.output?.[0] || this.originalImage;
           this.editorStore.setStyledImage(returnedImg);
         },
         error: (err) => {

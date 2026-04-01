@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText } from '@ionic/angular/standalone';
 import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
@@ -7,6 +7,8 @@ import { AuthService } from '../services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle } from 'ionicons/icons';
+import { Firestore, collection, query, where, onSnapshot } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,7 @@ import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folde
   styleUrls: ['home.page.scss'],
   imports: [IonContent, IonButton, IonIcon, CommonModule, TranslateModule],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
   galleryInspirations = [
     { style: 'Cyberpunk', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=200&q=80' },
@@ -23,11 +25,7 @@ export class HomePage implements OnInit {
     { style: 'Oil Painting', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=200&q=80' }
   ];
 
-  userCreations = [
-    { style: 'Neon City', image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=200&q=80' },
-    { style: 'Pop Art Portrait', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=200&q=80' },
-    { style: 'Classic Landscape', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=200&q=80' }
-  ];
+  userCreations: any[] = [];
 
   orders = [
     { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', status: 'Pnippto', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=100&q=80' },
@@ -35,12 +33,50 @@ export class HomePage implements OnInit {
     { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', date: '20120221', status: 'Shipped', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=100&q=80' }
   ];
 
-  constructor(private modalCtrl: ModalController, public authService: AuthService) {
+  private authSub?: Subscription;
+  private unsubscribeArt?: () => void;
+
+  constructor(private modalCtrl: ModalController, public authService: AuthService, private firestore: Firestore) {
     addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle });
   }
 
   ngOnInit() {
-    // Optionally fetch creations and orders from a real service later
+    this.authSub = this.authService.user$.subscribe(user => {
+      if (user) {
+        this.loadUserArt(user.uid);
+      } else {
+        this.userCreations = [];
+        if (this.unsubscribeArt) {
+          this.unsubscribeArt();
+          this.unsubscribeArt = undefined;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.authSub?.unsubscribe();
+    if (this.unsubscribeArt) this.unsubscribeArt();
+  }
+
+  loadUserArt(uid: string) {
+    if (this.unsubscribeArt) this.unsubscribeArt();
+    
+    const artRef = collection(this.firestore, 'my_art');
+    const q = query(artRef, where('userId', '==', uid));
+    
+    this.unsubscribeArt = onSnapshot(q, (snapshot) => {
+      const creations: any[] = [];
+      snapshot.forEach(doc => {
+        creations.push({ id: doc.id, ...doc.data() });
+      });
+      // Sort newest first
+      this.userCreations = creations.sort((a, b) => {
+        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+    });
   }
 
   async openAuthModal() {

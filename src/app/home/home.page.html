@@ -20,10 +20,9 @@
       <ion-icon name="search-outline"></ion-icon>
       <input type="text" [placeholder]="'HOME.SEARCH' | translate" />
     </div>
-    <div class="user-meta">
+    <div class="user-meta" *ngIf="authService.user$ | async as user; else noAuth">
       <div class="avatar">
-        <!-- Placeholder for user avatar -->
-        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar" />
+        <img [src]="user.photoURL || 'https://i.pravatar.cc/150?u=anon'" alt="User Avatar" />
       </div>
       <span class="credits-text">10 {{ 'HOME.CREDITS' | translate }}</span>
       <div class="credits-bar">
@@ -32,6 +31,15 @@
       <ion-icon name="notifications-outline" class="meta-icon"></ion-icon>
       <ion-icon name="alert-outline" class="meta-icon"></ion-icon>
     </div>
+    <ng-template #noAuth>
+      <div class="user-meta">
+        <div class="avatar">
+          <img src="https://i.pravatar.cc/150?u=anon" alt="User Avatar" />
+        </div>
+        <span class="credits-text">0 {{ 'HOME.CREDITS' | translate }}</span>
+        <div class="credits-bar"><div class="progress" style="width:0%"></div></div>
+      </div>
+    </ng-template>
   </div>
 
   <!-- Quick Actions -->
@@ -72,7 +80,7 @@
 
     <div class="creations-carousel" *ngIf="userCreations.length > 0">
       <div class="creation-wrapper" *ngFor="let creation of userCreations">
-        <div class="creation-img" [style.background-image]="'url(' + creation.image + ')'"></div>
+        <div class="creation-img" [style.background-image]="'url(' + (creation.imageUrl || creation.image) + ')'"></div>
         <p class="creation-label">{{ creation.style }}</p>
       </div>
     </div>

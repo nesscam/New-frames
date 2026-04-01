@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Functions, httpsCallable } from '@angular/fire/functions';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AiPromptService {
+  private processAiImageCallable: ReturnType<typeof httpsCallable>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private functions: Functions) {
+    this.processAiImageCallable = httpsCallable(this.functions, 'processAiImage');
+  }
 
   /**
    * Sends an image and a style prompt to the AI processing Cloud Function.
@@ -19,10 +21,10 @@ export class AiPromptService {
    */
   processImage(imageUrlOrBase64: string, stylePrompt: string): Observable<any> {
     const payload = {
-      image: imageUrlOrBase64,
-      prompt: stylePrompt
+      imageUrl: imageUrlOrBase64,
+      promptStyle: stylePrompt
     };
 
-    return this.http.post<any>(environment.api.processAiImage, payload);
+    return from(this.processAiImageCallable(payload));
   }
 }

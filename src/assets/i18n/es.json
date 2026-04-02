@@ -1,4 +1,7 @@
 {
+  "LANDING": {
+    "CTA": "Empieza a Crear"
+  },
   "HOME": {
     "QUICK_ACTIONS": "Acciones Rápidas",
     "UPLOAD_PHOTO": "Subir Foto",
@@ -10,7 +13,14 @@
     "VIEW_ALL_ORDERS": "Ver Todos los Pedidos",
     "SEARCH": "Buscar",
     "CREDITS": "Créditos",
-    "LOGIN_TO_TEST": "Login para Probar"
+    "LOGIN_TO_TEST": "Login para Probar",
+    "LOGIN_BTN": "Iniciar Sesión",
+    "OIL_PAINTING": "Óleo",
+    "TAB_GALLERY": "Galería",
+    "TAB_STYLES": "Estilos",
+    "TAB_EDITOR": "Editor",
+    "TAB_FAVORITES": "Favoritos",
+    "TAB_ACCOUNT": "Cuenta"
   },
   "SIDEBAR": {
     "WELCOME": "Bienvenido",
@@ -18,8 +28,9 @@
     "HOME": "Inicio",
     "EDITOR": "Estudio",
     "ORDERS": "Pedidos",
-    "PROFILE": "Perfil",
+    "PROFILE": "Cuenta",
     "LOGOUT": "Cerrar Sesión",
+    "LOGIN": "Iniciar Sesión",
     "SUBTITLE": "Tu arte IA, hecho realidad"
   },
   "AUTH": {
@@ -99,5 +110,19 @@
     "OIL": "Óleo",
     "SKETCH": "Boceto",
     "COMIC": "Cómic"
+  },
+  "PROFILE": {
+    "TITLE": "Perfil de Usuario",
+    "MY_ADDRESSES": "Mis Direcciones",
+    "ADD_NEW": "Agregar Nueva",
+    "NO_ADDRESSES": "Aún no tienes direcciones guardadas.",
+    "ADD_ADDRESS": "Agregar Dirección",
+    "STREET": "Calle y Número",
+    "CITY": "Ciudad",
+    "STATE": "Estado / Provincia",
+    "ZIP": "C.P.",
+    "COUNTRY": "País",
+    "PHONE": "Teléfono",
+    "SAVE_ADDRESS": "Guardar Dirección"
   }
 }

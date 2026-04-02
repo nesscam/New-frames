@@ -1,0 +1,68 @@
+.glass-header {
+  backdrop-filter: blur(10px);
+  background: rgba(10, 15, 26, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-content {
+  --background: #0a0f1a;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+  
+  ion-label {
+    color: var(--vt-c-text-dark-2);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+}
+
+.glass-input {
+  --background: rgba(255, 255, 255, 0.05);
+  --color: #ffffff;
+  --placeholder-color: rgba(255, 255, 255, 0.3);
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  min-height: 48px;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+  }
+
+  &.ion-touched.ng-invalid {
+    border-color: var(--ion-color-danger);
+  }
+}
+
+.gradient-btn {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --border-radius: 12px;
+  --box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.4);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  height: 50px;
+  
+  &::part(native) {
+    transition: all 0.3s ease;
+  }
+
+  &:hover::part(native) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--ion-color-primary-rgb), 0.6);
+  }
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}

@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
 import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
 import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
 import { AuthService } from '../services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
-import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle } from 'ionicons/icons';
+import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline } from 'ionicons/icons';
 import { Firestore, collection, query, where, onSnapshot } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +15,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonButton, IonIcon, CommonModule, TranslateModule],
+  imports: [IonContent, IonButton, IonIcon, IonMenuButton, IonButtons, CommonModule, TranslateModule],
 })
 export class HomePage implements OnInit, OnDestroy {
 
@@ -36,8 +37,8 @@ export class HomePage implements OnInit, OnDestroy {
   private authSub?: Subscription;
   private unsubscribeArt?: () => void;
 
-  constructor(private modalCtrl: ModalController, public authService: AuthService, private firestore: Firestore) {
-    addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle });
+  constructor(private modalCtrl: ModalController, public authService: AuthService, private firestore: Firestore, private router: Router) {
+    addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline });
   }
 
   ngOnInit() {
@@ -45,6 +46,8 @@ export class HomePage implements OnInit, OnDestroy {
       if (user) {
         this.loadUserArt(user.uid);
       } else {
+        // Redirigir a landing si no está logueado
+        this.router.navigate(['/landing'], { replaceUrl: true });
         this.userCreations = [];
         if (this.unsubscribeArt) {
           this.unsubscribeArt();

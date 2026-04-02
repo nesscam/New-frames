@@ -1,24 +1,45 @@
 :host {
-  --background: #121212;
-  --ion-background-color: #121212;
-  --ion-text-color: #ffffff;
+  ion-content {
+    --background: #131417;
+  }
 }
 
+/* ─── Fondo radial (igual que auth-modal) ─── */
+.checkout-bg-gradient {
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150vw;
+  height: 50vh;
+  background: radial-gradient(circle at bottom, rgba(62, 123, 250, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Contenedor principal ─── */
 .checkout-container {
-  max-width: 600px;
+  position: relative;
+  z-index: 10;
+  max-width: 480px;
   margin: 0 auto;
+  padding: 24px 20px 50px;
 }
 
+/* ─── Preview de la imagen con marco ─── */
 .preview-section {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .thumbnail-wrapper {
-  max-width: 200px;
-  border: 10px solid #ffffff;
-  background-color: #2a2a2a;
+  max-width: 180px;
+  border: 10px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  transition: border 0.3s ease;
 
   img {
     display: block;
@@ -44,43 +65,184 @@
   }
 }
 
+/* ─── Tarjeta resumen (glassmorphism, igual que .custom-item del auth-modal) ─── */
 .summary-card {
-  margin: 0 0 20px 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
   h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
   }
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 
-  &.total {
-    font-size: 1.2rem;
-    color: var(--ion-color-success, #2dd36f);
-    margin-top: 10px;
-    margin-bottom: 0;
+  .price {
+    color: var(--text-primary);
+    font-weight: 500;
   }
 }
 
+.divider-line {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+}
+
+.total-row {
+  margin-bottom: 0;
+  font-size: 1rem;
+
+  strong {
+    color: var(--text-primary);
+  }
+
+  .total-price {
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* ─── Título de sección ─── */
 .section-title {
-  font-size: 1.2rem;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding-left: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+  letter-spacing: 0.2px;
 }
 
-ion-item {
-  --background: #2a2a2a;
-  margin-bottom: 10px;
-  border-radius: 8px;
+/* ─── Formulario de dirección ─── */
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-.pay-btn-container {
-  margin-top: 30px;
-  margin-bottom: 40px;
+.custom-field {
+  &.flex-1 { flex: 1; }
+  &.flex-half { flex: 0 0 calc(50% - 6px); }
+}
+
+.fields-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ─── Inputs (idéntico a .custom-item del auth-modal) ─── */
+.custom-item {
+  --background: rgba(255, 255, 255, 0.04);
+  --color: white;
+  --placeholder-color: #555;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-width: 1px;
+  --border-radius: 12px;
+  --padding-start: 15px;
+  --inner-padding-end: 15px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  transition: border-color 0.2s;
+
+  ion-icon {
+    color: #FF8E53;
+    margin-right: 8px;
+  }
+
+  ion-label {
+    color: var(--text-secondary) !important;
+    font-size: 0.8rem !important;
+  }
+
+  &:focus-within {
+    border-color: rgba(255, 142, 83, 0.5);
+  }
+}
+
+/* ─── Botón AR ─── */
+.ar-container {
+  margin-bottom: 16px;
+}
+
+.ar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 13px 0;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+  }
+}
+
+/* ─── Botón de pago (igual a .custom-gradient-btn del auth-modal) ─── */
+.pay-btn {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+  color: white;
+  border: none;
+  padding: 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  ion-spinner {
+    color: white;
+  }
 }

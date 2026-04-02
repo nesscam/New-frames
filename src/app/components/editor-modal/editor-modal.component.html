@@ -1,16 +1,9 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>
-      {{ 'EDITOR.MODAL_TITLE' | translate }}
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">{{ 'EDITOR.CLOSE' | translate }}</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="editor-content">
 
-<ion-content [fullscreen]="true" class="ion-padding" color="dark">
+  <!-- Background radial gradient (igual que auth-modal) -->
+  <div class="editor-bg-gradient"></div>
 
+  <!-- Canvas flotante sobre el fondo -->
   <div class="editor-container">
     <div class="canvas-wrapper"
          [class.has-styled]="styledImage !== null"
@@ -24,13 +17,15 @@
     </div>
   </div>
 
-  <div class="controls-container">
+  <!-- Panel de controles (estilo auth-container) -->
+  <div class="editor-panel-container">
+
     <!-- UPLOAD STEP -->
     <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
       <h2>{{ 'EDITOR.UPLOAD_TITLE' | translate }}</h2>
       <p>{{ 'EDITOR.UPLOAD_DESC' | translate }}</p>
       <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
-      <label for="file-upload" class="upload-btn">
+      <label for="file-upload" class="primary-btn">
         {{ 'HOME.UPLOAD_PHOTO' | translate }}
       </label>
     </div>
@@ -39,7 +34,7 @@
     <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
       <h2>{{ 'EDITOR.CHOOSE_STYLE' | translate }}</h2>
       <div class="horiz-scroll">
-        <button class="style-btn" *ngFor="let style of styles"
+        <button class="chip-btn" *ngFor="let style of styles"
                 [class.selected]="preselectedStyle === style"
                 (click)="applyStyle(style)">
           {{ 'STYLES.' + style.toUpperCase() | translate }}
@@ -51,7 +46,7 @@
     <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
       <h2>{{ 'EDITOR.CHOOSE_FRAME' | translate }}</h2>
       <div class="horiz-scroll">
-        <button class="frame-btn"
+        <button class="chip-btn"
                 *ngFor="let frame of frames"
                 [class.selected]="selectedFrameId === frame.id"
                 (click)="selectFrame(frame.id)">
@@ -60,15 +55,17 @@
       </div>
     </div>
 
-  </div>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar color="dark">
+    <!-- Footer nav -->
     <div class="footer-nav">
-      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">{{ 'EDITOR.BACK' | translate }}</ion-button>
+      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">
+        {{ 'EDITOR.BACK' | translate }}
+      </ion-button>
       <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">{{ 'EDITOR.NEXT' | translate }}</ion-button>
+      <button class="next-btn" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">
+        {{ 'EDITOR.NEXT' | translate }}
+      </button>
     </div>
-  </ion-toolbar>
-</ion-footer>
+
+  </div>
+
+</ion-content>

@@ -1,17 +1,16 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar color="dark">
-    <ion-title>{{ (isLogin ? 'AUTH.LOGIN_TITLE' : 'AUTH.SIGNUP_TITLE') | translate }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">{{ 'AUTH.CLOSE' | translate }}</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="auth-content">
+  <!-- Interactive Background Overlay -->
+  <div class="auth-bg-gradient"></div>
 
-<ion-content color="dark" class="ion-padding">
+  <!-- Floating Close Button -->
+  <ion-button fill="clear" color="light" class="close-btn" (click)="dismissModal()">
+    <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+  </ion-button>
+
   <div class="auth-container">
     <div class="logo-area">
-      <h1 class="logo-text">FRAMIA</h1>
-      <p>{{ 'AUTH.SLOGAN' | translate }}</p>
+      <img src="assets/logo.png" alt="Framia Logo" class="logo-img" />
+      <p class="slogan">{{ 'AUTH.SLOGAN' | translate }}</p>
     </div>
 
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
@@ -28,9 +27,9 @@
       </ion-item>
 
       <div class="ion-margin-top">
-        <ion-button expand="block" shape="round" type="submit" [disabled]="!authForm.valid" class="main-btn">
+        <button type="submit" [disabled]="!authForm.valid" class="custom-gradient-btn">
           {{ (isLogin ? 'AUTH.ENTER' : 'AUTH.SIGNUP') | translate }}
-        </ion-button>
+        </button>
       </div>
     </form>
 
@@ -38,10 +37,10 @@
       <span>{{ 'AUTH.OR_ALSO' | translate }}</span>
     </div>
 
-    <ion-button expand="block" fill="outline" shape="round" color="light" (click)="loginWithGoogle()" class="google-btn">
-      <ion-icon name="logo-google" slot="start"></ion-icon>
+    <button type="button" class="google-btn" (click)="loginWithGoogle()">
+      <ion-icon name="logo-google"></ion-icon>
       {{ 'AUTH.CONTINUE_GOOGLE' | translate }}
-    </ion-button>
+    </button>
 
     <div class="footer-toggle ion-text-center ion-margin-top">
       <ion-text (click)="toggleMode()">

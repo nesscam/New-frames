@@ -1,4 +1,7 @@
 {
+  "LANDING": {
+    "CTA": "Start Creating"
+  },
   "HOME": {
     "QUICK_ACTIONS": "Quick Actions",
     "UPLOAD_PHOTO": "Upload Photo",
@@ -10,7 +13,14 @@
     "VIEW_ALL_ORDERS": "View All Orders",
     "SEARCH": "Search",
     "CREDITS": "Credits",
-    "LOGIN_TO_TEST": "Login to Test"
+    "LOGIN_TO_TEST": "Login to Test",
+    "LOGIN_BTN": "Sign In",
+    "OIL_PAINTING": "Oil Painting",
+    "TAB_GALLERY": "Gallery",
+    "TAB_STYLES": "Styles",
+    "TAB_EDITOR": "Editor",
+    "TAB_FAVORITES": "Favorites",
+    "TAB_ACCOUNT": "Account"
   },
   "SIDEBAR": {
     "WELCOME": "Welcome",
@@ -18,8 +28,9 @@
     "HOME": "Home",
     "EDITOR": "Studio",
     "ORDERS": "Orders",
-    "PROFILE": "Profile",
+    "PROFILE": "Account",
     "LOGOUT": "Logout",
+    "LOGIN": "Sign In",
     "SUBTITLE": "Your AI Art, made reality"
   },
   "AUTH": {
@@ -99,5 +110,19 @@
     "OIL": "Oil Painting",
     "SKETCH": "Sketch",
     "COMIC": "Comic"
+  },
+  "PROFILE": {
+    "TITLE": "User Profile",
+    "MY_ADDRESSES": "My Addresses",
+    "ADD_NEW": "Add New",
+    "NO_ADDRESSES": "You haven't saved any addresses yet.",
+    "ADD_ADDRESS": "Add Address",
+    "STREET": "Street & Number",
+    "CITY": "City",
+    "STATE": "State / Province",
+    "ZIP": "Zip Code",
+    "COUNTRY": "Country",
+    "PHONE": "Phone Number",
+    "SAVE_ADDRESS": "Save Address"
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonIcon } from '@ionic/angular/standalone';
 import { EditorStoreService } from '../services/editor-store.service';
 import { addIcons } from 'ionicons';
 import { cubeOutline } from 'ionicons/icons';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './checkout.page.html',
   styleUrls: ['./checkout.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonButtons, IonBackButton, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonCard, IonCardContent, IonIcon, TranslateModule]
+  imports: [IonContent, CommonModule, FormsModule, ReactiveFormsModule, IonInput, IonItem, IonLabel, IonButton, IonSpinner, IonIcon, TranslateModule]
 })
 export class CheckoutPage implements OnInit, OnDestroy {
   checkoutForm: FormGroup;

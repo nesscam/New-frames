@@ -1,0 +1,65 @@
+<ion-header class="glass-header ion-no-border">
+  <ion-toolbar color="transparent">
+    <ion-title class="fw-bold">{{ 'PROFILE.ADD_ADDRESS' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="glass-content ion-padding">
+  <div class="form-container">
+    <form [formGroup]="addressForm" (ngSubmit)="save()">
+      <div class="input-group">
+        <ion-label position="stacked">{{ 'PROFILE.STREET' | translate }}</ion-label>
+        <ion-input type="text" formControlName="street" placeholder="123 Main St" class="glass-input"></ion-input>
+      </div>
+
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="6" class="ion-padding-end">
+            <div class="input-group">
+              <ion-label position="stacked">{{ 'PROFILE.CITY' | translate }}</ion-label>
+              <ion-input type="text" formControlName="city" placeholder="New York" class="glass-input"></ion-input>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="input-group">
+              <ion-label position="stacked">{{ 'PROFILE.STATE' | translate }}</ion-label>
+              <ion-input type="text" formControlName="state" placeholder="NY" class="glass-input"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="6" class="ion-padding-end">
+            <div class="input-group">
+              <ion-label position="stacked">{{ 'PROFILE.ZIP' | translate }}</ion-label>
+              <ion-input type="text" formControlName="zipCode" placeholder="10001" class="glass-input"></ion-input>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="input-group">
+              <ion-label position="stacked">{{ 'PROFILE.COUNTRY' | translate }}</ion-label>
+              <ion-input type="text" formControlName="country" placeholder="USA" class="glass-input"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="input-group">
+        <ion-label position="stacked">{{ 'PROFILE.PHONE' | translate }}</ion-label>
+        <ion-input type="tel" formControlName="phone" placeholder="+1 234 567 8900" class="glass-input"></ion-input>
+      </div>
+
+      <ion-button expand="block" type="submit" class="gradient-btn mt-4">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        {{ 'PROFILE.SAVE_ADDRESS' | translate }}
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

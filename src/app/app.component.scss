@@ -14,16 +14,11 @@ ion-content {
   flex-direction: column;
   align-items: center;
 
-  .logo-text {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 0;
-    /* Gradient text for the AI logo */
-    background: linear-gradient(135deg, #3E7BFA 0%, #8B4EFF 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
+  .logo-img {
+    width: 160px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 4px;
   }
 
   h2 {
@@ -62,11 +57,12 @@ ion-content {
 
     /* Hover and Active states */
     &:hover {
-      --background: rgba(255,255,255,0.05);
+      --background: rgba(255, 255, 255, 0.05);
     }
 
     &.active {
-      --background: #313545; /* Active background */
+      --background: #313545;
+      /* Active background */
       color: var(--text-primary);
 
       ion-icon {

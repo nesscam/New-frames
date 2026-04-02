@@ -55,8 +55,8 @@ export const processAiImage = onCall({
             {
                 input: {
                     image: imageUrl,
-                    prompt: `${actualPrompt}, masterpiece, best quality`,
-                    prompt_strength: 0.8,
+                    prompt: `A highly accurate stylization of the exact original image subjects, people, features and composition. Stylized as: ${actualPrompt}, masterpiece, best quality. Perfectly preserve the original faces, expressions, and number of people.`,
+                    prompt_strength: 0.55,
                     num_inference_steps: 28,
                     guidance: 3.5,
                     output_format: "jpg"
@@ -66,10 +66,10 @@ export const processAiImage = onCall({
 
         // Replicate v1+ SDK returns FileOutput streams instead of raw URL strings.
         const outputArr = output as any[];
-        const outputUrls = Array.isArray(outputArr) 
+        const outputUrls = Array.isArray(outputArr)
             ? outputArr.map((item: any) => typeof item.url === 'function' ? item.url().toString() : String(item))
             : [String(output)];
-        
+
         const rawOutputUrl = outputUrls[0];
         if (!rawOutputUrl) {
             throw new Error("No URL returned from Replicate");

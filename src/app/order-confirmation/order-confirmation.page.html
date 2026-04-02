@@ -1,13 +1,12 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>{{ 'CONFIRMATION.TITLE' | translate }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="confirmation-content">
 
-<ion-content [fullscreen]="true" color="dark" class="ion-padding">
+  <!-- Background radial gradient -->
+  <div class="confirmation-bg-gradient"></div>
+
   <div class="confirmation-container">
+
+    <!-- Icono de éxito -->
     <div class="success-icon">
-      <!-- SVG Checkmark -->
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
@@ -17,13 +16,17 @@
     <h1>{{ 'CONFIRMATION.THANK_YOU' | translate }}</h1>
     <p>{{ 'CONFIRMATION.DESC' | translate }}</p>
 
+    <!-- Número de pedido -->
     <div class="order-number-box" *ngIf="orderId">
       <small>{{ 'CONFIRMATION.ORDER_NUMBER' | translate }}</small>
       <strong>{{ orderId }}</strong>
     </div>
 
-    <ion-button expand="block" shape="round" color="primary" (click)="goHome()">
+    <!-- Botón volver -->
+    <button class="home-btn" (click)="goHome()">
       {{ 'CONFIRMATION.GO_HOME' | translate }}
-    </ion-button>
+    </button>
+
   </div>
+
 </ion-content>

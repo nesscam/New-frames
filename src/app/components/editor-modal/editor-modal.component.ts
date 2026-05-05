@@ -4,6 +4,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, Ion
 import { EditorStoreService, OrderStep } from '../../services/editor-store.service';
 import { CatalogService, Frame } from '../../services/catalog.service';
 import { AiPromptService } from '../../services/ai-prompt.service';
+import { ImageAiService } from '../../services/image-ai.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -38,6 +40,8 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     private editorStore: EditorStoreService,
     private catalogService: CatalogService,
     private aiPromptService: AiPromptService,
+    private imageAiService: ImageAiService,
+    private authService: AuthService,
     private router: Router,
     private modalCtrl: ModalController
   ) { }
@@ -131,7 +135,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  applyStyle(styleName: string) {
+  async applyStyle(styleName: string) {
     if (!this.originalImage) return;
     if (styleName === 'Original') {
       this.editorStore.setStyledImage(this.originalImage);
@@ -140,22 +144,33 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isApplyingStyle = true;
 
-    this.subs.add(
-      this.aiPromptService.processImage(this.originalImage, styleName).subscribe({
-        next: (result: any) => {
-          this.isApplyingStyle = false;
-          // AngularFire's httpsCallable automatically unwraps the { result: ... } HTTP payload.
-          // So our cloud function's payload `{ success: true, output: [...] }` is directly in `result`.
-          const returnedImg = result?.output?.[0] || result?.data?.output?.[0] || this.originalImage;
-          this.editorStore.setStyledImage(returnedImg);
-        },
-        error: (err) => {
-          console.error("Failed to generate AI stylistic image", err);
-          this.isApplyingStyle = false;
-          this.editorStore.setStyledImage(this.originalImage);
-        }
-      })
-    );
+    try {
+      // Convert base64 to Blob
+      const res = await fetch(this.originalImage);
+      const blob = await res.blob();
+      
+      const user = await this.authService.getCurrentUser();
+      if (!user) throw new Error("Usuario no autenticado");
+
+      this.subs.add(
+        this.imageAiService.generateArt(blob, styleName, user.uid).subscribe({
+          next: (returnedImgUrl: string) => {
+            this.isApplyingStyle = false;
+            this.editorStore.setStyledImage(returnedImgUrl);
+          },
+          error: (err) => {
+            console.error("Failed to generate AI stylistic image", err);
+            window.alert("Error al generar la imagen con IA: " + (err.message || err));
+            this.isApplyingStyle = false;
+            this.editorStore.setStyledImage(this.originalImage);
+          }
+        })
+      );
+    } catch (err) {
+      console.error("Error preparing image for AI", err);
+      this.isApplyingStyle = false;
+      this.editorStore.setStyledImage(this.originalImage);
+    }
   }
 
   selectFrame(frameId: string) {

@@ -1,59 +1,73 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar color="dark">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ 'SIDEBAR.EDITOR' | translate }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content color="dark">
-  <div class="gallery-container">
+<ion-content [fullscreen]="true">
+  <div class="studio-container">
+    
     <div class="header-section">
-      <h1 class="ion-padding-start">{{ 'STUDIO.TITLE' | translate }}</h1>
-      <p class="ion-padding-start subtitle">{{ 'STUDIO.SUBTITLE' | translate }}</p>
+      <h1>{{ 'STUDIO.TITLE' | translate }}</h1>
+      <p>{{ 'STUDIO.SUBTITLE' | translate }}</p>
     </div>
 
-    <ng-container *ngIf="artItems$ | async as items; else loading">
-      <div *ngIf="items.length === 0" class="empty-state">
-        <ion-icon name="color-palette-outline"></ion-icon>
-        <p>{{ 'HOME.NO_ART_YET' | translate }}</p>
+    <div class="tabs-header">
+      <div class="tab-btn" [class.active]="activeTab === 'creations'" (click)="setTab('creations')">
+        {{ 'STUDIO.TAB_CREATIONS' | translate }}
       </div>
-
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" size-md="4" size-lg="3" *ngFor="let item of items">
-            <ion-card class="art-card">
-              <div class="image-container">
-                <img [src]="item.imageUrl" alt="AI Art" />
-                <div class="watermark">{{ 'STUDIO.WATERMARK' | translate }}</div>
-                <div class="actions-overlay">
-                  <ion-button fill="clear" (click)="toggleFavorite(item)">
-                    <ion-icon [name]="item.isFavorite ? 'heart' : 'heart-outline'" [color]="item.isFavorite ? 'danger' : 'light'"></ion-icon>
-                  </ion-button>
-                </div>
-                <div class="ar-overlay">
-                  <ion-button fill="solid" size="small" color="secondary" [attr.href]="'intent://ar-canvas.model#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end'">
-                    <ion-icon name="cube-outline" slot="start"></ion-icon>
-                    {{ 'STUDIO.VIEW_ON_WALL' | translate }}
-                  </ion-button>
-                </div>
-              </div>
-              <div class="card-footer">
-                <ion-text color="light">
-                  <small>{{ item.style }}</small>
-                </ion-text>
-              </div>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ng-container>
-
-    <ng-template #loading>
-      <div class="ion-text-center ion-padding">
-        <ion-spinner color="primary"></ion-spinner>
+      <div class="tab-btn" [class.active]="activeTab === 'originals'" (click)="setTab('originals')">
+        {{ 'STUDIO.TAB_ORIGINALS' | translate }}
       </div>
-    </ng-template>
+    </div>
+
+    <!-- IA Creations Grid -->
+    <div *ngIf="activeTab === 'creations'">
+      <div class="art-grid" *ngIf="userCreations.length > 0; else emptyCreations">
+        <div class="art-card" *ngFor="let item of userCreations">
+          <div class="img-wrapper">
+            <img [src]="item.imageUrl || item.image" [alt]="item.style" />
+            <div class="delete-btn" (click)="deleteItem(item, 'my_art'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="style-label">{{ item.style }}</span>
+            <div class="order-btn" (click)="makeOrder(item)">
+              <ion-icon name="cart-outline" slot="start"></ion-icon>
+              {{ 'STUDIO.ORDER_BTN' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #emptyCreations>
+        <div class="empty-state">
+          <ion-icon name="color-palette-outline"></ion-icon>
+          <p>{{ 'STUDIO.EMPTY_CREATIONS' | translate }}</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Originals Grid -->
+    <div *ngIf="activeTab === 'originals'">
+      <div class="art-grid" *ngIf="userOriginals.length > 0; else emptyOriginals">
+        <div class="art-card" *ngFor="let item of userOriginals">
+          <div class="img-wrapper">
+            <img [src]="item.imageUrl || item.image" alt="Original Photo" />
+            <div class="delete-btn" (click)="deleteItem(item, 'original_photos'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="style-label">{{ 'STUDIO.ORIGINAL' | translate }}</span>
+            <div class="order-btn" (click)="makeOrder(item)">
+              <ion-icon name="cart-outline" slot="start"></ion-icon>
+              {{ 'STUDIO.ORDER_BTN' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #emptyOriginals>
+        <div class="empty-state">
+          <ion-icon name="image-outline"></ion-icon>
+          <p>{{ 'STUDIO.EMPTY_ORIGINALS' | translate }}</p>
+        </div>
+      </ng-template>
+    </div>
+
   </div>
 </ion-content>

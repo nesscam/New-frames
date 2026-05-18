@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "",
+    apiKey: "AIzaSyCH3FzFF0TMUhODcvys_nU_jUhr-uQP5K4",
     authDomain: "new-frames-703a6.firebaseapp.com",
     projectId: "new-frames-703a6",
     storageBucket: "new-frames-703a6.firebasestorage.app",
@@ -13,7 +13,7 @@ export const environment = {
     appId: "1:152247361953:web:5c6a1586ff669a213babe0",
     measurementId: "G-9KYXX1N7P3"
   },
-  replicateApiKey: "",
+  replicateApiKey: "***REPLICATE-KEY-ROTATED-Y-REDACTADA-2026-08-25***",
   stripe: {
     publicKey: "pk_test_placeholder"
   },

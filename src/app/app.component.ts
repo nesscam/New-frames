@@ -3,7 +3,7 @@ import { IonApp, IonRouterOutlet, IonSplitPane, IonMenu, IonContent, IonList, Io
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline, logInOutline } from 'ionicons/icons';
+import { homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline, logInOutline, imagesOutline } from 'ionicons/icons';
 import { AuthService } from './services/auth.service';
 import { AuthModalComponent } from './components/auth-modal/auth-modal.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -20,7 +20,7 @@ export class AppComponent {
   private modalCtrl = inject(ModalController);
 
   constructor() {
-    addIcons({ homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline, logInOutline });
+    addIcons({ homeOutline, colorPaletteOutline, cubeOutline, personOutline, logOutOutline, logInOutline, imagesOutline });
     this.translate.use('es');
   }
 

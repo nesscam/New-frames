@@ -1,13 +1,24 @@
+<ion-header class="editor-header" *ngIf="!isInline">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeAndReset()" fill="clear" class="close-btn">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="editor-content">
 
   <!-- Background radial gradient (igual que auth-modal) -->
-  <div class="editor-bg-gradient"></div>
+  <div class="editor-bg-gradient" *ngIf="!isInline"></div>
 
   <!-- Canvas flotante sobre el fondo -->
   <div class="editor-container">
     <div class="canvas-wrapper"
          [class.has-styled]="styledImage !== null"
          [attr.data-frame]="selectedFrameId"
+         [attr.data-frame-style]="selectedFrameStyle"
          [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
       <canvas #fabricCanvas></canvas>
       <div *ngIf="isApplyingStyle" class="spinner-overlay">
@@ -44,15 +55,35 @@
 
     <!-- FRAME STEP -->
     <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
-      <h2>{{ 'EDITOR.CHOOSE_FRAME' | translate }}</h2>
+      <h2>Selecciona Tamaño</h2>
       <div class="horiz-scroll">
         <button class="chip-btn"
                 *ngFor="let frame of frames"
                 [class.selected]="selectedFrameId === frame.id"
                 (click)="selectFrame(frame.id)">
-          {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
+          {{ frame.material }}<br><small>{{ frame.size }}</small>
         </button>
       </div>
+
+      <h2 style="margin-top: 15px;">Estilo de Marco</h2>
+      <div class="horiz-scroll">
+        <button class="chip-btn" 
+                *ngFor="let style of frameStyles"
+                [class.selected]="selectedFrameStyle === style.id"
+                (click)="selectFrameStyle(style.id)">
+          {{ style.label }}
+        </button>
+      </div>
+
+      <!-- AR Preview button — visible once a frame is selected -->
+      <button
+        *ngIf="selectedFrameId && (styledImage || originalImage)"
+        id="ar-preview-btn"
+        class="ar-preview-btn-v2"
+        (click)="openArPreview()">
+        <span class="ar-icon">📐</span>
+        Ver en tu pared
+      </button>
     </div>
 
     <!-- Footer nav -->
@@ -61,8 +92,10 @@
         {{ 'EDITOR.BACK' | translate }}
       </ion-button>
       <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <button class="next-btn" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">
-        {{ 'EDITOR.NEXT' | translate }}
+      <button class="next-btn" (click)="nextStep()" [disabled]="!originalImage">
+        <span>
+          {{ 'EDITOR.NEXT' | translate }}
+        </span>
       </button>
     </div>
 

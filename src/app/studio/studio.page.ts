@@ -1,89 +1,95 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonIcon,
-  IonButton,
-  IonButtons,
-  IonMenuButton,
-  IonSpinner,
-  IonText
-} from '@ionic/angular/standalone';
-import { Firestore, collection, query, where, collectionData, doc, updateDoc, orderBy } from '@angular/fire/firestore';
+import { IonContent, IonButton, IonIcon, ModalController, IonSpinner } from '@ionic/angular/standalone';
+import { Firestore, collection, query, where, onSnapshot, doc, deleteDoc } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
+import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, shareOutline, downloadOutline, cubeOutline } from 'ionicons/icons';
-
-interface ArtItem {
-  id: string;
-  imageUrl: string;
-  style: string;
-  isFavorite: boolean;
-  createdAt: any;
-}
+import { colorPaletteOutline, imageOutline, trashOutline, cartOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-studio',
   templateUrl: './studio.page.html',
   styleUrls: ['./studio.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonCard,
-    IonIcon,
-    IonButton,
-    IonButtons,
-    IonMenuButton,
-    IonSpinner,
-    IonText,
-    TranslateModule
-  ]
+  imports: [IonContent, IonButton, IonIcon, IonSpinner, CommonModule, TranslateModule, EditorModalComponent]
 })
-export class StudioPage implements OnInit {
-  private firestore = inject(Firestore);
-  private authService = inject(AuthService);
+export class StudioPage implements OnInit, OnDestroy {
+  activeTab: 'creations' | 'originals' = 'creations';
+  userCreations: any[] = [];
+  userOriginals: any[] = [];
+  isLoading = true;
 
-  artItems$: Observable<ArtItem[]> = of([]);
+  private authSub?: Subscription;
+  private unsubCreations?: () => void;
+  private unsubOriginals?: () => void;
 
-  constructor() {
-    addIcons({ heart, heartOutline, shareOutline, downloadOutline, cubeOutline });
+  constructor(
+    public authService: AuthService,
+    private firestore: Firestore,
+    private modalCtrl: ModalController
+  ) {
+    addIcons({ colorPaletteOutline, imageOutline, trashOutline, cartOutline });
   }
 
   ngOnInit() {
-    this.artItems$ = this.authService.user$.pipe(
-      switchMap(user => {
-        if (!user) return of([]);
-        const artRef = collection(this.firestore, 'my_art');
-        const q = query(
-          artRef,
-          where('userId', '==', user.uid),
-          orderBy('createdAt', 'desc')
-        );
-        return collectionData(q, { idField: 'id' }) as Observable<ArtItem[]>;
-      })
-    );
+    this.authSub = this.authService.user$.subscribe(user => {
+      if (user) {
+        this.loadData(user.uid);
+      }
+    });
   }
 
-  async toggleFavorite(item: ArtItem) {
-    const docRef = doc(this.firestore, `my_art/${item.id}`);
-    await updateDoc(docRef, {
-      isFavorite: !item.isFavorite
+  ngOnDestroy() {
+    this.authSub?.unsubscribe();
+    if (this.unsubCreations) this.unsubCreations();
+    if (this.unsubOriginals) this.unsubOriginals();
+  }
+
+  loadData(uid: string) {
+    this.isLoading = true;
+    
+    // Load IA Creations
+    const creationsRef = collection(this.firestore, 'my_art');
+    const qC = query(creationsRef, where('userId', '==', uid));
+    this.unsubCreations = onSnapshot(qC, (snapshot) => {
+      const items: any[] = [];
+      snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+      this.userCreations = items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+      this.isLoading = false;
     });
+
+    // Load Originals
+    const originalsRef = collection(this.firestore, 'original_photos');
+    const qO = query(originalsRef, where('userId', '==', uid));
+    this.unsubOriginals = onSnapshot(qO, (snapshot) => {
+      const items: any[] = [];
+      snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+      this.userOriginals = items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    });
+  }
+
+  async makeOrder(item: any) {
+    const modal = await this.modalCtrl.create({
+      component: EditorModalComponent,
+      componentProps: {
+        // Pass the existing image to start with it
+        existingImage: item.imageUrl || item.image
+      },
+      cssClass: 'full-screen-modal'
+    });
+    await modal.present();
+  }
+
+  async deleteItem(item: any, collectionName: 'my_art' | 'original_photos') {
+    if (confirm('¿Estás seguro de que quieres borrar esta imagen?')) {
+      await deleteDoc(doc(this.firestore, collectionName, item.id));
+    }
+  }
+
+  setTab(tab: 'creations' | 'originals') {
+    this.activeTab = tab;
   }
 }

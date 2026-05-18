@@ -22,20 +22,12 @@
               <ion-label>{{ 'SIDEBAR.HOME' | translate }}</ion-label>
             </ion-item>
             <ion-item button routerLink="/studio" routerDirection="forward" routerLinkActive="active">
-              <ion-icon name="color-palette-outline" slot="start"></ion-icon>
-              <ion-label>{{ 'SIDEBAR.EDITOR' | translate }}</ion-label>
-            </ion-item>
-            <ion-item button>
-              <ion-icon name="cube-outline" slot="start"></ion-icon>
-              <ion-label>{{ 'SIDEBAR.ORDERS' | translate }}</ion-label>
+              <ion-icon name="images-outline" slot="start"></ion-icon>
+              <ion-label>{{ 'SIDEBAR.STUDIO' | translate }}</ion-label>
             </ion-item>
             <ion-item button routerLink="/account" routerDirection="forward" routerLinkActive="active">
               <ion-icon name="person-outline" slot="start"></ion-icon>
               <ion-label>{{ 'SIDEBAR.PROFILE' | translate }}</ion-label>
-            </ion-item>
-            <ion-item button *ngIf="!(authService.user$ | async)" (click)="openAuthModal()">
-              <ion-icon name="log-in-outline" slot="start"></ion-icon>
-              <ion-label>{{ 'SIDEBAR.LOGIN' | translate }}</ion-label>
             </ion-item>
             <ion-item button *ngIf="authService.user$ | async" (click)="authService.logout()">
               <ion-icon name="log-out-outline" slot="start"></ion-icon>

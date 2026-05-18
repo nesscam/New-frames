@@ -11,6 +11,7 @@ export class EditorStoreService {
   private _originalImage$ = new BehaviorSubject<string | null>(null);
   private _styledImage$ = new BehaviorSubject<string | null>(null);
   private _selectedFrameId$ = new BehaviorSubject<string | null>(null);
+  private _selectedFrameStyle$ = new BehaviorSubject<string>('none');
   private _orderStep$ = new BehaviorSubject<OrderStep>('upload');
 
   constructor() { }
@@ -26,6 +27,10 @@ export class EditorStoreService {
 
   get selectedFrameId$(): Observable<string | null> {
     return this._selectedFrameId$.asObservable();
+  }
+
+  get selectedFrameStyle$(): Observable<string> {
+    return this._selectedFrameStyle$.asObservable();
   }
 
   get orderStep$(): Observable<OrderStep> {
@@ -45,6 +50,10 @@ export class EditorStoreService {
     this._selectedFrameId$.next(id);
   }
 
+  setSelectedFrameStyle(style: string): void {
+    this._selectedFrameStyle$.next(style);
+  }
+
   setOrderStep(step: OrderStep): void {
     this._orderStep$.next(step);
   }
@@ -55,7 +64,8 @@ export class EditorStoreService {
   resetState(): void {
     this._originalImage$.next(null);
     this._styledImage$.next(null);
-    this._selectedFrameId$.next(null);
+    this._selectedFrameId$.next('8x8');
+    this._selectedFrameStyle$.next('black');
     this._orderStep$.next('upload');
   }
 }

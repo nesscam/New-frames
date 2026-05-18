@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true" class="ion-padding custom-bg">
 
-
   <!-- Top Bar -->
   <div class="top-bar">
     <ion-buttons slot="start" class="ion-hide-lg-up" style="margin-right: 10px;">
@@ -45,42 +44,51 @@
     </div>
   </div>
 
-  <!-- Inspiration Gallery -->
+  <!-- Inspirations -->
   <div class="section-container">
     <h2>{{ 'HOME.INSPIRATION' | translate }}</h2>
-
     <div class="creations-carousel">
       <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
         <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
         <p class="creation-label">{{ inspo.style }}</p>
       </div>
-      <!-- Add extra placeholders to match the mockup horizontal scroll -->
-      <div class="creation-wrapper" (click)="openEditorModal('Oil Painting')">
-        <div class="creation-img"
-          style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=200')">
-        </div>
-        <p class="creation-label">{{ 'HOME.OIL_PAINTING' | translate }}</p>
-      </div>
     </div>
   </div>
 
-  <!-- Authenticated Only Sections -->
+  <!-- Auth Content -->
   <ng-container *ngIf="authService.user$ | async">
-    <!-- Your Creations -->
-    <div class="section-container">
-      <h2>{{ 'HOME.YOUR_CREATIONS' | translate }}</h2>
-
-      <div class="creations-carousel" *ngIf="userCreations.length > 0">
-        <div class="creation-wrapper" *ngFor="let creation of userCreations">
-          <div class="creation-img" [style.background-image]="'url(' + (creation.imageUrl || creation.image) + ')'">
+    
+    <!-- Your Original Photos -->
+    <div class="section-container" *ngIf="userOriginals.length > 0">
+      <h2>{{ 'HOME.YOUR_ORIGINALS' | translate }}</h2>
+      <div class="creations-carousel">
+        <div class="creation-wrapper" *ngFor="let item of userOriginals">
+          <div class="creation-img" 
+               [style.background-image]="'url(' + item.imageUrl + ')'"
+               (click)="openEditorModal(undefined, item.imageUrl)">
+            <div class="delete-badge" (click)="deleteItem(item, 'original_photos'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
           </div>
-          <p class="creation-label">{{ creation.style }}</p>
+          <p class="creation-label">{{ 'HOME.ORIGINAL' | translate }}</p>
         </div>
       </div>
+    </div>
 
-      <div class="empty-state" *ngIf="userCreations.length === 0">
-        <ion-icon name="color-palette-outline"></ion-icon>
-        <p>{{ 'HOME.NO_ART_YET' | translate }}</p>
+    <!-- Your Creations -->
+    <div class="section-container" *ngIf="userCreations.length > 0">
+      <h2>{{ 'HOME.YOUR_CREATIONS' | translate }}</h2>
+      <div class="creations-carousel">
+        <div class="creation-wrapper" *ngFor="let item of userCreations">
+          <div class="creation-img" 
+               [style.background-image]="'url(' + (item.imageUrl || item.image) + ')'"
+               (click)="openEditorModal(undefined, item.imageUrl || item.image)">
+            <div class="delete-badge" (click)="deleteItem(item, 'my_art'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </div>
+          <p class="creation-label">{{ item.style }}</p>
+        </div>
       </div>
     </div>
 
@@ -93,37 +101,30 @@
           <div class="order-details">
             <h3>{{ order.id }}</h3>
             <p>{{ order.details }}</p>
-            <p *ngIf="order.date" class="order-date">{{ order.date }}</p>
           </div>
           <div class="order-status" [ngClass]="order.status.toLowerCase()">
             {{ order.status }}
           </div>
         </div>
       </div>
-      <div class="view-all-container">
-        <button class="view-all-btn">{{ 'HOME.VIEW_ALL_ORDERS' | translate }}</button>
-      </div>
     </div>
   </ng-container>
 
-  <div class="landing-footer">
-    <div class="tab">
+  <!-- Mobile Footer Nav -->
+  <div class="landing-footer ion-hide-lg-up">
+    <div class="tab" routerLink="/studio" routerLinkActive="active">
       <ion-icon name="images-outline"></ion-icon>
       <span>{{ 'HOME.TAB_GALLERY' | translate }}</span>
     </div>
-    <div class="tab active">
+    <div class="tab" routerLink="/home" routerLinkActive="active">
       <ion-icon name="color-palette-outline"></ion-icon>
       <span>{{ 'HOME.TAB_STYLES' | translate }}</span>
     </div>
-    <div class="tab">
+    <div class="tab" (click)="openEditorModal()">
       <ion-icon name="create-outline"></ion-icon>
       <span>{{ 'HOME.TAB_EDITOR' | translate }}</span>
     </div>
-    <div class="tab">
-      <ion-icon name="star-outline"></ion-icon>
-      <span>{{ 'HOME.TAB_FAVORITES' | translate }}</span>
-    </div>
-    <div class="tab" routerLink="/account">
+    <div class="tab" routerLink="/account" routerLinkActive="active">
       <ion-icon name="person-outline"></ion-icon>
       <span>{{ 'HOME.TAB_ACCOUNT' | translate }}</span>
     </div>

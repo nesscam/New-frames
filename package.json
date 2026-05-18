@@ -7,6 +7,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
+    "deploy": "ng build --configuration production && firebase deploy --only hosting",
+    "deploy:all": "ng build --configuration production && firebase deploy",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -32,11 +35,13 @@
     "@ionic/angular": "^8.0.0",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
+    "@types/three": "^0.184.1",
     "fabric": "^7.2.0",
     "firebase": "^11.10.0",
     "ionicons": "^7.0.0",
     "replicate": "^1.4.0",
     "rxjs": "~7.8.0",
+    "three": "^0.184.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

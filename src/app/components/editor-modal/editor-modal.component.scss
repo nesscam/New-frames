@@ -2,7 +2,30 @@
   height: 100%;
 }
 
-/* ─── Fondo igual que auth-modal ─── */
+/* ─── Header ─── */
+.editor-header {
+  ion-toolbar {
+    --background: transparent;
+    --border-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    
+    ion-button.close-btn {
+      --color: rgba(255, 255, 255, 0.8);
+      margin-right: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        --color: #fff;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
 :host ion-content {
   --background: #131417;
 }
@@ -13,8 +36,8 @@
   left: 50%;
   transform: translateX(-50%);
   width: 150vw;
-  height: 50vh;
-  background: radial-gradient(circle at bottom, rgba(62, 123, 250, 0.15) 0%, transparent 70%);
+  height: 60vh;
+  background: radial-gradient(circle at bottom, rgba(62, 123, 250, 0.18) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -24,237 +47,174 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 20px 16px;
+  padding: 60px 20px 20px;
   position: relative;
   z-index: 1;
+  min-height: 50vh;
 }
 
 .canvas-wrapper {
   position: relative;
-  border: 10px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-  transition: border 0.3s ease, filter 0.3s ease;
-  background-color: var(--bg-secondary);
-  border-radius: 4px;
-  overflow: hidden;
-
-  &[data-style="loading"] {
-    opacity: 0.7;
-    filter: blur(2px) grayscale(50%);
+  display: flex;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: transparent;
+  overflow: visible; 
+  line-height: 0;
+  
+  canvas {
+    max-width: 100%;
+    height: auto !important;
   }
-
-  &[data-frame="min-black-8-10"] {
-    border-color: #1a1a1a;
-    border-width: 8px;
+  
+  &[data-frame-style="none"] { border-width: 4px; }
+  &[data-frame-style="black"] { border: 20px solid #000; }
+  &[data-frame-style="white"] { border: 20px solid #fff; }
+  &[data-frame-style="brown"] { border: 20px solid #5D4037; }
+  &[data-frame-style="natural"] { border: 20px solid #D2B48C; }
+  &[data-frame-style="black-gold"] {
+    border: 20px solid #000;
+    outline: 2px solid #d4af37;
+    outline-offset: -11px;
   }
-
-  &[data-frame="classic-oak-11-14"] {
-    border-color: #8B5A2B;
-    border-style: ridge;
-    border-width: 15px;
-  }
-
-  &[data-frame="premium-gold-12-12"] {
-    border-color: #D4AF37;
-    border-style: double;
-    border-width: 12px;
+  &[data-frame-style="black-silver"] {
+    border: 20px solid #000;
+    outline: 2px solid #c0c0c0;
+    outline-offset: -11px;
   }
 }
 
-/* ─── Spinner overlay ─── */
 .spinner-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   color: white;
   z-index: 10;
-
-  p {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-  }
+  border-radius: 12px;
 }
 
-/* ─── Panel principal (igual al auth-container) ─── */
 .editor-panel-container {
   position: relative;
   z-index: 10;
-  max-width: 420px;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 0 25px 30px;
+  padding: 0 25px 40px;
+  
+  @media (min-width: 992px) {
+    max-width: 800px; // Mas ancho en desktop
+  }
 }
 
-/* ─── Step panels ─── */
 .step-panel {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 
   h2 {
-    margin: 0 0 6px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.2px;
-  }
-
-  p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
   }
 }
 
-/* ─── Botón principal (igual a .custom-gradient-btn del auth-modal) ─── */
 .primary-btn {
   display: block;
   width: 100%;
   background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
   color: white;
   border: none;
-  padding: 16px 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border-radius: 30px;
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+  padding: 18px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 35px;
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
   cursor: pointer;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 22px;
-  letter-spacing: 0.3px;
-
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
-  }
-
-  &:active {
-    opacity: 0.85;
-    transform: scale(0.98);
-  }
 }
 
-/* ─── Scroll horizontal de chips ─── */
 .horiz-scroll {
   display: flex;
   overflow-x: auto;
-  gap: 12px;
-  padding: 12px 0 16px;
-  margin-top: 12px;
-
-  &::-webkit-scrollbar {
-    display: none;
+  gap: 14px;
+  padding: 10px 0 20px;
+  &::-webkit-scrollbar { display: none; }
+  
+  @media (min-width: 992px) {
+    justify-content: flex-start;
+    flex-wrap: nowrap; 
   }
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
-/* ─── Chips de estilo/marco (similar a .custom-item del auth-modal) ─── */
 .chip-btn {
   flex: 0 0 auto;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 18px;
-  border-radius: 12px;
-  min-width: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 24px;
+  border-radius: 15px;
+  min-width: 110px;
   text-align: center;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-size: 0.95rem;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-
+  
   &.selected {
     border-color: #FF8E53;
-    background: rgba(255, 107, 107, 0.1);
-    color: white;
-    box-shadow: 0 0 0 1px #FF8E53, 0 6px 20px rgba(255, 107, 107, 0.2);
-  }
-
-  small {
-    display: block;
-    margin-top: 4px;
-    color: var(--text-secondary);
-    font-size: 0.75rem;
+    background: rgba(255, 107, 107, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
   }
 }
 
-/* ─── Separador entre chips y footer nav ─── */
-.divider-line {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 20px 0;
+.ar-preview-btn-v2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 15px;
+  background: rgba(167, 139, 250, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.5);
+  color: #fff;
+  font-weight: 700;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(167, 139, 250, 0.3);
+    transform: scale(1.02);
+  }
 }
 
-/* ─── Footer nav ─── */
 .footer-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding: 0;
-  gap: 12px;
-
-  ion-button {
-    --color: var(--text-secondary);
-    font-size: 0.9rem;
-    font-weight: 500;
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  
+  .next-btn {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
   }
 }
 
-/* ─── Botón "Siguiente" (acorde con el gradiente principal) ─── */
-.next-btn {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-
-  &:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-}
-
-/* ─── Step indicator pill ─── */
-.step-indicator {
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  font-weight: 700;
-  padding: 5px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
+/* ─── Global Override for Desktop Modal ─── */
+:host-context(body) {
+  --full-modal-width: 90vw;
+  --full-modal-height: 90vh;
 }

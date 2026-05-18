@@ -1,21 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonList, IonItem, IonLabel, ModalController, IonCard, IonText, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonIcon, IonMenuButton, IonButtons, ModalController } from '@ionic/angular/standalone';
 import { EditorModalComponent } from '../components/editor-modal/editor-modal.component';
 import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
 import { AuthService } from '../services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
-import { searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline } from 'ionicons/icons';
-import { Firestore, collection, query, where, onSnapshot } from '@angular/fire/firestore';
+import { trashOutline, cartOutline, searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline } from 'ionicons/icons';
+import { Firestore, collection, query, where, onSnapshot, doc, deleteDoc } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonButton, IonIcon, IonMenuButton, IonButtons, CommonModule, TranslateModule],
+  standalone: true,
+  imports: [IonContent, IonButton, IonIcon, IonMenuButton, IonButtons, CommonModule, TranslateModule, EditorModalComponent],
 })
 export class HomePage implements OnInit, OnDestroy {
 
@@ -27,6 +28,7 @@ export class HomePage implements OnInit, OnDestroy {
   ];
 
   userCreations: any[] = [];
+  userOriginals: any[] = [];
 
   orders = [
     { id: '#AF-3024-001', details: 'Size: 11x14, Material, Wood', status: 'Pnippto', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=100&q=80' },
@@ -36,23 +38,33 @@ export class HomePage implements OnInit, OnDestroy {
 
   private authSub?: Subscription;
   private unsubscribeArt?: () => void;
+  private unsubscribeOrig?: () => void;
 
-  constructor(private modalCtrl: ModalController, public authService: AuthService, private firestore: Firestore, private router: Router) {
-    addIcons({ searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline });
+  constructor(
+    private modalCtrl: ModalController, 
+    public authService: AuthService, 
+    private firestore: Firestore, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    addIcons({ trashOutline, cartOutline, searchOutline, notificationsOutline, alertOutline, cameraOutline, folderOutline, imagesOutline, personCircleOutline, colorPaletteOutline, cubeOutline, logoGoogle, createOutline, starOutline, personOutline });
   }
 
   ngOnInit() {
     this.authSub = this.authService.user$.subscribe(user => {
       if (user) {
         this.loadUserArt(user.uid);
+        this.route.queryParams.subscribe(params => {
+          if (params['reopen']) {
+            this.openEditorModal();
+          }
+        });
       } else {
-        // Redirigir a landing si no está logueado
         this.router.navigate(['/landing'], { replaceUrl: true });
         this.userCreations = [];
-        if (this.unsubscribeArt) {
-          this.unsubscribeArt();
-          this.unsubscribeArt = undefined;
-        }
+        this.userOriginals = [];
+        if (this.unsubscribeArt) this.unsubscribeArt();
+        if (this.unsubscribeOrig) this.unsubscribeOrig();
       }
     });
   }
@@ -60,47 +72,52 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.authSub?.unsubscribe();
     if (this.unsubscribeArt) this.unsubscribeArt();
+    if (this.unsubscribeOrig) this.unsubscribeOrig();
   }
 
   loadUserArt(uid: string) {
+    // IA Creations
     if (this.unsubscribeArt) this.unsubscribeArt();
-    
     const artRef = collection(this.firestore, 'my_art');
-    const q = query(artRef, where('userId', '==', uid));
-    
-    this.unsubscribeArt = onSnapshot(q, (snapshot) => {
-      const creations: any[] = [];
-      snapshot.forEach(doc => {
-        creations.push({ id: doc.id, ...doc.data() });
-      });
-      // Sort newest first
-      this.userCreations = creations.sort((a, b) => {
-        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
-        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
-        return timeB - timeA;
-      });
+    const qC = query(artRef, where('userId', '==', uid));
+    this.unsubscribeArt = onSnapshot(qC, (snapshot) => {
+      const items: any[] = [];
+      snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+      this.userCreations = items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    });
+
+    // Originals
+    if (this.unsubscribeOrig) this.unsubscribeOrig();
+    const origRef = collection(this.firestore, 'original_photos');
+    const qO = query(origRef, where('userId', '==', uid));
+    this.unsubscribeOrig = onSnapshot(qO, (snapshot) => {
+      const items: any[] = [];
+      snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+      this.userOriginals = items.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+      console.log('Originals loaded:', this.userOriginals.length);
     });
   }
 
   async openAuthModal() {
-    const modal = await this.modalCtrl.create({
-      component: AuthModalComponent,
-    });
+    const modal = await this.modalCtrl.create({ component: AuthModalComponent });
     await modal.present();
   }
 
-  async openEditorModal(preselectedStyle?: string) {
+  async openEditorModal(preselectedStyle?: string, existingImage?: string) {
     const modal = await this.modalCtrl.create({
       component: EditorModalComponent,
-      componentProps: {
-        preselectedStyle: preselectedStyle
-      }
+      componentProps: { 
+        preselectedStyle: preselectedStyle,
+        existingImage: existingImage
+      },
+      cssClass: 'full-screen-modal'
     });
-
     await modal.present();
-
-    // When closed, you could optionally refresh the dashboard
-    // const { data } = await modal.onWillDismiss();
   }
 
+  async deleteItem(item: any, collectionName: string) {
+    if (confirm('¿Borrar esta imagen?')) {
+      await deleteDoc(doc(this.firestore, collectionName, item.id));
+    }
+  }
 }

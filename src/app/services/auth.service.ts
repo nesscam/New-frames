@@ -35,6 +35,12 @@ export class AuthService {
     }
   }
 
+  async getCurrentUser(): Promise<User | null> {
+    if (!this.auth) return null;
+    await this.auth.authStateReady();
+    return this.auth.currentUser;
+  }
+
   async loginWithGoogle() {
     if (!this.auth) return;
     const provider = new GoogleAuthProvider();

@@ -1,29 +1,77 @@
 {
-  "catalog_version": "1.0",
-  "last_updated": "2026-03-09",
+  "catalog_version": "1.1",
+  "last_updated": "2026-05-10",
   "frames": [
     {
-      "id": "canvas-std",
+      "id": "8x8",
       "style": "Canvas",
-      "material": "Lienzo Canvas",
-      "size": "12x18",
-      "price": 49.99,
+      "material": "Lienzo Mini",
+      "size": "8x8",
+      "price": 29.99,
       "currency": "USD"
     },
     {
-      "id": "poster-std",
-      "style": "Poster",
-      "material": "Póster Premium",
-      "size": "18x24",
-      "price": 24.99,
+      "id": "12x12",
+      "style": "Canvas",
+      "material": "Lienzo Cuadrado",
+      "size": "12x12",
+      "price": 39.99,
       "currency": "USD"
     },
     {
-      "id": "marco-lux",
+      "id": "14x14",
       "style": "Marco",
-      "material": "Cuadro con Marco",
-      "size": "11x14",
-      "price": 59.99,
+      "material": "Marco Galería",
+      "size": "14x14",
+      "price": 54.99,
+      "currency": "USD"
+    },
+    {
+      "id": "16x16",
+      "style": "Marco",
+      "material": "Marco Premium",
+      "size": "16x16",
+      "price": 64.99,
+      "currency": "USD"
+    },
+    {
+      "id": "16x24",
+      "style": "Poster",
+      "material": "Póster Cine",
+      "size": "16x24",
+      "price": 34.99,
+      "currency": "USD"
+    },
+    {
+      "id": "18x24",
+      "style": "Poster",
+      "material": "Póster Grande",
+      "size": "18x24",
+      "price": 39.99,
+      "currency": "USD"
+    },
+    {
+      "id": "20x24",
+      "style": "Canvas",
+      "material": "Lienzo Studio",
+      "size": "20x24",
+      "price": 79.99,
+      "currency": "USD"
+    },
+    {
+      "id": "24x32",
+      "style": "Marco",
+      "material": "Marco Mural",
+      "size": "24x32",
+      "price": 129.99,
+      "currency": "USD"
+    },
+    {
+      "id": "24x36",
+      "style": "Canvas",
+      "material": "Lienzo Maestro",
+      "size": "24x36",
+      "price": 149.99,
       "currency": "USD"
     }
   ]

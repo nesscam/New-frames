@@ -50,7 +50,7 @@
     <div class="creations-carousel">
       <div class="creation-wrapper" *ngFor="let inspo of galleryInspirations" (click)="openEditorModal(inspo.style)">
         <div class="creation-img" [style.background-image]="'url(' + inspo.image + ')'"></div>
-        <p class="creation-label">{{ inspo.style }}</p>
+        <p class="creation-label">{{ 'STYLES.' + inspo.style.toUpperCase() | translate }}</p>
       </div>
     </div>
   </div>
@@ -87,7 +87,7 @@
               <ion-icon name="trash-outline"></ion-icon>
             </div>
           </div>
-          <p class="creation-label">{{ item.style }}</p>
+          <p class="creation-label">{{ 'STYLES.' + item.style.toUpperCase() | translate }}</p>
         </div>
       </div>
     </div>

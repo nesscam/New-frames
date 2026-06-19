@@ -19,53 +19,64 @@ interface StyleConfig {
     descriptor: string;
     /** Minimum strength (when intensity = 0) */
     strengthMin: number;
-    /** Maximum strength (when intensity = 1) — NEVER above 0.50 */
+    /** Maximum strength (when intensity = 1) */
     strengthMax: number;
     /** Guidance scale — controls prompt adherence */
     guidance: number;
+    /** Whether to preserve original facial features and identity */
+    preserveIdentity: boolean;
 }
 
 const STYLE_CONFIG: Record<string, StyleConfig> = {
-    Neon: {
-        descriptor:
-            "cyberpunk neon artwork, neon city lights, purple and blue neon glow, "
-            + "holographic reflections, dramatic shadows, cinematic sci-fi",
-        strengthMin: 0.28,
-        strengthMax: 0.50,
+    Cinematic_Royal: {
+        descriptor: "epic royal portrait, cinematic lighting, medieval elegant attire, rich deep colors, dramatic shadows, museum masterpiece, 8k resolution, volumetric light",
+        strengthMin: 0.65,
+        strengthMax: 0.85,
         guidance: 8,
+        preserveIdentity: false,
     },
-    Watercolor: {
-        descriptor:
-            "elegant watercolor painting, soft brush strokes, pastel colors, "
-            + "paper grain texture, paint bleeding, hand-painted",
-        strengthMin: 0.15,
-        strengthMax: 0.30,
-        guidance: 6,
+    Luxury_Minimal: {
+        descriptor: "luxury minimal portrait, high fashion editorial, stark white and beige tones, elegant simplicity, soft studio lighting, premium aesthetic, sleek and modern",
+        strengthMin: 0.35,
+        strengthMax: 0.55,
+        guidance: 8,
+        preserveIdentity: true,
     },
-    Oil: {
-        descriptor:
-            "oil painting, visible brush strokes, rich colors, "
-            + "renaissance lighting, impasto texture, museum quality",
-        strengthMin: 0.18,
-        strengthMax: 0.35,
+    Fantasy_Epic: {
+        descriptor: "epic fantasy portrait, magical glowing atmosphere, ethereal background, elven or sci-fi aesthetic, highly detailed masterpiece, cinematic movie poster",
+        strengthMin: 0.65,
+        strengthMax: 0.85,
+        guidance: 8,
+        preserveIdentity: false,
+    },
+    Renaissance_Masterpiece: {
+        descriptor: "epic renaissance oil portrait, dramatic golden lighting, museum masterpiece, ultra detailed brush strokes, cinematic shadows, royal atmosphere, luxury wall art, gallery quality",
+        strengthMin: 0.45,
+        strengthMax: 0.75,
+        guidance: 9,
+        preserveIdentity: true,
+    },
+    Dreamy_Watercolor_Gallery: {
+        descriptor: "dreamy watercolor portrait, elegant pastel tones, soft emotional lighting, delicate paint textures, luxury wall art, artistic composition, gallery quality",
+        strengthMin: 0.40,
+        strengthMax: 0.65,
         guidance: 7,
+        preserveIdentity: true,
     },
-    Comic: {
-        descriptor:
-            "comic book illustration, bold ink outlines, vivid colors, "
-            + "dynamic shading, graphic novel style, detailed line art",
-        strengthMin: 0.25,
-        strengthMax: 0.45,
+    Cinematic_Graphic_Novel: {
+        descriptor: "cinematic graphic novel art, striking ink shading, dramatic composition, rich vibrant colors, superhero comic poster, award-winning illustration",
+        strengthMin: 0.60,
+        strengthMax: 0.80,
         guidance: 8,
+        preserveIdentity: false,
     },
-    Sketch: {
-        descriptor:
-            "pencil sketch, graphite texture, hand-drawn shading, "
-            + "fine sketch lines, monochrome, subtle paper texture",
-        strengthMin: 0.12,
-        strengthMax: 0.28,
-        guidance: 5,
-    },
+    Cyberpunk_Movie_Poster: {
+        descriptor: "cyberpunk movie poster, neon glowing aesthetic, futuristic city reflections, dramatic rim lighting, sci-fi masterpiece, cinematic quality",
+        strengthMin: 0.65,
+        strengthMax: 0.85,
+        guidance: 8,
+        preserveIdentity: false,
+    }
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -77,19 +88,24 @@ function buildPrompt(style: string): string {
     const cfg = STYLE_CONFIG[style];
     if (!cfg) return style; // fallback: use raw style string
 
-    return [
+    const basePrompt = [
         cfg.descriptor,
-        "preserve exact facial identity",
-        "same person",
-        "same face",
-        "same eyes",
-        "same hairstyle",
-        "same composition",
-        "same pose",
+        "centered composition",
+        "wall art composition",
+        "premium portrait framing",
         "high detail",
-        "professional artwork",
-        "cinematic lighting",
-    ].join(", ");
+        "cinematic lighting"
+    ];
+
+    if (cfg.preserveIdentity) {
+        basePrompt.push(
+            "preserve exact facial identity",
+            "recognizable face",
+            "same person"
+        );
+    }
+
+    return basePrompt.join(", ");
 }
 
 /**
@@ -176,8 +192,8 @@ export const processAiImage = onCall({
         logger.info(`[FLUX] style=${promptStyle}, intensity=${safeIntensity}, strength=${falStrength.toFixed(3)}, guidance=${guidanceScale}`);
         logger.info(`[FLUX] prompt=${finalPrompt}`);
 
-        // ── Step A: FLUX image-to-image (identity-preserving stylization) ──
-        const fluxResult = await subscribe("fal-ai/flux/dev/image-to-image", {
+        // ── Step A: Nano Banana 2 Edit (identity-preserving stylization) ──
+        const fluxResult = await subscribe("fal-ai/nano-banana-2/edit", {
             input: {
                 prompt: finalPrompt,
                 negative_prompt: negativePrompt,

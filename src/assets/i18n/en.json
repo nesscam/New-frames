@@ -113,11 +113,19 @@
   },
   "STYLES": {
     "ORIGINAL": "Original",
+    "CINEMATIC_ROYAL": "Cinematic Royal",
+    "LUXURY_MINIMAL": "Luxury Minimal",
+    "FANTASY_EPIC": "Fantasy Epic",
+    "RENAISSANCE_MASTERPIECE": "Renaissance Masterpiece",
+    "DREAMY_WATERCOLOR_GALLERY": "Dreamy Watercolor",
+    "CINEMATIC_GRAPHIC_NOVEL": "Cinematic Graphic Novel",
+    "CYBERPUNK_MOVIE_POSTER": "Cyberpunk Movie Poster",
     "NEON": "Neon / Cyberpunk",
     "WATERCOLOR": "Watercolor",
     "OIL": "Oil Painting",
     "SKETCH": "Sketch",
-    "COMIC": "Comic"
+    "COMIC": "Comic",
+    "CYBERPUNK": "Cyberpunk"
   },
   "PROFILE": {
     "TITLE": "User Profile",

@@ -10,14 +10,7 @@ import { switchMap, map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ImageAiService {
-  // Master Prompts in English
-  private readonly MASTER_PROMPTS: { [key: string]: string } = {
-    'Neon': 'Cyberpunk style, neon lights, futuristic city, glowing colors, highly detailed, 8k resolution',
-    'Watercolor': 'Soft watercolor painting, artistic brush strokes, pastel colors, dreamlike atmosphere, fluid textures',
-    'Oil': 'Classical oil painting, heavy texture, rich colors, impasto technique, museum quality, dramatic lighting',
-    'Sketch': 'Hand-drawn pencil sketch, charcoal lines, artistic shading, graphite texture, white paper background',
-    'Comic': 'Pop art comic book style, bold outlines, Ben-Day dots, vibrant colors, superhero aesthetic'
-  };
+
 
   private processAiImageCallable: ReturnType<typeof httpsCallable>;
 
@@ -49,12 +42,12 @@ export class ImageAiService {
    * Generates artistic version of a user image using Fal.ai.
    *
    * @param userImage The original image as a Blob.
-   * @param styleKey The artistic style key (Neon, Watercolor, Oil, Sketch, Comic).
+   * @param styleKey The artistic style key.
    * @param userId The ID of the user.
    * @returns Observable with the URL of the generated image.
    */
   generateArt(userImage: Blob, styleKey: string, userId: string): Observable<string> {
-    const stylePrompt = this.MASTER_PROMPTS[styleKey] || styleKey;
+    const stylePrompt = styleKey;
     const userDocRef = doc(this.firestore, `users/${userId}`);
     const fingerprint = this.getBlobFingerprint(userImage);
 

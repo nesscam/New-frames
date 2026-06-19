@@ -113,11 +113,19 @@
   },
   "STYLES": {
     "ORIGINAL": "Original",
+    "CINEMATIC_ROYAL": "Retrato Real",
+    "LUXURY_MINIMAL": "Lujo Minimalista",
+    "FANTASY_EPIC": "Fantasía Épica",
+    "RENAISSANCE_MASTERPIECE": "Obra Maestra Renacentista",
+    "DREAMY_WATERCOLOR_GALLERY": "Acuarela de Galería",
+    "CINEMATIC_GRAPHIC_NOVEL": "Novela Gráfica",
+    "CYBERPUNK_MOVIE_POSTER": "Póster Cyberpunk",
     "NEON": "Neon / Cyberpunk",
     "WATERCOLOR": "Acuarela",
     "OIL": "Óleo",
     "SKETCH": "Boceto",
-    "COMIC": "Cómic"
+    "COMIC": "Cómic",
+    "CYBERPUNK": "Cyberpunk"
   },
   "PROFILE": {
     "TITLE": "Perfil de Usuario",

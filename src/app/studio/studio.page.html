@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="card-info">
-            <span class="style-label">{{ item.style }}</span>
+            <span class="style-label">{{ 'STYLES.' + item.style.toUpperCase() | translate }}</span>
             <div class="order-btn" (click)="makeOrder(item)">
               <ion-icon name="cart-outline" slot="start"></ion-icon>
               {{ 'STUDIO.ORDER_BTN' | translate }}

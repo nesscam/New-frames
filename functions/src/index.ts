@@ -17,6 +17,8 @@ if (!admin.apps.length) {
 interface StyleConfig {
     /** The Fal.ai model endpoint to use. Defaults to 'fal-ai/flux/dev/image-to-image' */
     model?: string;
+    /** Optional target template URL for face swap */
+    templateUrl?: string;
     /** Short, visual FLUX-optimized descriptor */
     descriptor: string;
     /** Minimum strength (when intensity = 0) */
@@ -31,11 +33,12 @@ interface StyleConfig {
 
 const STYLE_CONFIG: Record<string, StyleConfig> = {
     Cinematic_Royal: {
+        templateUrl: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000",
         descriptor: "epic royal portrait, cinematic lighting, medieval elegant attire, rich deep colors, dramatic shadows, museum masterpiece, 8k resolution, volumetric light",
         strengthMin: 0.65,
         strengthMax: 0.85,
         guidance: 8,
-        preserveIdentity: false,
+        preserveIdentity: true,
     },
     Luxury_Minimal: {
         descriptor: "luxury minimal portrait, high fashion editorial, stark white and beige tones, elegant simplicity, soft studio lighting, premium aesthetic, sleek and modern",
@@ -52,6 +55,7 @@ const STYLE_CONFIG: Record<string, StyleConfig> = {
         preserveIdentity: false,
     },
     Renaissance_Masterpiece: {
+        templateUrl: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?q=80&w=1000",
         descriptor: "epic renaissance oil portrait, dramatic golden lighting, museum masterpiece, ultra detailed brush strokes, cinematic shadows, royal atmosphere, luxury wall art, gallery quality",
         strengthMin: 0.45,
         strengthMax: 0.75,
@@ -202,40 +206,60 @@ export const processAiImage = onCall({
         // 4. Build prompt & calculate per-style parameters
         const finalPrompt    = buildPrompt(promptStyle);
         const negativePrompt = getNegativePrompt();
-        const falStrength    = getStrength(promptStyle, safeIntensity);
-        const guidanceScale  = getGuidance(promptStyle);
 
         const styleCfg = STYLE_CONFIG[promptStyle];
-        const modelEndpoint = styleCfg?.model || "fal-ai/flux/dev/image-to-image";
+        const targetTemplateUrl = styleCfg?.templateUrl;
         const preserveIdentity = styleCfg?.preserveIdentity ?? true;
-        const isFlux = modelEndpoint.includes("flux");
 
-        logger.info(`[FLUX] style=${promptStyle}, model=${modelEndpoint}, intensity=${safeIntensity}, strength=${falStrength.toFixed(3)}, guidance=${guidanceScale}`);
-        logger.info(`[FLUX] prompt=${finalPrompt}`);
+        let stylizedUrl: string;
 
-        // ── Step A: Image-to-Image / Edit stylization ──
-        const inputPayload: Record<string, any> = {
-            prompt: finalPrompt,
-            image_url: imageUrl,
-            strength: falStrength,
-            num_inference_steps: 28,
-            guidance_scale: guidanceScale,
-            enable_safety_checker: false,
-        };
+        if (targetTemplateUrl) {
+            logger.info(`[FACE-SWAP] style=${promptStyle}, targetTemplateUrl=${targetTemplateUrl}, sourceImageUrl=${imageUrl}`);
+            const faceSwapResult = await subscribe("fal-ai/face-swap", {
+                input: {
+                    base_image_url: targetTemplateUrl,
+                    swap_image_url: imageUrl,
+                }
+            }) as any;
 
-        if (!isFlux) {
-            inputPayload["negative_prompt"] = negativePrompt;
+            stylizedUrl = faceSwapResult?.image?.url || faceSwapResult?.output?.url;
+            if (!stylizedUrl) {
+                throw new Error("No URL returned from fal-ai/face-swap");
+            }
+            logger.info("[FACE-SWAP] Face swap complete:", stylizedUrl);
+        } else {
+            const falStrength    = getStrength(promptStyle, safeIntensity);
+            const guidanceScale  = getGuidance(promptStyle);
+            const modelEndpoint  = styleCfg?.model || "fal-ai/flux/dev/image-to-image";
+            const isFlux = modelEndpoint.includes("flux");
+
+            logger.info(`[FLUX] style=${promptStyle}, model=${modelEndpoint}, intensity=${safeIntensity}, strength=${falStrength.toFixed(3)}, guidance=${guidanceScale}`);
+            logger.info(`[FLUX] prompt=${finalPrompt}`);
+
+            // ── Step A: Image-to-Image / Edit stylization ──
+            const inputPayload: Record<string, any> = {
+                prompt: finalPrompt,
+                image_url: imageUrl,
+                strength: falStrength,
+                num_inference_steps: 28,
+                guidance_scale: guidanceScale,
+                enable_safety_checker: false,
+            };
+
+            if (!isFlux) {
+                inputPayload["negative_prompt"] = negativePrompt;
+            }
+
+            const fluxResult = await subscribe(modelEndpoint, {
+                input: inputPayload
+            }) as any;
+
+            stylizedUrl = fluxResult?.images?.[0]?.url;
+            if (!stylizedUrl) {
+                throw new Error(`No URL returned from ${modelEndpoint} stylization`);
+            }
+            logger.info("[FLUX] Stylization complete:", stylizedUrl);
         }
-
-        const fluxResult = await subscribe(modelEndpoint, {
-            input: inputPayload
-        }) as any;
-
-        const stylizedUrl = fluxResult?.images?.[0]?.url;
-        if (!stylizedUrl) {
-            throw new Error(`No URL returned from ${modelEndpoint} stylization`);
-        }
-        logger.info("[FLUX] Stylization complete:", stylizedUrl);
 
         // ── Step B: CodeFormer face restoration (optional) ──
         // Repairs any facial degradation from stylization if configured.

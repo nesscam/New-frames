@@ -15,6 +15,8 @@ if (!admin.apps.length) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface StyleConfig {
+    /** The Fal.ai model endpoint to use. Defaults to 'fal-ai/flux/dev/image-to-image' */
+    model?: string;
     /** Short, visual FLUX-optimized descriptor */
     descriptor: string;
     /** Minimum strength (when intensity = 0) */
@@ -58,24 +60,24 @@ const STYLE_CONFIG: Record<string, StyleConfig> = {
     },
     Dreamy_Watercolor_Gallery: {
         descriptor: "artistic watercolor portrait painting, soft pastel color washes, light paint splatters and bleeds, wet-on-wet watercolor technique, on premium clean white textured watercolor paper, minimalist composition, elegant and romantic, gallery quality",
-        strengthMin: 0.35,
-        strengthMax: 0.55,
+        strengthMin: 0.55,
+        strengthMax: 0.65,
         guidance: 7,
         preserveIdentity: true,
     },
     Minimalist_Line_Art: {
         descriptor: "minimalist continuous line art portrait, single line weight vector outline, sleek black ink lines on solid off-white background, elegant cardstock paper texture, artistic faceless silhouette style, clean aesthetic, high-end gallery print, absolute simplicity, no colors, no shadows",
-        strengthMin: 0.45,
-        strengthMax: 0.55,
+        strengthMin: 0.65,
+        strengthMax: 0.75,
         guidance: 9,
-        preserveIdentity: true,
+        preserveIdentity: false,
     },
     Fine_Pencil_Sketch: {
         descriptor: "fine pencil sketch portrait, hand-drawn graphite art, detailed cross-hatching shading, charcoal outlines, clean textured sketch paper background, monochrome art, elegant studio drawing, masterpiece, no color",
-        strengthMin: 0.45,
-        strengthMax: 0.60,
+        strengthMin: 0.60,
+        strengthMax: 0.70,
         guidance: 8,
-        preserveIdentity: true,
+        preserveIdentity: false,
     },
     Cinematic_Graphic_Novel: {
         descriptor: "cinematic graphic novel art, striking ink shading, dramatic composition, rich vibrant colors, superhero comic poster, award-winning illustration",
@@ -203,52 +205,65 @@ export const processAiImage = onCall({
         const falStrength    = getStrength(promptStyle, safeIntensity);
         const guidanceScale  = getGuidance(promptStyle);
 
-        logger.info(`[FLUX] style=${promptStyle}, intensity=${safeIntensity}, strength=${falStrength.toFixed(3)}, guidance=${guidanceScale}`);
+        const styleCfg = STYLE_CONFIG[promptStyle];
+        const modelEndpoint = styleCfg?.model || "fal-ai/flux/dev/image-to-image";
+        const preserveIdentity = styleCfg?.preserveIdentity ?? true;
+        const isFlux = modelEndpoint.includes("flux");
+
+        logger.info(`[FLUX] style=${promptStyle}, model=${modelEndpoint}, intensity=${safeIntensity}, strength=${falStrength.toFixed(3)}, guidance=${guidanceScale}`);
         logger.info(`[FLUX] prompt=${finalPrompt}`);
 
-        // ── Step A: Nano Banana 2 Edit (identity-preserving stylization) ──
-        const fluxResult = await subscribe("fal-ai/nano-banana-2/edit", {
-            input: {
-                prompt: finalPrompt,
-                negative_prompt: negativePrompt,
-                image_url: imageUrl,
-                strength: falStrength,
-                num_inference_steps: 28,
-                guidance_scale: guidanceScale,
-                enable_safety_checker: false,
-            }
+        // ── Step A: Image-to-Image / Edit stylization ──
+        const inputPayload: Record<string, any> = {
+            prompt: finalPrompt,
+            image_url: imageUrl,
+            strength: falStrength,
+            num_inference_steps: 28,
+            guidance_scale: guidanceScale,
+            enable_safety_checker: false,
+        };
+
+        if (!isFlux) {
+            inputPayload["negative_prompt"] = negativePrompt;
+        }
+
+        const fluxResult = await subscribe(modelEndpoint, {
+            input: inputPayload
         }) as any;
 
         const stylizedUrl = fluxResult?.images?.[0]?.url;
         if (!stylizedUrl) {
-            throw new Error("No URL returned from FLUX stylization");
+            throw new Error(`No URL returned from ${modelEndpoint} stylization`);
         }
         logger.info("[FLUX] Stylization complete:", stylizedUrl);
 
-        // ── Step B: CodeFormer face restoration ──
-        // Repairs any facial degradation from stylization.
-        // fidelity 0.7 = strong identity preservation while cleaning up artefacts.
+        // ── Step B: CodeFormer face restoration (optional) ──
+        // Repairs any facial degradation from stylization if configured.
         let finalUrl = stylizedUrl;
-        try {
-            logger.info("[CodeFormer] Starting face restoration...");
-            const faceResult = await subscribe("fal-ai/codeformer", {
-                input: {
-                    image_url: stylizedUrl,
-                    fidelity: 0.7,
-                    only_center_face: false,
-                }
-            }) as any;
+        if (preserveIdentity) {
+            try {
+                logger.info("[CodeFormer] Starting face restoration...");
+                const faceResult = await subscribe("fal-ai/codeformer", {
+                    input: {
+                        image_url: stylizedUrl,
+                        fidelity: 0.7,
+                        only_center_face: false,
+                    }
+                }) as any;
 
-            const restoredUrl = faceResult?.image?.url || faceResult?.output?.url;
-            if (restoredUrl) {
-                finalUrl = restoredUrl;
-                logger.info("[CodeFormer] Face restoration complete:", restoredUrl);
-            } else {
-                logger.warn("[CodeFormer] No output URL, using stylized image as-is");
+                const restoredUrl = faceResult?.image?.url || faceResult?.output?.url;
+                if (restoredUrl) {
+                    finalUrl = restoredUrl;
+                    logger.info("[CodeFormer] Face restoration complete:", restoredUrl);
+                } else {
+                    logger.warn("[CodeFormer] No output URL, using stylized image as-is");
+                }
+            } catch (faceErr: any) {
+                // Face restoration is enhancement, not critical — don't fail the whole pipeline
+                logger.warn("[CodeFormer] Face restore failed, continuing with stylized image:", faceErr.message);
             }
-        } catch (faceErr: any) {
-            // Face restoration is enhancement, not critical — don't fail the whole pipeline
-            logger.warn("[CodeFormer] Face restore failed, continuing with stylized image:", faceErr.message);
+        } else {
+            logger.info("[CodeFormer] Skipping face restoration as preserveIdentity is false for style:", promptStyle);
         }
 
         // 5. Return immediately for speed; save permanently in background

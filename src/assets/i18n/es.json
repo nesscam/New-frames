@@ -113,6 +113,8 @@
   },
   "STYLES": {
     "ORIGINAL": "Original",
+    "MINIMALIST_LINE_ART": "Líneas Minimalistas",
+    "FINE_PENCIL_SKETCH": "Boceto a Lápiz",
     "CINEMATIC_ROYAL": "Retrato Real",
     "LUXURY_MINIMAL": "Lujo Minimalista",
     "FANTASY_EPIC": "Fantasía Épica",

@@ -113,6 +113,8 @@
   },
   "STYLES": {
     "ORIGINAL": "Original",
+    "MINIMALIST_LINE_ART": "Minimalist Line Art",
+    "FINE_PENCIL_SKETCH": "Pencil Sketch",
     "CINEMATIC_ROYAL": "Cinematic Royal",
     "LUXURY_MINIMAL": "Luxury Minimal",
     "FANTASY_EPIC": "Fantasy Epic",

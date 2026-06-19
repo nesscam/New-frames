@@ -57,10 +57,24 @@ const STYLE_CONFIG: Record<string, StyleConfig> = {
         preserveIdentity: true,
     },
     Dreamy_Watercolor_Gallery: {
-        descriptor: "dreamy watercolor portrait, elegant pastel tones, soft emotional lighting, delicate paint textures, luxury wall art, artistic composition, gallery quality",
-        strengthMin: 0.40,
-        strengthMax: 0.65,
+        descriptor: "artistic watercolor portrait painting, soft pastel color washes, light paint splatters and bleeds, wet-on-wet watercolor technique, on premium clean white textured watercolor paper, minimalist composition, elegant and romantic, gallery quality",
+        strengthMin: 0.35,
+        strengthMax: 0.55,
         guidance: 7,
+        preserveIdentity: true,
+    },
+    Minimalist_Line_Art: {
+        descriptor: "minimalist continuous line art portrait, single line weight vector outline, sleek black ink lines on solid off-white background, elegant cardstock paper texture, artistic faceless silhouette style, clean aesthetic, high-end gallery print, absolute simplicity, no colors, no shadows",
+        strengthMin: 0.45,
+        strengthMax: 0.55,
+        guidance: 9,
+        preserveIdentity: true,
+    },
+    Fine_Pencil_Sketch: {
+        descriptor: "fine pencil sketch portrait, hand-drawn graphite art, detailed cross-hatching shading, charcoal outlines, clean textured sketch paper background, monochrome art, elegant studio drawing, masterpiece, no color",
+        strengthMin: 0.45,
+        strengthMax: 0.60,
+        guidance: 8,
         preserveIdentity: true,
     },
     Cinematic_Graphic_Novel: {

@@ -47,7 +47,7 @@ export class EditorModalComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'black-gold', label: 'Negro/Oro' },
     { id: 'black-silver', label: 'Negro/Plata' },
   ];
-  styles: string[] = ['Original', 'Cinematic_Royal', 'Luxury_Minimal', 'Fantasy_Epic', 'Renaissance_Masterpiece', 'Dreamy_Watercolor_Gallery', 'Cinematic_Graphic_Novel', 'Cyberpunk_Movie_Poster'];
+  styles: string[] = ['Original', 'Minimalist_Line_Art', 'Fine_Pencil_Sketch', 'Dreamy_Watercolor_Gallery', 'Cinematic_Royal', 'Luxury_Minimal', 'Fantasy_Epic', 'Renaissance_Masterpiece', 'Cinematic_Graphic_Novel', 'Cyberpunk_Movie_Poster'];
 
   isApplyingStyle = false;
   private subs = new Subscription();

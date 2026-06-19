@@ -19,6 +19,8 @@ interface StyleConfig {
     model?: string;
     /** Optional target template URL for face swap */
     templateUrl?: string;
+    /** Whether to run a style-transfer image-to-image pass after face swapping to blend the face texture into the template style */
+    runStylePassAfterSwap?: boolean;
     /** Short, visual FLUX-optimized descriptor */
     descriptor: string;
     /** Minimum strength (when intensity = 0) */
@@ -70,16 +72,20 @@ const STYLE_CONFIG: Record<string, StyleConfig> = {
         preserveIdentity: true,
     },
     Minimalist_Line_Art: {
+        templateUrl: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?q=80&w=1000",
+        runStylePassAfterSwap: true,
         descriptor: "minimalist continuous line art portrait, single line weight vector outline, sleek black ink lines on solid off-white background, elegant cardstock paper texture, artistic faceless silhouette style, clean aesthetic, high-end gallery print, absolute simplicity, no colors, no shadows",
-        strengthMin: 0.40,
-        strengthMax: 0.52,
+        strengthMin: 0.32,
+        strengthMax: 0.45,
         guidance: 9,
         preserveIdentity: false,
     },
     Fine_Pencil_Sketch: {
+        templateUrl: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=1000",
+        runStylePassAfterSwap: true,
         descriptor: "fine pencil sketch portrait, hand-drawn graphite art, detailed cross-hatching shading, charcoal outlines, clean textured sketch paper background, monochrome art, elegant studio drawing, masterpiece, no color",
-        strengthMin: 0.35,
-        strengthMax: 0.48,
+        strengthMin: 0.28,
+        strengthMax: 0.40,
         guidance: 8,
         preserveIdentity: false,
     },
@@ -222,11 +228,46 @@ export const processAiImage = onCall({
                 }
             }) as any;
 
-            stylizedUrl = faceSwapResult?.image?.url || faceSwapResult?.output?.url;
-            if (!stylizedUrl) {
+            const swapUrl = faceSwapResult?.image?.url || faceSwapResult?.output?.url;
+            if (!swapUrl) {
                 throw new Error("No URL returned from fal-ai/face-swap");
             }
-            logger.info("[FACE-SWAP] Face swap complete:", stylizedUrl);
+            logger.info("[FACE-SWAP] Face swap complete:", swapUrl);
+            stylizedUrl = swapUrl;
+
+            // ── Step A2: Optional style pass after swap to blend the face into the template style ──
+            if (styleCfg?.runStylePassAfterSwap) {
+                const falStrength    = getStrength(promptStyle, safeIntensity);
+                const guidanceScale  = getGuidance(promptStyle);
+                const modelEndpoint  = styleCfg?.model || "fal-ai/flux/dev/image-to-image";
+                const isFlux = modelEndpoint.includes("flux");
+
+                logger.info(`[STYLE PASS] Blending swap image into style: ${promptStyle}, model=${modelEndpoint}, strength=${falStrength.toFixed(3)}`);
+                const inputPayload: Record<string, any> = {
+                    prompt: finalPrompt,
+                    image_url: swapUrl,
+                    strength: falStrength,
+                    num_inference_steps: 28,
+                    guidance_scale: guidanceScale,
+                    enable_safety_checker: false,
+                };
+
+                if (!isFlux) {
+                    inputPayload["negative_prompt"] = negativePrompt;
+                }
+
+                const styleResult = await subscribe(modelEndpoint, {
+                    input: inputPayload
+                }) as any;
+
+                const blendedUrl = styleResult?.images?.[0]?.url;
+                if (blendedUrl) {
+                    stylizedUrl = blendedUrl;
+                    logger.info("[STYLE PASS] Blending complete:", blendedUrl);
+                } else {
+                    logger.warn("[STYLE PASS] Blending failed, using swap image as-is");
+                }
+            }
         } else {
             const falStrength    = getStrength(promptStyle, safeIntensity);
             const guidanceScale  = getGuidance(promptStyle);

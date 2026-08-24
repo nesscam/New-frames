@@ -8,6 +8,17 @@ if (!admin.apps.length) {
     admin.initializeApp();
 }
 
+/**
+ * Rejects any callable invocation that is not authenticated.
+ * Must be called as the first statement in every onCall handler that
+ * touches paid/limited resources (AI generation, storage writes).
+ */
+function requireAuth(request: { auth?: { uid?: string } | null }): void {
+    if (!request.auth?.uid) {
+        throw new HttpsError("unauthenticated", "Esta operación requiere autenticación.");
+    }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // STYLE CONFIG — per-style strength ranges & guidance
 // Key insight: FLUX destroys facial identity above ~0.55 strength.
@@ -181,6 +192,8 @@ export const processAiImage = onCall({
     invoker: "public",
     secrets: ["FAL_KEY"]
 }, async (request) => {
+    requireAuth(request);
+
     const { imageUrl, promptStyle, intensity } = request.data;
     if (!imageUrl) {
         throw new HttpsError("invalid-argument", "Falta la URL de la imagen");
@@ -353,6 +366,8 @@ export const saveImagePermanently = onCall({
     timeoutSeconds: 300,
     memory: "512MiB"
 }, async (request) => {
+    requireAuth(request);
+
     const { rawOutputUrl, cacheKey, promptStyle } = request.data;
     if (!rawOutputUrl || !cacheKey) throw new HttpsError("invalid-argument", "Faltan datos");
 
@@ -395,6 +410,8 @@ export const upscaleImageForPrint = onCall({
     memory: "1GiB",
     secrets: ["FAL_KEY"]
 }, async (request) => {
+    requireAuth(request);
+
     const { imageUrl, doublePasses } = request.data;
     if (!imageUrl) throw new HttpsError("invalid-argument", "Falta imageUrl");
 

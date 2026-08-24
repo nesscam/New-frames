@@ -1,4 +1,4 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { onCall, HttpsError, CallableRequest } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 import * as crypto from "crypto";
@@ -16,6 +16,21 @@ if (!admin.apps.length) {
 function requireAuth(request: { auth?: { uid?: string } | null }): void {
     if (!request.auth?.uid) {
         throw new HttpsError("unauthenticated", "Esta operación requiere autenticación.");
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// APP CHECK — MONITOR MODE ONLY
+// enforceAppCheck is intentionally false on every callable below: unverified/missing
+// tokens are logged, never blocked. This gives visibility into legitimate-client
+// traffic (mobile apps not yet shipped, cached links, etc.) before enforcement is
+// turned on for real in a follow-up task.
+// ═══════════════════════════════════════════════════════════════════════════════
+function logAppCheckStatus(fnName: string, app: CallableRequest["app"]): void {
+    if (app) {
+        logger.info(`[AppCheck][MONITOR] ${fnName}: verified token, appId=${app.appId}`);
+    } else {
+        logger.warn(`[AppCheck][MONITOR] ${fnName}: request without a valid App Check token (not blocked — monitor mode)`);
     }
 }
 
@@ -190,9 +205,13 @@ export const processAiImage = onCall({
     memory: "512MiB",
     cors: true,
     invoker: "public",
-    secrets: ["FAL_KEY"]
+    secrets: ["FAL_KEY"],
+    // App Check MONITOR mode: log token presence, never block. Flip to true only after
+    // reviewing the App Check metrics tab shows verified traffic isn't being missed.
+    enforceAppCheck: false,
 }, async (request) => {
     requireAuth(request);
+    logAppCheckStatus("processAiImage", request.app);
 
     const { imageUrl, promptStyle, intensity } = request.data;
     if (!imageUrl) {
@@ -382,9 +401,11 @@ export const processAiImage = onCall({
 
 export const saveImagePermanently = onCall({
     timeoutSeconds: 300,
-    memory: "512MiB"
+    memory: "512MiB",
+    enforceAppCheck: false,
 }, async (request) => {
     requireAuth(request);
+    logAppCheckStatus("saveImagePermanently", request.app);
 
     const { rawOutputUrl, cacheKey, promptStyle } = request.data;
     if (!rawOutputUrl || !cacheKey) throw new HttpsError("invalid-argument", "Faltan datos");
@@ -426,9 +447,11 @@ export const saveImagePermanently = onCall({
 export const upscaleImageForPrint = onCall({
     timeoutSeconds: 300,
     memory: "1GiB",
-    secrets: ["FAL_KEY"]
+    secrets: ["FAL_KEY"],
+    enforceAppCheck: false,
 }, async (request) => {
     requireAuth(request);
+    logAppCheckStatus("upscaleImageForPrint", request.app);
 
     const { imageUrl, doublePasses } = request.data;
     if (!imageUrl) throw new HttpsError("invalid-argument", "Falta imageUrl");

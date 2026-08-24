@@ -37,8 +37,20 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
+    // Sin Chrome de escritorio disponible (contenedores/CI), karma-chrome-
+    // launcher ya respeta CHROME_BIN automaticamente -- solo hace falta
+    // --no-sandbox porque un container corriendo sin privilegios de
+    // sandboxing (o como usuario no-root) no puede usar el sandbox nativo
+    // de Chrome. Con CHROME_BIN sin definir (dev local normal), sigue
+    // usando el launcher 'Chrome' de siempre, sin cambios de comportamiento.
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
+    browsers: [process.env.CHROME_BIN ? 'ChromeHeadlessNoSandbox' : 'Chrome'],
+    singleRun: !!process.env.CHROME_BIN,
     restartOnFileChange: true
   });
 };

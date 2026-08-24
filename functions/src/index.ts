@@ -92,7 +92,7 @@ const STYLE_CONFIG: Record<string, StyleConfig> = {
         preserveIdentity: false,
     },
     Fine_Pencil_Sketch: {
-        templateUrl: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=1000",
+        templateUrl: "https://firebasestorage.googleapis.com/v0/b/new-frames-703a6.firebasestorage.app/o/templates%2Fpencil.png?alt=media&token=bb0c289a-3d2b-462e-9d51-dfa0b5ac589f",
         runStylePassAfterSwap: true,
         descriptor: "fine pencil sketch portrait, hand-drawn graphite art, detailed cross-hatching shading, charcoal outlines, clean textured sketch paper background, monochrome art, elegant studio drawing, masterpiece, no color",
         strengthMin: 0.28,
@@ -234,12 +234,30 @@ export const processAiImage = onCall({
 
         if (targetTemplateUrl) {
             logger.info(`[FACE-SWAP] style=${promptStyle}, targetTemplateUrl=${targetTemplateUrl}, sourceImageUrl=${imageUrl}`);
-            const faceSwapResult = await subscribe("fal-ai/face-swap", {
-                input: {
-                    base_image_url: targetTemplateUrl,
-                    swap_image_url: imageUrl,
+            // Quick check: verify template URL is reachable before calling Fal.ai
+            try {
+                const headCheck = await fetch(targetTemplateUrl, { method: "HEAD" });
+                logger.info(`[FACE-SWAP] Template URL HEAD check: status=${headCheck.status}, content-type=${headCheck.headers.get("content-type")}`);
+                if (!headCheck.ok) {
+                    logger.error(`[FACE-SWAP] Template URL returned ${headCheck.status} — likely blocked by Unsplash. Upload image to Firebase Storage instead.`);
                 }
-            }) as any;
+            } catch (headErr: any) {
+                logger.warn(`[FACE-SWAP] Could not HEAD-check template URL: ${headErr.message}`);
+            }
+            let faceSwapResult: any;
+            try {
+                faceSwapResult = await subscribe("fal-ai/face-swap", {
+                    input: {
+                        base_image_url: targetTemplateUrl,
+                        swap_image_url: imageUrl,
+                    }
+                });
+                logger.info("[FACE-SWAP] Raw result:", JSON.stringify(faceSwapResult));
+            } catch (swapErr: any) {
+                logger.error("[FACE-SWAP] ERROR from fal-ai/face-swap:", JSON.stringify(swapErr));
+                logger.error("[FACE-SWAP] Error body:", swapErr?.body ?? swapErr?.response ?? swapErr?.message);
+                throw new Error(`fal-ai/face-swap failed: ${JSON.stringify(swapErr?.body ?? swapErr?.message ?? swapErr)}`);
+            }
 
             const swapUrl = faceSwapResult?.image?.url || faceSwapResult?.output?.url;
             if (!swapUrl) {

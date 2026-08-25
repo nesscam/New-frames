@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permite a los usuarios leer y escribir sus propios datos en la colección "users"
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Permite a los usuarios leer y crear su propio arte en la colección "my_art"
+    match /my_art/{documentId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+
+    // Regla general para otras colecciones mientras se desarrolla (con precaución)
+    // Se asegura de que al menos el usuario esté autenticado
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

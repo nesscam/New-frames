@@ -1,0 +1,117 @@
+<ion-header class="ar-header">
+  <ion-toolbar>
+    <ion-title>Ver en tu espacio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" fill="clear" id="ar-close-btn">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ar-content" [fullscreen]="true">
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LOADING STATE                                          -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="ar-loading" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Activando cámara…</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- ERROR STATE                                            -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="ar-error" *ngIf="mode === 'error'">
+    <ion-icon name="camera-outline" class="error-icon"></ion-icon>
+    <h3>Cámara no disponible</h3>
+    <p>{{ errorMessage }}</p>
+    <ion-button (click)="dismiss()" fill="outline" color="light">Cerrar</ion-button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MODE 1: WebXR Canvas (Android Chrome)                 -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <ng-container *ngIf="mode === 'webxr'">
+    <canvas #canvasEl class="xr-canvas" (click)="placeFrameWebXR()"></canvas>
+
+    <div class="webxr-hint">
+      <ion-icon name="image-outline"></ion-icon>
+      <span>Apunta a una pared o mesa y toca para colocar el cuadro</span>
+    </div>
+  </ng-container>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MODE 2: Magic Window — camera + draggable overlay     -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <ng-container *ngIf="mode === 'magic-window'">
+
+    <!-- Live camera background — always in DOM so srcObject can be assigned -->
+    <video #videoEl class="camera-bg" autoplay playsinline muted></video>
+
+    <!-- Loading overlay on top of camera -->
+    <div class="ar-loading camera-loading" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Activando cámara…</p>
+    </div>
+
+    <!-- Draggable picture frame overlay (only after camera is ready) -->
+    <div #overlayEl class="frame-overlay" *ngIf="!isLoading">
+      <div
+        #frameEl
+        class="frame-container"
+        [style.aspect-ratio]="getAdjustedDimensions().w / getAdjustedDimensions().h"
+        [attr.data-frame-style]="frameStyle"
+        (pointerdown)="onFramePointerDown($event)"
+        (pointermove)="onFramePointerMove($event)"
+        (pointerup)="onFramePointerUp($event)"
+        (touchstart)="onFrameTouchStart($event)"
+        (touchmove)="onFrameTouchMove($event)"
+      >
+        <!-- Artwork image -->
+        <img [src]="imageUrl" class="frame-artwork" draggable="false" />
+
+        <!-- Frame border overlay -->
+        <div class="frame-border"></div>
+
+        <!-- Drag handle hint -->
+        <div class="drag-hint">
+          <ion-icon name="expand-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Size badge -->
+    <div class="size-badge" *ngIf="!isLoading">
+      <span class="size-label">{{ frameDimensions.label }}</span>
+      <span class="size-cm">{{ frameLabelCm }}</span>
+    </div>
+
+    <!-- Controls bar -->
+    <div class="ar-controls" *ngIf="!isLoading">
+      <div class="ar-controls-inner">
+        <div class="hint-text">
+          <ion-icon name="expand-outline"></ion-icon>
+          Arrastra para mover · Pellizca para redimensionar
+        </div>
+
+        <ion-button
+          id="ar-screenshot-btn"
+          class="screenshot-btn"
+          (click)="takeScreenshot()"
+          [color]="screenshotTaken ? 'success' : 'light'"
+          fill="solid"
+          shape="round"
+        >
+          <ion-icon
+            [name]="screenshotTaken ? 'checkmark-circle-outline' : 'camera-outline'"
+            slot="start"
+          ></ion-icon>
+          {{ screenshotTaken ? '¡Guardado!' : 'Capturar' }}
+        </ion-button>
+      </div>
+    </div>
+
+  </ng-container>
+
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-content class="landing-content">
+
+  <!-- Header -->
+  <div class="landing-header">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Framia Logo" class="logo-img" />
+    </div>
+  </div>
+
+  <!-- Masonry Gallery Layout -->
+  <div class="masonry-gallery">
+    <div class="gallery-row row-1">
+      <div class="gallery-item flex-2"
+        style="background-image: url('https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=400')"></div>
+      <div class="gallery-item flex-1"
+        style="background-image: url('https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=400')"></div>
+      <div class="gallery-item flex-1"
+        style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=400')"></div>
+    </div>
+    <div class="gallery-row row-2">
+      <div class="gallery-item flex-1"
+        style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=400')"></div>
+      <div class="gallery-item flex-2"
+        style="background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=400')"></div>
+      <div class="gallery-item flex-1"
+        style="background-image: url('https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=400')"></div>
+    </div>
+    <div class="gallery-row row-3">
+      <div class="gallery-item flex-3"
+        style="background-image: url('https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=800')"></div>
+    </div>
+  </div>
+
+  <!-- Central Floating Call to Action -->
+  <div class="cta-overlay">
+    <button class="cta-pulse" (click)="openAuthModal()">{{ 'LANDING.CTA' | translate }}</button>
+  </div>
+
+
+
+</ion-content>

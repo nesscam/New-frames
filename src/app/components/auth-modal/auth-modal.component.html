@@ -1,0 +1,51 @@
+<ion-content class="auth-content">
+  <!-- Interactive Background Overlay -->
+  <div class="auth-bg-gradient"></div>
+
+  <!-- Floating Close Button -->
+  <ion-button fill="clear" color="light" class="close-btn" (click)="dismissModal()">
+    <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+  </ion-button>
+
+  <div class="auth-container">
+    <div class="logo-area">
+      <img src="assets/logo.png" alt="Framia Logo" class="logo-img" />
+      <p class="slogan">{{ 'AUTH.SLOGAN' | translate }}</p>
+    </div>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+      <ion-item lines="full" class="custom-item">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">{{ 'AUTH.EMAIL' | translate }}</ion-label>
+        <ion-input formControlName="email" type="email" placeholder="tu@email.com"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full" class="custom-item">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">{{ 'AUTH.PASSWORD' | translate }}</ion-label>
+        <ion-input formControlName="password" type="password" placeholder="******"></ion-input>
+      </ion-item>
+
+      <div class="ion-margin-top">
+        <button type="submit" [disabled]="!authForm.valid" class="custom-gradient-btn">
+          {{ (isLogin ? 'AUTH.ENTER' : 'AUTH.SIGNUP') | translate }}
+        </button>
+      </div>
+    </form>
+
+    <div class="divider">
+      <span>{{ 'AUTH.OR_ALSO' | translate }}</span>
+    </div>
+
+    <button type="button" class="google-btn" (click)="loginWithGoogle()">
+      <ion-icon name="logo-google"></ion-icon>
+      {{ 'AUTH.CONTINUE_GOOGLE' | translate }}
+    </button>
+
+    <div class="footer-toggle ion-text-center ion-margin-top">
+      <ion-text (click)="toggleMode()">
+        {{ (isLogin ? 'AUTH.NO_ACCOUNT' : 'AUTH.ALREADY_ACCOUNT') | translate }}
+      </ion-text>
+    </div>
+  </div>
+</ion-content>

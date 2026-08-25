@@ -6,16 +6,30 @@
   --padding-bottom: 30px;
 }
 
-.custom-bg {
-  --background: var(--bg-primary);
+.home-main-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+
+  .left-column {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 100px; 
+    position: relative;
+    transition: all 0.3s ease;
+  }
 }
 
-/* Typography & Spacing */
+.custom-bg {
+  --background: radial-gradient(circle at 50% 0%, rgba(62, 123, 250, 0.08) 0%, #131417 60%);
+}
+
 h2 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 20px;
-  color: var(--text-primary);
+  color: #fff;
   letter-spacing: 0.3px;
 }
 
@@ -31,28 +45,11 @@ h2 {
   align-items: center;
   margin-bottom: 30px;
 
-  .search-container {
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 8px 15px;
-    width: 300px;
-
-    ion-icon {
-      color: var(--text-secondary);
-      margin-right: 10px;
-    }
-
-    input {
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      width: 100%;
-      outline: none;
-      font-size: 0.9rem;
-      &::placeholder { color: var(--text-secondary); }
+  .logo-mobile {
+    .logo-img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
     }
   }
 
@@ -68,32 +65,10 @@ h2 {
       overflow: hidden;
       img { width: 100%; height: 100%; object-fit: cover; }
     }
-
-    .credits-text {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-left: 5px;
-    }
-
+    .credits-text { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
     .credits-bar {
-      width: 60px;
-      height: 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-      .progress {
-        width: 30%;
-        height: 100%;
-        background: var(--text-secondary);
-      }
-    }
-
-    .meta-icon {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      margin-left: 5px;
-      cursor: pointer;
-      &:hover { color: var(--text-primary); }
+      width: 60px; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px;
+      .progress { width: 30%; height: 100%; background: #FF8E53; }
     }
   }
 }
@@ -112,61 +87,81 @@ h2 {
     justify-content: center;
     gap: 12px;
     cursor: pointer;
-    transition: transform 0.2s;
     font-weight: 500;
     font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
 
-    &:hover { transform: translateY(-2px); }
-
-    ion-icon {
-      font-size: 1.6rem;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(62, 123, 250, 0.2);
     }
 
     &.upload-card {
-      background: var(--upload-gradient);
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
       color: white;
-    }
-
-    &.studio-card {
-      background: var(--bg-secondary);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: none;
     }
   }
 }
 
-/* ------------- Your Creations ------------- */
+/* ------------- Creations Carousel & Cards ------------- */
 .creations-carousel {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   overflow-x: auto;
-  padding-bottom: 10px;
-
+  padding: 10px 0 20px;
   &::-webkit-scrollbar { display: none; }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 
   .creation-wrapper {
-    flex: 0 0 140px;
+    flex: 0 0 160px;
     cursor: pointer;
 
     .creation-img {
-      width: 140px;
-      height: 140px;
-      border-radius: 12px;
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
       background-size: cover;
       background-position: center;
-      background-color: var(--bg-secondary);
-      margin-bottom: 10px;
-      transition: transform 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      transition: all 0.3s ease;
 
-      &:hover { transform: scale(1.03); }
+      &:hover {
+        transform: translateY(-5px) scale(1.02);
+        border-color: rgba(255, 142, 83, 0.5);
+      }
+
+      .delete-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        background: rgba(255, 59, 48, 0.8);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(4px);
+        z-index: 5;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #ff3b30;
+          transform: scale(1.1);
+        }
+      }
     }
 
     .creation-label {
-      margin: 0;
-      color: var(--text-primary);
+      margin-top: 12px;
       font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
       text-align: center;
     }
   }
@@ -174,87 +169,67 @@ h2 {
 
 /* ------------- Your Orders ------------- */
 .orders-list {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-secondary);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
   overflow: hidden;
 
   .order-card {
     display: flex;
     align-items: center;
     padding: 15px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-
-    &:last-child {
-      border-bottom: none;
-    }
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    &:last-child { border-bottom: none; }
 
     .order-img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-      background-size: cover;
-      background-position: center;
-      margin-right: 20px;
-      background-color: #111;
+      width: 45px; height: 45px; border-radius: 10px;
+      background-size: cover; background-position: center;
+      margin-right: 15px;
     }
 
     .order-details {
       flex: 1;
-
-      h3 {
-        margin: 0 0 4px;
-        font-size: 1rem;
-        color: var(--text-primary);
-        font-weight: 500;
-      }
-      p {
-        margin: 0;
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-      }
-      .order-date {
-        margin-top: 4px;
-      }
+      h3 { margin: 0; font-size: 0.95rem; color: #fff; }
+      p { margin: 4px 0 0; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
     }
 
     .order-status {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-
-      &.pnippto {
-        background: var(--accent-blue);
-        color: white;
-      }
-      &.shipped {
-        background: var(--accent-green);
-        color: white;
-      }
+      padding: 5px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;
+      &.pnippto { background: #3E7BFA; color: white; }
+      &.shipped { background: #34C759; color: white; }
     }
   }
 }
 
-.view-all-container {
+/* ------------- Mobile Footer Nav ------------- */
+.landing-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 85px;
+  background: rgba(19, 20, 23, 0.9);
+  backdrop-filter: blur(20px);
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1000;
 
-  .view-all-btn {
-    background: transparent;
-    border: 1px solid var(--accent-blue);
-    color: var(--text-primary);
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-size: 0.9rem;
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.3);
+    gap: 4px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
 
-    &:hover {
-      background: rgba(62, 123, 250, 0.1);
+    ion-icon { font-size: 24px; }
+    span { font-size: 10px; font-weight: 600; }
+
+    &.active {
+      color: #FF8E53;
+      transform: translateY(-2px);
     }
   }
 }

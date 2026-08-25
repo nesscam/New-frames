@@ -5,19 +5,26 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyCH3FzFF0TMUhODcvys_nU_jUhr-uQP5K4",
+    authDomain: "new-frames-703a6.firebaseapp.com",
+    projectId: "new-frames-703a6",
+    storageBucket: "new-frames-703a6.firebasestorage.app",
+    messagingSenderId: "152247361953",
+    appId: "1:152247361953:web:5c6a1586ff669a213babe0",
+    measurementId: "G-9KYXX1N7P3",
+    // App Check reCAPTCHA v3 site key — leave empty until registered in the Firebase
+    // Console (App Check > Apps > register web app). App Check stays disabled on the
+    // client until this is set; no monitoring occurs without it.
+    appCheckSiteKey: "6LcllpYtAAAAAKhZHJm7jqulXzoPUDt7STyuaPhg"
   },
-  stabilityApiKey: "",
   stripe: {
     publicKey: "pk_test_placeholder"
   },
   api: {
-    processAiImage: "https://placeholder-url.cloudfunctions.net/processAiImage"
+    baseUrl: "https://app.framia.art"
+  },
+  social: {
+    handle: "@framia_art"
   }
 };
 

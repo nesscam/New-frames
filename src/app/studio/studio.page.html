@@ -1,0 +1,73 @@
+<ion-content [fullscreen]="true">
+  <div class="studio-container">
+    
+    <div class="header-section">
+      <h1>{{ 'STUDIO.TITLE' | translate }}</h1>
+      <p>{{ 'STUDIO.SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="tabs-header">
+      <div class="tab-btn" [class.active]="activeTab === 'creations'" (click)="setTab('creations')">
+        {{ 'STUDIO.TAB_CREATIONS' | translate }}
+      </div>
+      <div class="tab-btn" [class.active]="activeTab === 'originals'" (click)="setTab('originals')">
+        {{ 'STUDIO.TAB_ORIGINALS' | translate }}
+      </div>
+    </div>
+
+    <!-- IA Creations Grid -->
+    <div *ngIf="activeTab === 'creations'">
+      <div class="art-grid" *ngIf="userCreations.length > 0; else emptyCreations">
+        <div class="art-card" *ngFor="let item of userCreations">
+          <div class="img-wrapper">
+            <img [src]="item.imageUrl || item.image" [alt]="item.style" />
+            <div class="delete-btn" (click)="deleteItem(item, 'my_art'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="style-label">{{ 'STYLES.' + item.style.toUpperCase() | translate }}</span>
+            <div class="order-btn" (click)="makeOrder(item)">
+              <ion-icon name="cart-outline" slot="start"></ion-icon>
+              {{ 'STUDIO.ORDER_BTN' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #emptyCreations>
+        <div class="empty-state">
+          <ion-icon name="color-palette-outline"></ion-icon>
+          <p>{{ 'STUDIO.EMPTY_CREATIONS' | translate }}</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Originals Grid -->
+    <div *ngIf="activeTab === 'originals'">
+      <div class="art-grid" *ngIf="userOriginals.length > 0; else emptyOriginals">
+        <div class="art-card" *ngFor="let item of userOriginals">
+          <div class="img-wrapper">
+            <img [src]="item.imageUrl || item.image" alt="Original Photo" />
+            <div class="delete-btn" (click)="deleteItem(item, 'original_photos'); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="style-label">{{ 'STUDIO.ORIGINAL' | translate }}</span>
+            <div class="order-btn" (click)="makeOrder(item)">
+              <ion-icon name="cart-outline" slot="start"></ion-icon>
+              {{ 'STUDIO.ORDER_BTN' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #emptyOriginals>
+        <div class="empty-state">
+          <ion-icon name="image-outline"></ion-icon>
+          <p>{{ 'STUDIO.EMPTY_ORIGINALS' | translate }}</p>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,74 +1,104 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>
-      AI Poster Editor
-    </ion-title>
+<ion-header class="editor-header" *ngIf="!isInline">
+  <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Cerrar</ion-button>
+      <ion-button (click)="closeAndReset()" fill="clear" class="close-btn">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding" color="dark">
+<ion-content [fullscreen]="true" class="editor-content">
 
+  <!-- Background radial gradient (igual que auth-modal) -->
+  <div class="editor-bg-gradient" *ngIf="!isInline"></div>
+
+  <!-- Canvas flotante sobre el fondo -->
   <div class="editor-container">
     <div class="canvas-wrapper"
          [class.has-styled]="styledImage !== null"
          [attr.data-frame]="selectedFrameId"
+         [attr.data-frame-style]="selectedFrameStyle"
          [attr.data-style]="isApplyingStyle ? 'loading' : 'done'">
       <canvas #fabricCanvas></canvas>
       <div *ngIf="isApplyingStyle" class="spinner-overlay">
         <ion-spinner name="crescent" color="light"></ion-spinner>
-        <p>Aplicando Estilo...</p>
+        <p>{{ 'EDITOR.APPLYING' | translate }}</p>
       </div>
     </div>
   </div>
 
-  <div class="controls-container">
+  <!-- Panel de controles (estilo auth-container) -->
+  <div class="editor-panel-container">
+
     <!-- UPLOAD STEP -->
     <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
-      <h2>Sube tu foto</h2>
-      <p>Selecciona una imagen para comenzar.</p>
+      <h2>{{ 'EDITOR.UPLOAD_TITLE' | translate }}</h2>
+      <p>{{ 'EDITOR.UPLOAD_DESC' | translate }}</p>
       <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" hidden />
-      <label for="file-upload" class="upload-btn">
-        Seleccionar Imagen
+      <label for="file-upload" class="primary-btn">
+        {{ 'HOME.UPLOAD_PHOTO' | translate }}
       </label>
     </div>
 
     <!-- STYLE STEP -->
     <div *ngIf="currentStep === 'style'" class="step-panel style-panel">
-      <h2>Elige un Estilo</h2>
+      <h2>{{ 'EDITOR.CHOOSE_STYLE' | translate }}</h2>
       <div class="horiz-scroll">
-        <button class="style-btn" *ngFor="let style of styles"
+        <button class="chip-btn" *ngFor="let style of styles"
                 [class.selected]="preselectedStyle === style"
                 (click)="applyStyle(style)">
-          {{ style }}
+          {{ 'STYLES.' + style.toUpperCase() | translate }}
         </button>
       </div>
     </div>
 
     <!-- FRAME STEP -->
     <div *ngIf="currentStep === 'frame'" class="step-panel frame-panel">
-      <h2>Elige un Marco</h2>
+      <h2>Selecciona Tamaño</h2>
       <div class="horiz-scroll">
-        <button class="frame-btn"
+        <button class="chip-btn"
                 *ngFor="let frame of frames"
                 [class.selected]="selectedFrameId === frame.id"
                 (click)="selectFrame(frame.id)">
-          {{ frame.material }}<br><small>{{ frame.price | currency:frame.currency }}</small>
+          {{ frame.material }}<br><small>{{ frame.size }}</small>
         </button>
       </div>
+
+      <h2 style="margin-top: 15px;">Estilo de Marco</h2>
+      <div class="horiz-scroll">
+        <button class="chip-btn" 
+                *ngFor="let style of frameStyles"
+                [class.selected]="selectedFrameStyle === style.id"
+                (click)="selectFrameStyle(style.id)">
+          {{ style.label }}
+        </button>
+      </div>
+
+      <!-- AR Preview button — visible once a frame is selected -->
+      <button
+        *ngIf="selectedFrameId && (styledImage || originalImage)"
+        id="ar-preview-btn"
+        class="ar-preview-btn-v2"
+        (click)="openArPreview()">
+        <span class="ar-icon">📐</span>
+        Ver en tu pared
+      </button>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="footer-nav">
+      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">
+        {{ 'EDITOR.BACK' | translate }}
+      </ion-button>
+      <div class="step-indicator">{{ currentStep | uppercase }}</div>
+      <button class="next-btn" (click)="nextStep()" [disabled]="!originalImage">
+        <span>
+          {{ 'EDITOR.NEXT' | translate }}
+        </span>
+      </button>
     </div>
 
   </div>
-</ion-content>
 
-<ion-footer>
-  <ion-toolbar color="dark">
-    <div class="footer-nav">
-      <ion-button fill="clear" color="light" (click)="prevStep()" [disabled]="currentStep === 'upload'">Atrás</ion-button>
-      <div class="step-indicator">{{ currentStep | uppercase }}</div>
-      <ion-button fill="solid" color="primary" (click)="nextStep()" [disabled]="!originalImage || currentStep === 'checkout'">Siguiente</ion-button>
-    </div>
-  </ion-toolbar>
-</ion-footer>
+</ion-content>

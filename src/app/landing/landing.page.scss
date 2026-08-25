@@ -1,0 +1,100 @@
+:host {
+  ion-content {
+    --background: #131417; // Mockup dark grey
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+}
+
+.landing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(19, 20, 23, 0.9) 0%, transparent 100%);
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+
+    .logo-img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  ion-menu-button {
+    font-size: 1.5rem;
+  }
+}
+
+.masonry-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 100vh;
+  padding-bottom: 80px;
+
+  .gallery-row {
+    display: flex;
+    gap: 8px;
+    height: 32vh;
+
+    .gallery-item {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 4px;
+
+      &.flex-1 {
+        flex: 1;
+      }
+
+      &.flex-2 {
+        flex: 2;
+      }
+
+      &.flex-3 {
+        flex: 3;
+      }
+    }
+
+    &.row-3 {
+      height: 36vh;
+    }
+  }
+}
+
+.cta-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+
+  .cta-pulse {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 30px;
+    box-shadow: 0 6px 25px rgba(255, 107, 107, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 30px rgba(255, 107, 107, 0.6);
+    }
+  }
+}

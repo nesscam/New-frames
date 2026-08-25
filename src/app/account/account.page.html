@@ -1,0 +1,78 @@
+<ion-header class="glass-header ion-no-border">
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="fw-bold">{{ 'PROFILE.TITLE' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="glass-content ion-padding">
+  
+  <div class="profile-container" *ngIf="!loading && profile; else loadingTpl">
+    
+    <!-- User Info Card -->
+    <ion-card class="glass-card user-card">
+      <div class="user-header">
+        <ion-avatar>
+          <img [src]="profile.photoURL || 'assets/default-avatar.png'" (error)="img.src='assets/default-avatar.png'" #img />
+        </ion-avatar>
+        <div class="user-details">
+          <h2>{{ profile.displayName || 'User' }}</h2>
+          <p class="text-muted">{{ profile.email }}</p>
+        </div>
+      </div>
+    </ion-card>
+
+    <!-- Addresses Section -->
+    <div class="section-container mt-4">
+      <div class="section-header">
+        <h3>{{ 'PROFILE.MY_ADDRESSES' | translate }}</h3>
+        <ion-button fill="clear" (click)="openAddAddressModal()">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          {{ 'PROFILE.ADD_NEW' | translate }}
+        </ion-button>
+      </div>
+
+      <ng-container *ngIf="profile.addresses && profile.addresses.length > 0; else noAddresses">
+        <ion-card class="glass-card item-card" *ngFor="let address of profile.addresses">
+          <div class="item-content">
+            <div class="item-icon">
+              <ion-icon name="location-outline" color="primary"></ion-icon>
+            </div>
+            <div class="item-details">
+              <h4 class="m-0">{{ address.street }} <ion-icon *ngIf="address.isDefault" name="star-outline" color="warning"></ion-icon></h4>
+              <p class="text-muted m-0">{{ address.city }}, {{ address.state }} {{ address.zipCode }}</p>
+              <p class="text-muted m-0">{{ address.country }} | {{ address.phone }}</p>
+            </div>
+            <div class="item-actions">
+              <ion-button fill="clear" color="danger" (click)="removeAddress(address.id)">
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-card>
+      </ng-container>
+
+      <ng-template #noAddresses>
+        <div class="empty-state glass-card">
+          <ion-icon name="location-outline"></ion-icon>
+          <p>{{ 'PROFILE.NO_ADDRESSES' | translate }}</p>
+        </div>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading-state">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+  </ng-template>
+</ion-content>

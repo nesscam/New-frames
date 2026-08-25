@@ -35,3 +35,26 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Custom Full Screen Modal for Desktop */
+@media (min-width: 992px) {
+  .full-screen-modal {
+    --width: 90vw;
+    --height: 90vh;
+    --max-width: 1400px;
+    --max-height: 900px;
+    --border-radius: 24px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    
+    &::part(content) {
+      background: #131417;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Fix for Magic Window and AR styles globally */
+.ar-preview-modal {
+  --width: 100%;
+  --height: 100%;
+}

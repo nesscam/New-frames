@@ -13,10 +13,22 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
     }
 
+    // orders/{orderId}: sólo el Admin SDK (Cloud Functions) puede escribir.
+    // El Admin SDK ignora estas reglas, por lo que "write: if false" bloquea
+    // toda escritura desde clientes sin afectar a las Cloud Functions.
+    // Un usuario únicamente puede leer sus propias órdenes.
+    match /orders/{orderId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow write: if false;
+    }
+
     // Regla general para otras colecciones mientras se desarrolla (con precaución)
-    // Se asegura de que al menos el usuario esté autenticado
+    // Se asegura de que al menos el usuario esté autenticado.
+    // Se excluye explícitamente "orders/**": sin este recorte, esta regla catch-all
+    // (unión lógica OR con la regla específica de arriba) volvería a permitir
+    // lectura/escritura a cualquier usuario autenticado sobre "orders".
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if request.auth != null && !document.matches('^orders/.*');
     }
   }
 }

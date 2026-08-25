@@ -17,12 +17,10 @@ export const environment = {
     // client until this is set; no monitoring occurs without it.
     appCheckSiteKey: "6LcllpYtAAAAAKhZHJm7jqulXzoPUDt7STyuaPhg"
   },
-  replicateApiKey: "***REPLICATE-KEY-ROTATED-Y-REDACTADA-2026-08-25***",
   stripe: {
     publicKey: "pk_test_placeholder"
   },
   api: {
-    processAiImage: "https://api.replicate.com/v1/predictions",
     baseUrl: "https://app.framia.art"
   },
   social: {
